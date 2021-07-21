@@ -51,7 +51,7 @@ final class InvoiceGenerator
             $results = json_decode($response);
 
             if (! $results->success) {
-                throw new \Exception($results->message);
+                throw new \Exception(is_string($results->message) ? $results->message : json_encode($results->message));
             }
 
             update_post_meta($order->get_id(), '_ebilling_invoice_xml_url', $results->links->xml);

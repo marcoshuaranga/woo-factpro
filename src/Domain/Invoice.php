@@ -61,8 +61,9 @@ final class Invoice
             $order->get_meta('_ebilling_customer_document_number'),
             $nameOrCompany, 
             $address, 
-            $order->get_billing_email(), 
-            $order->get_billing_phone()
+            $order->get_billing_email(),
+            $order->get_billing_postcode(),
+            $order->get_billing_phone(),
         );
 
         $lineItems = $order->get_items('line_item');

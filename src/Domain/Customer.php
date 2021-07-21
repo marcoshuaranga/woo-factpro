@@ -16,6 +16,8 @@ final class Customer
 
     private $email;
 
+    private $postalCode;
+
     private $phoneNumber;
 
     public function __construct(
@@ -24,6 +26,7 @@ final class Customer
         $nameOrCompany,
         $address,
         $email,
+        $postalCode,
         $phoneNumber
     ) {
         $this->documentType = $documentType;
@@ -31,6 +34,7 @@ final class Customer
         $this->nameOrCompany = $nameOrCompany;
         $this->address = $address;
         $this->email = $email;
+        $this->postalCode = $postalCode;
         $this->phoneNumber = $phoneNumber;
     }
 
@@ -41,7 +45,7 @@ final class Customer
             'numero_documento' => $this->documentNumber,
             'apellidos_y_nombres_o_razon_social' => $this->nameOrCompany,
             'codigo_pais' => self::COUNTRY,
-            'ubigeo' => '',
+            'ubigeo' => $this->postalCode,
             'direccion' => $this->address,
             'correo_electronico' => $this->email,
             'telefono' => $this->phoneNumber,

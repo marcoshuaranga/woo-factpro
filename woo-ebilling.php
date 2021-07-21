@@ -12,7 +12,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use EBilling\Domain\Invoice;
 use EBilling\WP\AdminHooks;
 use EBilling\WP\RestApiHooks;
 use EBilling\WP\WoocommerceDisplayHooks;
@@ -39,11 +38,16 @@ WoocommerceDisplayHooks::initEmailHooks();
 
 add_action('admin_post_show_invoice', function () {
     $order = new WC_Order(filter_input(INPUT_GET, 'order_id'));
-    $invoice = Invoice::createFromWooOrder('F001', '#', $order, get_option('woocommerce_calc_taxes', 'yes') === 'yes');
+    $canSend = filter_input(INPUT_GET, 'send', FILTER_VALIDATE_BOOLEAN);
+    $invoice = EBilling\Domain\Invoice::createFromWooOrder('F001', '#', $order, get_option('woocommerce_calc_taxes', 'yes') === 'yes');
 
     print('<pre>');
     print(json_encode($invoice->toArray(), JSON_PRETTY_PRINT));
     print('</pre>');
+
+    if ($canSend) {
+        EBilling\InvoiceGenerator::generate($order);
+    }
 
     die();
 });
