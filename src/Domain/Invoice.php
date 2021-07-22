@@ -50,10 +50,12 @@ final class Invoice
         $invoiceType = $order->get_meta('_ebilling_invoice_type');
         $nameOrCompany = "{$order->get_billing_first_name()} {$order->get_billing_last_name()}";
         $address = $order->get_billing_address_1();
+        $ubigeo = null;
 
         if (InvoiceType::is_factura($invoiceType)) {
             $nameOrCompany = $order->get_meta('_ebilling_company_name');
             $address = $order->get_meta('_ebilling_company_address');
+            $ubigeo = $order->get_meta('_ebilling_company_ubigeo');
         }
 
         $customer = new Customer(
@@ -62,7 +64,7 @@ final class Invoice
             $nameOrCompany, 
             $address, 
             $order->get_billing_email(),
-            $order->get_billing_postcode(),
+            $ubigeo,
             $order->get_billing_phone(),
         );
 

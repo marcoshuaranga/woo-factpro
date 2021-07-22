@@ -14,7 +14,8 @@ defined( 'ABSPATH' ) || exit;
 
 use EBilling\WP\AdminHooks;
 use EBilling\WP\RestApiHooks;
-use EBilling\WP\WoocommerceDisplayHooks;
+use EBilling\WP\WoocommerceAdminHooks;
+use EBilling\WP\WoocommerceEmailHooks;
 use EBilling\WP\WoocommerceHooks;
 
 define('EBILLING_VIEW_DIR', __DIR__ . '/views');
@@ -23,18 +24,10 @@ define('EBILLING_PLUGIN_FILE', __FILE__);
 require __DIR__ . '/vendor/autoload.php';
 
 AdminHooks::init();
-
 RestApiHooks::init();
-
+WoocommerceAdminHooks::init();
 WoocommerceHooks::init();
-
-WoocommerceHooks::initAdminHooks();
-
-WoocommerceDisplayHooks::init();
-
-WoocommerceDisplayHooks::initAdminHooks();
-
-WoocommerceDisplayHooks::initEmailHooks();
+WoocommerceEmailHooks::init();
 
 add_action('admin_post_show_invoice', function () {
     $order = new WC_Order(filter_input(INPUT_GET, 'order_id'));
@@ -48,6 +41,6 @@ add_action('admin_post_show_invoice', function () {
     if ($canSend) {
         EBilling\InvoiceGenerator::generate($order);
     }
-
+    
     die();
 });

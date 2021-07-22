@@ -1,16 +1,19 @@
 <?php
 
-namespace EBilling\Response;
+namespace EBilling\Sunat\Response;
 
 final class RucResponse {
     private $companyName;
 
     private $companyAddress;
 
-    public function __construct($companyName, $companyAddress)
+    private $ubigeo;
+
+    public function __construct($companyName, $companyAddress, $ubigeo)
     {
         $this->companyName = $companyName;
         $this->companyAddress = $companyAddress;
+        $this->ubigeo = $ubigeo;
     }
 
     public function toArray()
@@ -18,6 +21,7 @@ final class RucResponse {
         return [
             'nombre_o_razon_social' => $this->companyName,
             'direccion_completa' => $this->companyAddress,
+            'ubigeo' => $this->ubigeo,
         ];
     }
 }

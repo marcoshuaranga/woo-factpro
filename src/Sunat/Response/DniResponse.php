@@ -1,6 +1,6 @@
 <?php
 
-namespace EBilling\Response;
+namespace EBilling\Sunat\Response;
 
 final class DniResponse {
     private $firstName;

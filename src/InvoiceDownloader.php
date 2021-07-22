@@ -11,7 +11,7 @@ final class InvoiceDownloader
         $order = wc_get_order($order_id);
 
         if (! $order) {
-            wp_die('El pediddo no existe.');
+            wp_die('El pedido no existe.');
         }
 
         if ($order && $order->get_order_key() !== $order_key) {

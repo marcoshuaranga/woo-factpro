@@ -39,5 +39,12 @@
       'value' => $order->get_meta('_ebilling_company_address'),
       'wrapper_class' => 'form-field-wide',
     ]);
+
+    woocommerce_wp_text_input([
+      'id' => 'ebilling_company_ubigeo',
+      'label' => __('Ubigeo', 'woo-ebilling'),
+      'value' => $order->get_meta('_ebilling_company_ubigeo'),
+      'wrapper_class' => 'form-field-wide',
+    ]);
   ?>
 </div>

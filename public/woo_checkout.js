@@ -26,6 +26,7 @@ jQuery(function($) {
                 documentNumber.length === 11 && findBy('ruc', documentNumber, function (data) {
                     $('#ebilling_company_name').val(data.nombre_o_razon_social);
                     $('#ebilling_company_address').val(data.direccion_completa);
+                    $('#ebilling_company_ubigeo').val(data.ubigeo);
                 });
                 break;
         }

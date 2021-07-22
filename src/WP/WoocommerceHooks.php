@@ -2,9 +2,8 @@
 
 namespace EBilling\WP;
 
-use EBilling\InvoiceDownloader;
+use EBilling\Helper\View;
 use EBilling\InvoiceGenerator;
-use EBilling\SunatCode\IdentityDocument;
 use EBilling\SunatCode\InvoiceType;
 
 final class WoocommerceHooks
@@ -42,6 +41,7 @@ final class WoocommerceHooks
                     ! $_POST['ebilling_customer_document_number'] && wc_add_notice(__('El número de documento no es válido.', 'woo-ebilling'), 'error');
                     ! $_POST['ebilling_company_name'] && wc_add_notice(__('El nombre de razón social no es válido.', 'woo-ebilling'), 'error');
                     ! $_POST['ebilling_company_address'] && wc_add_notice(__('El domicilio fiscal no es es válido.', 'woo-ebilling'), 'error');
+                    ! $_POST['ebilling_company_ubigeo'] && wc_add_notice(__('Hubo un error al obtener el ubigeo. Intente la búsqueda nuevamente.', 'woo-ebilling'), 'error');
                     break;
                 default:
                     wc_add_notice(__('Debe seleccionar el tipo de comprobante.', 'woo-ebilling'), 'error');
@@ -66,52 +66,36 @@ final class WoocommerceHooks
             if (InvoiceType::is_factura($_POST['ebilling_invoice_type'])) {
                 update_post_meta($order_id, '_ebilling_company_name', wc_clean($_POST['ebilling_company_name']));
                 update_post_meta($order_id, '_ebilling_company_address', wc_clean($_POST['ebilling_company_address']));
+                update_post_meta($order_id, '_ebilling_company_ubigeo', wc_clean($_POST['ebilling_company_ubigeo']));
             }
         });
 
         add_action('woocommerce_order_status_completed', [InvoiceGenerator::class, 'generate']);
-    }
 
-    public static function initAdminHooks()
-    {
-        add_action('woocommerce_process_shop_order_meta', function ($order_id) {
+        /**
+         * Display in Website
+         */
+        add_action('woocommerce_after_checkout_billing_form', function (\WC_Checkout $checkout) {
+            print View::make(EBILLING_VIEW_DIR)->render('invoice-address-section', [
+                'checkout' => $checkout,
+                'invoice_is_mandatory' => get_option('wc_settings_ebilling_invoice_is_mandatory', 'no') === 'yes',
+                'invoices_types' => InvoiceType::getOptions(),
+            ]);
+        });
 
-            if ($_POST['ebilling_customer_document_type'] === IdentityDocument::NO_IDENTITY_DOCUMENT) {
-                return;
+        add_action('wp_enqueue_scripts', function () {
+        
+            $publicUrl = plugins_url('public', EBILLING_PLUGIN_FILE);
+        
+            wp_register_script('woo_checkout', $publicUrl . '/woo_checkout.js', ['jquery'], 1.1, true);
+        
+            if (is_checkout()) {
+                wp_enqueue_script('woo_checkout');
+                wp_localize_script('woo_checkout', 'ebillingSettings', [
+                    'root' => esc_url_raw( rest_url('woo-ebilling/v1') ),
+                    'nonce' => wp_create_nonce( 'wp_rest' ),
+                ]);
             }
-
-            $invoiceType = IdentityDocument::get_invoice_type($_POST['ebilling_customer_document_type']);
-
-            update_post_meta($order_id, '_ebilling_invoice_type', $invoiceType);
-            update_post_meta($order_id, '_ebilling_customer_document_type', wc_clean($_POST['ebilling_customer_document_type']));
-            update_post_meta($order_id, '_ebilling_customer_document_number', wc_clean($_POST['ebilling_customer_document_number']));
-
-            if (InvoiceType::is_factura($invoiceType)) {
-                update_post_meta($order_id, '_ebilling_company_name', wc_clean($_POST['ebilling_company_name']));
-                update_post_meta($order_id, '_ebilling_company_address', wc_clean($_POST['ebilling_company_address']));
-            }
-        });
-
-        add_filter( 'woocommerce_order_actions',  function ( $actions) {
-            $actions['generate_ebilling'] = __('Generar comprobante electrónico');
-
-            return $actions;
-        });
-
-        add_action('woocommerce_order_action_generate_ebilling', [InvoiceGenerator::class, 'generate']);
-
-        add_action('admin_post_ebilling_download_invoice', function () {
-            $order_id = wc_sanitize_order_id($_REQUEST['order']);
-            $order_key = sanitize_text_field($_REQUEST['key']);
-            
-            InvoiceDownloader::download($order_id, $order_key);
-        });
-
-        add_action('admin_post_nopriv_ebilling_download_invoice', function () {
-            $order_id = wc_sanitize_order_id($_REQUEST['order']);
-            $order_key = sanitize_text_field($_REQUEST['key']);
-
-            InvoiceDownloader::download($order_id, $order_key);
         });
     }
 }

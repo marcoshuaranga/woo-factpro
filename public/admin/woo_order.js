@@ -4,10 +4,12 @@ jQuery(function ($) {
 
     $('.ebilling_company_name_field').fadeOut();
     $('.ebilling_company_address_field').fadeOut();
+    $('.ebilling_company_ubigeo_field').fadeOut();
 
     if ($('#ebilling_customer_document_type').val() === RUC) {
         $('.ebilling_company_name_field').fadeIn();
         $('.ebilling_company_address_field').fadeIn();
+        $('.ebilling_company_ubigeo_field').fadeIn();
     }
 
     $('#ebilling_customer_document_number').change(function(){
@@ -25,10 +27,11 @@ jQuery(function ($) {
                 documentNumber.length === 11 && findBy('ruc', documentNumber, function (data) {
                     $('#ebilling_company_name').val(data.nombre_o_razon_social);
                     $('#ebilling_company_address').val(data.direccion_completa);
+                    $('#ebilling_company_ubigeo').val(data.ubigeo);
                 });
                 break;
             default:
-                console.log('no selected option.')
+                console.log('No option selected.')
         }
     });
 
@@ -37,10 +40,12 @@ jQuery(function ($) {
             case RUC:
                 $('.ebilling_company_name_field').fadeIn();
                 $('.ebilling_company_address_field').fadeIn();
+                $('.ebilling_company_ubigeo_field').fadeIn();
                 break;
             default:
                 $('.ebilling_company_name_field').fadeOut();
                 $('.ebilling_company_address_field').fadeOut();
+                $('.ebilling_company_ubigeo_field').fadeOut();
         }
     });
 
