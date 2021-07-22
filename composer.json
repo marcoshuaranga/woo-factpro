@@ -6,7 +6,7 @@
     "minimum-stability": "stable",
     "config": {
         "platform": {
-            "php": "5.6.1"
+            "php": "7.4"
         }
     },
     "require": {

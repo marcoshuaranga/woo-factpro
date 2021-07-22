@@ -7,10 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
 {
     public static $files = array (
-        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
-        '023d27dca8066ef29e6739335ea73bad' => __DIR__ . '/..' . '/symfony/polyfill-php70/bootstrap.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
@@ -22,7 +20,6 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
         'S' => 
         array (
             'Symfony\\Polyfill\\Php72\\' => 23,
-            'Symfony\\Polyfill\\Php70\\' => 23,
             'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
         ),
@@ -46,10 +43,6 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
         'Symfony\\Polyfill\\Php72\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php72',
-        ),
-        'Symfony\\Polyfill\\Php70\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php70',
         ),
         'Symfony\\Polyfill\\Intl\\Normalizer\\' => 
         array (
@@ -82,17 +75,10 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
     );
 
     public static $classMap = array (
-        'ArithmeticError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/ArithmeticError.php',
-        'AssertionError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/AssertionError.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'DivisionByZeroError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/DivisionByZeroError.php',
         'EBilling\\Action\\GetDniAction' => __DIR__ . '/../..' . '/src/Action/GetDniAction.php',
         'EBilling\\Action\\GetRucAction' => __DIR__ . '/../..' . '/src/Action/GetRucAction.php',
         'EBilling\\Admin\\WCSettingsTab' => __DIR__ . '/../..' . '/src/Admin/WCSettingsTab.php',
-        'EBilling\\ClientFactory\\ClientFactory' => __DIR__ . '/../..' . '/src/ClientFactory/ClientFactory.php',
-        'EBilling\\ClientFactory\\MigoApi' => __DIR__ . '/../..' . '/src/ClientFactory/MigoApi.php',
-        'EBilling\\ClientFactory\\PeruDevApi' => __DIR__ . '/../..' . '/src/ClientFactory/PeruDevApi.php',
-        'EBilling\\Contract\\Client' => __DIR__ . '/../..' . '/src/Contract/Client.php',
         'EBilling\\Domain\\Customer' => __DIR__ . '/../..' . '/src/Domain/Customer.php',
         'EBilling\\Domain\\DiscountLine' => __DIR__ . '/../..' . '/src/Domain/DiscountLine.php',
         'EBilling\\Domain\\FeeItemProcessor' => __DIR__ . '/../..' . '/src/Domain/FeeItemProcessor.php',
@@ -106,15 +92,19 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
         'EBilling\\InvoiceDownloader' => __DIR__ . '/../..' . '/src/InvoiceDownloader.php',
         'EBilling\\InvoiceGenerator' => __DIR__ . '/../..' . '/src/InvoiceGenerator.php',
         'EBilling\\InvoiceSender' => __DIR__ . '/../..' . '/src/InvoiceSender.php',
-        'EBilling\\Response\\DniResponse' => __DIR__ . '/../..' . '/src/Response/DniResponse.php',
-        'EBilling\\Response\\RucResponse' => __DIR__ . '/../..' . '/src/Response/RucResponse.php',
         'EBilling\\SunatCode\\IdentityDocument' => __DIR__ . '/../..' . '/src/SunatCode/IdentityDocument.php',
         'EBilling\\SunatCode\\InvoiceType' => __DIR__ . '/../..' . '/src/SunatCode/InvoiceType.php',
+        'EBilling\\Sunat\\Client\\MigoApiClient' => __DIR__ . '/../..' . '/src/Sunat/Client/MigoApiClient.php',
+        'EBilling\\Sunat\\Client\\PeruDevApiClient' => __DIR__ . '/../..' . '/src/Sunat/Client/PeruDevApiClient.php',
+        'EBilling\\Sunat\\Response\\DniResponse' => __DIR__ . '/../..' . '/src/Sunat/Response/DniResponse.php',
+        'EBilling\\Sunat\\Response\\RucResponse' => __DIR__ . '/../..' . '/src/Sunat/Response/RucResponse.php',
+        'EBilling\\Sunat\\SunatClient' => __DIR__ . '/../..' . '/src/Sunat/SunatClient.php',
+        'EBilling\\Sunat\\SunatClientFactory' => __DIR__ . '/../..' . '/src/Sunat/SunatClientFactory.php',
         'EBilling\\WP\\AdminHooks' => __DIR__ . '/../..' . '/src/WP/AdminHooks.php',
         'EBilling\\WP\\RestApiHooks' => __DIR__ . '/../..' . '/src/WP/RestApiHooks.php',
-        'EBilling\\WP\\WoocommerceDisplayHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceDisplayHooks.php',
+        'EBilling\\WP\\WoocommerceAdminHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceAdminHooks.php',
+        'EBilling\\WP\\WoocommerceEmailHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceEmailHooks.php',
         'EBilling\\WP\\WoocommerceHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceHooks.php',
-        'Error' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/Error.php',
         'GuzzleHttp\\Client' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Client.php',
         'GuzzleHttp\\ClientInterface' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/ClientInterface.php',
         'GuzzleHttp\\Cookie\\CookieJar' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Cookie/CookieJar.php',
@@ -196,7 +186,6 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
         'GuzzleHttp\\UriTemplate' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/UriTemplate.php',
         'GuzzleHttp\\Utils' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Utils.php',
         'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
-        'ParseError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/ParseError.php',
         'Psr\\Http\\Message\\MessageInterface' => __DIR__ . '/..' . '/psr/http-message/src/MessageInterface.php',
         'Psr\\Http\\Message\\RequestInterface' => __DIR__ . '/..' . '/psr/http-message/src/RequestInterface.php',
         'Psr\\Http\\Message\\ResponseInterface' => __DIR__ . '/..' . '/psr/http-message/src/ResponseInterface.php',
@@ -204,15 +193,12 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
         'Psr\\Http\\Message\\StreamInterface' => __DIR__ . '/..' . '/psr/http-message/src/StreamInterface.php',
         'Psr\\Http\\Message\\UploadedFileInterface' => __DIR__ . '/..' . '/psr/http-message/src/UploadedFileInterface.php',
         'Psr\\Http\\Message\\UriInterface' => __DIR__ . '/..' . '/psr/http-message/src/UriInterface.php',
-        'SessionUpdateTimestampHandlerInterface' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/SessionUpdateTimestampHandlerInterface.php',
         'Symfony\\Polyfill\\Intl\\Idn\\Idn' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/Idn.php',
         'Symfony\\Polyfill\\Intl\\Idn\\Info' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/Info.php',
         'Symfony\\Polyfill\\Intl\\Idn\\Resources\\unidata\\DisallowedRanges' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/Resources/unidata/DisallowedRanges.php',
         'Symfony\\Polyfill\\Intl\\Idn\\Resources\\unidata\\Regex' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/Resources/unidata/Regex.php',
         'Symfony\\Polyfill\\Intl\\Normalizer\\Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Normalizer.php',
-        'Symfony\\Polyfill\\Php70\\Php70' => __DIR__ . '/..' . '/symfony/polyfill-php70/Php70.php',
         'Symfony\\Polyfill\\Php72\\Php72' => __DIR__ . '/..' . '/symfony/polyfill-php72/Php72.php',
-        'TypeError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/TypeError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
