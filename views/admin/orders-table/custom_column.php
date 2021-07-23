@@ -5,7 +5,7 @@
            aria-label="<?=esc_attr($action['name'])?>" 
            title="<?=esc_attr($action['name'])?>"
         >
-            <span class="dashicons dashicons-download"></span> <?=esc_html($action['name'])?>
+            <span class="dashicons dashicons-download" style="vertical-align: middle;"></span> <?=esc_html($action['name'])?>
         </a>
     <?php endforeach; ?>
 </div>

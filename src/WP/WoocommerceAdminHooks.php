@@ -87,7 +87,6 @@ final class WoocommerceAdminHooks
                 ];
             }
 
-            print ('<style> .column-download_pdf_or_xml .dashicons { vertical-align: middle; }</style>');
             print View::make(EBILLING_VIEW_DIR)->render('admin/orders-table/custom_column', [
                 'actions' => $actions,
             ]);
