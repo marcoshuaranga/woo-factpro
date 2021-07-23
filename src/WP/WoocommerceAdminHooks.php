@@ -31,34 +31,6 @@ final class WoocommerceAdminHooks
             }
         });
 
-        add_action('admin_head', function () {
-            print ('<style>
-                .widefat .column-wc_actions a.pdf::after { content: "\f190"; }
-                .widefat .column-wc_actions a.xml::after { content: "\f491"; }
-            </style>');
-        });
-
-        add_filter('woocommerce_admin_order_actions', function (array $actions, \WC_Order $order) {
-
-            if ($order->get_meta('_ebilling_invoice_pdf_url')) {
-                $actions['download_pdf'] = array(
-                    'url'  => $order->get_meta('_ebilling_invoice_pdf_url'),
-                    'name' => __('Descargar PDF', 'woo-ebilling'),
-                    'action' => 'pdf',
-                );
-            }
-
-            if ($order->get_meta('_ebilling_invoice_xml_url')) {
-                $actions['download_xml'] = array(
-                    'url'  => $order->get_meta('_ebilling_invoice_xml_url'),
-                    'name' => __('Descargar XML', 'woo-ebilling'),
-                    'action' => 'xml',
-                );
-            }
-
-            return $actions;
-        }, 100, 2);
-
         add_filter( 'woocommerce_order_actions',  function ($actions) {
             $actions['generate_ebilling'] = __('Generar comprobante electrónico');
 
@@ -82,7 +54,47 @@ final class WoocommerceAdminHooks
         });
 
         /**
-         * Display in WP Admin
+         * Add custom column in Orders Table
+         */
+        add_filter('manage_edit-shop_order_columns', function (array $columns) {
+            $columns['download_pdf_or_xml'] = __('Comprobante', 'woocommerce');
+        
+            return $columns;
+        });
+
+        add_action('manage_shop_order_posts_custom_column', function ($column) {
+        
+            if ($column !== 'download_pdf_or_xml') {
+                return;
+            }
+        
+            $actions = [];
+            $order = wc_get_order();
+
+            if ($order->get_meta('_ebilling_invoice_pdf_url')) {
+                $actions[] = [
+                    'url'  => $order->get_meta('_ebilling_invoice_pdf_url'),
+                    'name' => __('PDF', 'woo-ebilling'),
+                    'action' => 'pdf',
+                ];
+            }
+
+            if ($order->get_meta('_ebilling_invoice_xml_url')) {
+                $actions[] = [
+                    'url'  => $order->get_meta('_ebilling_invoice_xml_url'),
+                    'name' => __('XML', 'woo-ebilling'),
+                    'action' => 'xml',
+                ];
+            }
+
+            print ('<style> .column-download_pdf_or_xml .dashicons { vertical-align: middle; }</style>');
+            print View::make(EBILLING_VIEW_DIR)->render('admin/orders-table/custom_column', [
+                'actions' => $actions,
+            ]);
+        });
+
+        /**
+         * Show custom form fields on Edit order page
          */
         add_action( 'woocommerce_admin_order_data_after_billing_address', function (\WC_Order $order) {
 
