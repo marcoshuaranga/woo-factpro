@@ -64,9 +64,16 @@ final class WoocommerceHooks
             update_post_meta($order_id, '_ebilling_customer_document_number', wc_clean($_POST['ebilling_customer_document_number']));
 
             if (InvoiceType::is_factura($_POST['ebilling_invoice_type'])) {
+                $isCompany = substr(wc_clean($_POST['ebilling_customer_document_number']), 0, 2) === '20';
+
                 update_post_meta($order_id, '_ebilling_company_name', wc_clean($_POST['ebilling_company_name']));
                 update_post_meta($order_id, '_ebilling_company_address', wc_clean($_POST['ebilling_company_address']));
-                update_post_meta($order_id, '_ebilling_company_ubigeo', wc_clean($_POST['ebilling_company_ubigeo']));
+
+                if ($isCompany) {
+                    update_post_meta($order_id, '_ebilling_company_ubigeo', wc_clean($_POST['ebilling_company_ubigeo']));
+                } else {
+                    update_post_meta($order_id, '_ebilling_company_ubigeo', '140101');
+                }   
             }
         });
 
