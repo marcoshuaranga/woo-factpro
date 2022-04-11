@@ -3,6 +3,7 @@
 namespace EBilling;
 
 use EBilling\Domain\Invoice;
+use EBilling\Driver\PseApi;
 use EBilling\SunatCode\InvoiceType;
 use WC_Order;
 
@@ -42,7 +43,7 @@ final class InvoiceGenerator
         try {
             $invoice = Invoice::createFromWooOrder($serie, $number, $order, $includeTax);
 
-            $invoiceSender = new InvoiceSender(
+            $invoiceSender = new PseApi(
                 get_option('wc_settings_ebilling_url_api'),
                 get_option('wc_settings_ebilling_token')
             );
@@ -69,7 +70,7 @@ final class InvoiceGenerator
 
             wc_get_logger()->error(
                 "Pedido #{$order->get_id()}: " . $e->getMessage() . "\n" . 
-                "Request Failed: " .  json_encode($invoiceSender->requestDetails()) . "\n", ['source' => 'woo-ebilling']
+                "Request Failed: " .  json_encode($invoiceSender->getRequestDetails()) . "\n", ['source' => 'woo-ebilling']
             );
         }
     }

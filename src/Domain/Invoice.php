@@ -19,6 +19,8 @@ final class Invoice
 
     private $orderId;
 
+    private $paymentMethod;
+
     private $customer;
 
     private $itemsCollection;
@@ -30,6 +32,7 @@ final class Invoice
         $serie,
         $number,
         $orderId,
+        PaymentMethod $paymentMethod,
         Customer $customer,
         InvoiceItemsCollection $itemsCollection,
         InvoiceSummary $invoiceSummary
@@ -40,6 +43,7 @@ final class Invoice
         $this->date = new \DateTimeImmutable('now');
         $this->dueDate = $this->date->add(new \DateInterval('P10D')); //add 10 days
         $this->orderId = $orderId;
+        $this->paymentMethod = $paymentMethod;
         $this->customer = $customer;
         $this->itemsCollection = $itemsCollection;
         $this->invoiceSummary = $invoiceSummary;
@@ -57,6 +61,11 @@ final class Invoice
             $address = $order->get_meta('_ebilling_company_address');
             $ubigeo = $order->get_meta('_ebilling_company_ubigeo');
         }
+
+        $paymentMethod = new PaymentMethod(
+            $order->get_payment_method(),
+            $order->get_payment_method_title()
+        );
 
         $customer = new Customer(
             $order->get_meta('_ebilling_customer_document_type'),
@@ -88,12 +97,63 @@ final class Invoice
             $serie,
             $number,
             $order->get_id(),
+            $paymentMethod,
             $customer,
             $collection,
             $collection->createSummary($globalDiscount)
         );
 
         return $self;
+    }
+
+    public function getDocumentType()
+    {
+        return $this->documentType;
+    }
+
+    public function getSerie()
+    {
+        return $this->serie;
+    }
+
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    public function getDueDate()
+    {
+        return $this->dueDate;
+    }
+
+    public function getOrderId()
+    {
+        return $this->orderId;
+    }
+
+    public function getPaymentMethod()
+    {
+        return $this->paymentMethod;
+    }
+
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    public function getItemsCollection()
+    {
+        return $this->itemsCollection;
+    }
+
+    public function getInvoiceSummary()
+    {
+        return $this->invoiceSummary;
     }
 
     public function toArray()

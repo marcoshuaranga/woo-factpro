@@ -4,22 +4,12 @@ namespace EBilling;
 
 use EBilling\Domain\Invoice;
 
-final class InvoiceSender
+interface InvoiceSender
 {
-    private $invoiceApi;
+    const FACTPSE = 'factpse';
+    const PSE = 'pse';
 
-    public function __construct($url, $token)
-    {
-        $this->invoiceApi = new InvoiceApi($url, $token);
-    }
+    public function getRequestDetails();
 
-    public function requestDetails()
-    {
-        return $this->invoiceApi->getRequestDetails();
-    }
-
-    public function send(Invoice $invoice)
-    {
-        return $this->invoiceApi->send($invoice->toArray());        
-    }
+    public function send(Invoice $invoice);
 }
