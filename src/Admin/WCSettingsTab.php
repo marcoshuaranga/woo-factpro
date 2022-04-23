@@ -13,13 +13,13 @@ final class WCSettingsTab
     {
         return [
             'section_title' => [
-                'name'     => __( 'Configuración General', 'woo-ebilling' ),
+                'name'     => __( 'Configuración General', 'woo-ebilling'),
                 'type'     => 'title',
                 'id'       => 'wc_settings_ebilling_section_title'
             ],
 
             'url_api' => [
-                'name' => __('Url Api', 'woo-ebilling'),
+                'name' => __('URL', 'woo-ebilling'),
                 'type' => 'text',
                 'id'   => 'wc_settings_ebilling_url_api'
             ],
@@ -31,25 +31,25 @@ final class WCSettingsTab
             ],
 
             'siglafactura' => [
-                'name' => __('Sigla Facturación', 'woo-ebilling'),
+                'name' => __('Serie - Factura', 'woo-ebilling'),
                 'type' => 'text',
                 'id'   => 'wc_settings_ebilling_siglafactura'
             ],
 
             'nsiglafactura' => [
-                'name' => __('Número_Factura', 'woo-ebilling'),
+                'name' => __('Correlativo - Factura', 'woo-ebilling'),
                 'type' => 'text',
                 'id'   => 'wc_settings_ebilling_nsiglafactura'
             ],
 
             'bsiglafactura' => [
-                'name' => __('Sigla Boleta', 'woo-ebilling'),
+                'name' => __('Serie - Boleta', 'woo-ebilling'),
                 'type' => 'text',
                 'id'   => 'wc_settings_ebilling_bsiglafactura'
             ],
 
             'bnsiglafactura' => [
-                'name' => __('Número Boleta', 'woo-ebilling'),
+                'name' => __('Correlativo - Boleta', 'woo-ebilling'),
                 'type' => 'text',
                 'id'   => 'wc_settings_ebilling_bnsiglafactura'
             ],
@@ -74,7 +74,7 @@ final class WCSettingsTab
             ],
 
             'client_section_title' => [
-                'name'     => __( 'API para búsqueda de DNI/RUC', 'woo-ebilling' ),
+                'name'     => __('API para la búsqueda de DNI/RUC', 'woo-ebilling'),
                 'type'     => 'title',
                 'id'       => 'wc_settings_ebilling_client_section_title'
             ],
