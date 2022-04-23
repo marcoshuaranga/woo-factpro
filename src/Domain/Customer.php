@@ -6,6 +6,8 @@ final class Customer
 {
     const COUNTRY = 'PE';
 
+    private $countryCode = self::COUNTRY;
+
     private $documentType;
 
     private $documentNumber;
@@ -38,13 +40,53 @@ final class Customer
         $this->phoneNumber = $phoneNumber;
     }
 
+    public function getCountryCode()
+    {
+        return $this->countryCode;
+    }
+
+    public function getDocumentType()
+    {
+        return $this->documentType;
+    }
+
+    public function getDocumentNumber()
+    {
+        return $this->documentNumber;
+    }
+
+    public function getNameOrCompany()
+    {
+        return $this->nameOrCompany;
+    }
+
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function getPostalCode()
+    {
+        return $this->postalCode;
+    }
+    
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
+
     public function toArray()
     {
         return [
+            'codigo_pais' => $this->countryCode,
             'codigo_tipo_documento_identidad' => $this->documentType,
             'numero_documento' => $this->documentNumber,
             'apellidos_y_nombres_o_razon_social' => $this->nameOrCompany,
-            'codigo_pais' => self::COUNTRY,
             'ubigeo' => $this->postalCode,
             'direccion' => $this->address,
             'correo_electronico' => $this->email,

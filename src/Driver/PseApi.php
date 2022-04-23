@@ -78,7 +78,16 @@ final class PseApi implements InvoiceSender
             'datos_del_emisor' => [
                 'codigo_del_domicilio_fiscal' => '0000',
             ],
-            'datos_del_cliente_o_receptor' => $invoice->getCustomer()->toArray(),
+            'datos_del_cliente_o_receptor' => [
+                'codigo_pais' => $invoice->getCustomer()->getCountryCode(),
+                'codigo_tipo_documento_identidad' => $invoice->getCustomer()->getDocumentType(),
+                'numero_documento' => $invoice->getCustomer()->getDocumentNumber(),
+                'apellidos_y_nombres_o_razon_social' => $invoice->getCustomer()->getNameOrCompany(),
+                'ubigeo' => $invoice->getCustomer()->getPostalCode() ?? '150101',
+                'direccion' => $invoice->getCustomer()->getAddress(),
+                'correo_electronico' => $invoice->getCustomer()->getEmail(),
+                'telefono' => $invoice->getCustomer()->getPhoneNumber(),
+            ],
             'metodo_de_pago' => 'Efectivo',
             'termino_de_pago' => [
                 'descripcion' => 'Contado',
