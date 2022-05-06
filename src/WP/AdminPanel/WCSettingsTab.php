@@ -1,6 +1,6 @@
 <?php
 
-namespace EBilling\Admin;
+namespace EBilling\WP\AdminPanel;
 
 final class WCSettingsTab
 {

@@ -2,7 +2,7 @@
 
 namespace EBilling\WP;
 
-use EBilling\Admin\WCSettingsTab;
+use EBilling\WP\AdminPanel\WCSettingsTab;
 
 final class AdminHooks
 {

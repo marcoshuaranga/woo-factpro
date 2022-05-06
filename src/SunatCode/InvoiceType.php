@@ -15,15 +15,6 @@ final class InvoiceType
         ];
     }
 
-    public static function get_identity_document($invoiceType)
-    {
-        if (self::FACTURA === $invoiceType) {
-            return IdentityDocument::RUC;
-        }
-
-        return IdentityDocument::DNI;
-    }
-
     public static function is_boleta($invoiceType)
     {
         return self::BOLETA === $invoiceType;

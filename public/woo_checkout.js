@@ -3,12 +3,21 @@ jQuery(function($) {
     const BOLETA = '03';
 
     $('#has-invoice-address').on('change', 'input', function() {
-        $('div.invoice_address' ).toggle(450);
+        $('div.invoice_address').toggle(450);
     });
 
     $('#ebilling_invoice_type_field input[type="radio"]').change(function() {
-        this.value === BOLETA && $('#factura-fields').hide();
-        this.value === FACTURA && $('#factura-fields').show();
+        switch (this.value) {
+            case BOLETA:
+                $('#ebilling_customer_document_type_wrapper').show();
+                $('#factura-fields').hide();
+                break;
+                
+            case FACTURA:
+                $('#ebilling_customer_document_type_wrapper').hide();
+                $('#factura-fields').show();
+                break;
+        }
     });
 
     $('#find_apiperu').click(function () {

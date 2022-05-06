@@ -1,9 +1,9 @@
 <?php
 
-namespace EBilling\Driver;
+namespace EBilling\InvoiceSender\Api;
 
 use EBilling\Domain\Invoice;
-use EBilling\InvoiceSender;
+use EBilling\InvoiceSender\InvoiceSender;
 
 final class PseApi implements InvoiceSender
 {

@@ -3,7 +3,7 @@
 namespace EBilling;
 
 use EBilling\Domain\Invoice;
-use EBilling\Driver\PseApi;
+use EBilling\InvoiceSender\InvoiceSenderFactory;
 use EBilling\SunatCode\InvoiceType;
 use WC_Order;
 
@@ -43,7 +43,7 @@ final class InvoiceGenerator
         try {
             $invoice = Invoice::createFromWooOrder($serie, $number, $order, $includeTax);
 
-            $invoiceSender = new PseApi(
+            $invoiceSender = InvoiceSenderFactory::create(
                 get_option('wc_settings_ebilling_url_api'),
                 get_option('wc_settings_ebilling_token')
             );

@@ -20,13 +20,4 @@ final class IdentityDocument
             self::PASAPORTE => 'Pasaporte',
         ];
     }
-
-    public static function get_invoice_type($identityDocument)
-    {
-        if (self::RUC === $identityDocument) {
-            return InvoiceType::FACTURA;
-        }
-
-        return InvoiceType::BOLETA;
-    }
 }

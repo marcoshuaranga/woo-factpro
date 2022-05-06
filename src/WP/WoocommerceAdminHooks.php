@@ -18,7 +18,11 @@ final class WoocommerceAdminHooks
                 return;
             }
 
-            $invoiceType = IdentityDocument::get_invoice_type($_POST['ebilling_customer_document_type']);
+            if ($_POST['ebilling_customer_document_type'] === IdentityDocument::RUC) {
+                $invoiceType = InvoiceType::FACTURA;
+            } else {
+                $invoiceType = InvoiceType::BOLETA;
+            }
 
             update_post_meta($order_id, '_ebilling_invoice_type', $invoiceType);
             update_post_meta($order_id, '_ebilling_customer_document_type', wc_clean($_POST['ebilling_customer_document_type']));

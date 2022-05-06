@@ -33,17 +33,29 @@ defined( 'ABSPATH' ) || exit;
 
 		<div class="woocommerce-invoice-address-fields__field-wrapper">
 		<?php
-        woocommerce_form_field('ebilling_invoice_type', array(
-           'label'       => '',
-           'type'        => 'radio',
-           'options'     => $invoices_types,
-        ), $checkout->get_value('ebilling_invoice_type'));
+         woocommerce_form_field('ebilling_invoice_type', [
+           'label' => '',
+           'type' => 'radio',
+           'options' => $invoices_types,
+         ], $checkout->get_value('ebilling_invoice_type'));
+      ?>
 
-        woocommerce_form_field('ebilling_customer_document_number', array(
-           'label'          => __('Número Documento', 'woo-ebilling'),
-           'type'           => 'text',
-           'required'       => true,
-        ), $checkout->get_value('ebilling_customer_document_number'));
+      <div id="ebilling_customer_document_type_wrapper" style="display: none;">
+         <?php
+            woocommerce_form_field('ebilling_customer_document_type', [
+               'label' => __('Tipo de Documento', 'woo-ebilling'),
+               'type' => 'select',
+               'required' => true,
+               'options' => $identity_documents,
+            ], $checkout->get_value('ebilling_customer_document_type'));
+         ?>
+      </div>
+      <?php
+         woocommerce_form_field('ebilling_customer_document_number', [
+           'label' => __('Número de Documento', 'woo-ebilling'),
+           'type' => 'text',
+           'required' => true,
+         ], $checkout->get_value('ebilling_customer_document_number'));
       ?>
       <p class="form-row">
          <button type="button" id="find_apiperu">Buscar</button>
@@ -51,20 +63,20 @@ defined( 'ABSPATH' ) || exit;
       <div id="factura-fields" style="display: none;">
          <?php
             woocommerce_form_field('ebilling_company_name', [
-               'label'          => __('Nombre razón social', 'woo-ebilling'),
-               'type'           => 'text',
-               'required'       => true,
+               'label' => __('Nombre razón social', 'woo-ebilling'),
+               'type' => 'text',
+               'required' => true,
             ], $checkout->get_value('ebilling_company_name'));
 
             woocommerce_form_field('ebilling_company_address', [
-               'label'          => __('Domicilio Fiscal', 'woo-ebilling'),
-               'type'           => 'text',
-               'required'       => true,
+               'label' => __('Domicilio Fiscal', 'woo-ebilling'),
+               'type' => 'text',
+               'required' => true,
             ], $checkout->get_value('ebilling_company_address'));
 
             woocommerce_form_field('ebilling_company_ubigeo', [
-               'type'           => 'hidden',
-               'required'       => true,
+               'type' => 'hidden',
+               'required' => true,
             ], $checkout->get_value('ebilling_company_ubigeo'));
          ?>
       </div>

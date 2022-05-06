@@ -5,6 +5,8 @@
 * Description: Factpro.pe para facturación electrónica en el Perú
 * Version: 2.9.8
 * Author: Factpro.pe
+* Requires at least: 5.0
+* Requires PHP: 7.4
 * Text Domain: woo-ebilling
 * Domain Path: /languages/
 * License: MIT

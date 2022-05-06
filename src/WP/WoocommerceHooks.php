@@ -4,6 +4,7 @@ namespace EBilling\WP;
 
 use EBilling\Helper\View;
 use EBilling\InvoiceGenerator;
+use EBilling\SunatCode\IdentityDocument;
 use EBilling\SunatCode\InvoiceType;
 
 final class WoocommerceHooks
@@ -35,6 +36,10 @@ final class WoocommerceHooks
 
             switch ($invoiceType) {
                 case InvoiceType::BOLETA:
+                    if (! in_array($_POST['ebilling_customer_document_type'], [IdentityDocument::DNI, IdentityDocument::CARNET_EXTRANJERIA, IdentityDocument::PASAPORTE])) {
+                        wc_add_notice(__('El tipo de documento no es válido.', 'woo-ebilling'), 'error');
+                    }
+
                     ! $_POST['ebilling_customer_document_number'] && wc_add_notice(__('El número de documento no es válido.', 'woo-ebilling'), 'error');
                     break;
                 case InvoiceType::FACTURA:
@@ -57,7 +62,11 @@ final class WoocommerceHooks
                 return;
             }
 
-            $identityDocument = InvoiceType::get_identity_document($_POST['ebilling_invoice_type']);
+            if ($_POST['ebilling_customer_document_type']) {
+                $identityDocument = $_POST['ebilling_customer_document_type'];
+            } else {
+                $identityDocument = InvoiceType::is_factura($_POST['ebilling_invoice_type']) ? IdentityDocument::RUC : IdentityDocument::NO_IDENTITY_DOCUMENT;
+            }
 
             update_post_meta($order_id, '_ebilling_invoice_type', wc_clean($_POST['ebilling_invoice_type']));
             update_post_meta($order_id, '_ebilling_customer_document_type', $identityDocument);
@@ -85,6 +94,11 @@ final class WoocommerceHooks
         add_action('woocommerce_after_checkout_billing_form', function (\WC_Checkout $checkout) {
             print View::make(EBILLING_VIEW_DIR)->render('invoice-address-section', [
                 'checkout' => $checkout,
+                'identity_documents' => [
+                    IdentityDocument::DNI => __('DNI', 'woo-ebilling'),
+                    IdentityDocument::CARNET_EXTRANJERIA => __('C.E', 'woo-ebilling'),
+                    IdentityDocument::PASAPORTE => __('Pasaporte', 'woo-ebilling')
+                ],
                 'invoice_is_mandatory' => get_option('wc_settings_ebilling_invoice_is_mandatory', 'no') === 'yes',
                 'invoices_types' => InvoiceType::getOptions(),
             ]);
@@ -94,7 +108,7 @@ final class WoocommerceHooks
         
             $publicUrl = plugins_url('public', EBILLING_PLUGIN_FILE);
         
-            wp_register_script('woo_checkout', $publicUrl . '/woo_checkout.js', ['jquery'], 1.1, true);
+            wp_register_script('woo_checkout', $publicUrl . '/woo_checkout.js', ['jquery'], 1.2, true);
         
             if (is_checkout()) {
                 wp_enqueue_script('woo_checkout');
