@@ -9,7 +9,7 @@ final class InvoiceSenderFactory
 {
     public static function create($url, $token)
     {
-        if (\str_contains($url, 'https://facturacion.factpse.com')) {
+        if (\str_contains($url, 'factpse.com')) {
             return new FactPseApi($url, $token);
         } else {
             return new PseApi($url, $token);

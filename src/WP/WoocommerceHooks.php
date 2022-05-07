@@ -62,10 +62,10 @@ final class WoocommerceHooks
                 return;
             }
 
-            if ($_POST['ebilling_customer_document_type']) {
-                $identityDocument = $_POST['ebilling_customer_document_type'];
+            if (InvoiceType::is_factura($_POST['ebilling_invoice_type'])) {
+                $identityDocument = IdentityDocument::RUC;
             } else {
-                $identityDocument = InvoiceType::is_factura($_POST['ebilling_invoice_type']) ? IdentityDocument::RUC : IdentityDocument::NO_IDENTITY_DOCUMENT;
+                $identityDocument = $_POST['ebilling_customer_document_type'];
             }
 
             update_post_meta($order_id, '_ebilling_invoice_type', wc_clean($_POST['ebilling_invoice_type']));
