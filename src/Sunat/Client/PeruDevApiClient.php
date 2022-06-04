@@ -63,7 +63,7 @@ final class PeruDevApiClient implements SunatClient
 
         return new RucResponse(
             $data['data']['nombre_o_razon_social'],
-            $data['data']['direccion_completa'],
+            $data['data']['direccion'],
             is_array($ubigeo) ? $ubigeo[count($ubigeo) - 1] : null,
         );
     }

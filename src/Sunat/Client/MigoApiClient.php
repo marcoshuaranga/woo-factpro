@@ -70,6 +70,6 @@ final class MigoApiClient implements SunatClient
             return new \WP_Error('id_not_found', $data['message'], ['status' => 404]);
         }
 
-        return new RucResponse($data['nombre_o_razon_social'], $data['direccion'], $data['ubigeo']);
+        return new RucResponse($data['nombre_o_razon_social'], $data['direccion_simple'], $data['ubigeo']);
     }
 }
