@@ -54,8 +54,8 @@ final class InvoiceItem
 
         //No tiene los impuestos configurados. Por lo tanto debo extraer el subtotal y el igv.
         if (! $includeTax) {
-            $subtotal_item = round($total_item / 1.18, 2);
-            $tax_item = $total_item - $subtotal_item;
+            $subtotal_item = round($total_item / 1.18, 4);
+            $tax_item = round($total_item - $subtotal_item, 4);
         }
 
         $unitValue = $subtotal_item / $item->get_quantity();
@@ -180,12 +180,12 @@ final class InvoiceItem
             'codigo_tipo_precio' => '01',
             'precio_unitario' => $this->unitPrice,
             'codigo_tipo_afectacion_igv' => $this->taxExemptionReasonCode,
-            'total_base_igv' => $this->subtotal,
+            'total_base_igv' => round($this->subtotal, 2),
             'porcentaje_igv' => ($this->totalIgv > 0) ? 18 : 0,
-            'total_igv' => $this->totalIgv,
-            'total_impuestos' => $this->totalImpuestos,
-            'total_valor_item' => $this->totalValorItem,
-            'total_item' => $this->total,
+            'total_igv' => round($this->totalIgv, 2),
+            'total_impuestos' => round($this->totalImpuestos, 2),
+            'total_valor_item' => round($this->totalValorItem, 2),
+            'total_item' => round($this->total, 2),
         ];
     }
 }
