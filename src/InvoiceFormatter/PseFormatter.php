@@ -31,21 +31,21 @@ final class PseFormatter
                 'codigo_del_domicilio_fiscal' => '0000',
             ],
             'datos_del_cliente_o_receptor' => [
-                'codigo_pais' => $this->invoice->getCustomer()->getCountryCode(),
                 'codigo_tipo_documento_identidad' => $this->invoice->getCustomer()->getDocumentType(),
                 'numero_documento' => $this->invoice->getCustomer()->getDocumentNumber(),
                 'apellidos_y_nombres_o_razon_social' => $this->invoice->getCustomer()->getNameOrCompany(),
+                'codigo_pais' => $this->invoice->getCustomer()->getCountryCode(),
                 'ubigeo' => $this->invoice->getCustomer()->getPostalCode() ?? '150101',
                 'direccion' => $this->invoice->getCustomer()->getAddress(),
                 'correo_electronico' => $this->invoice->getCustomer()->getEmail(),
                 'telefono' => $this->invoice->getCustomer()->getPhoneNumber(),
             ],
-            'metodo_de_pago' => 'Efectivo',
+            'items' => $this->formatItems($this->invoice->getItemsCollection()->getItems()),
             'termino_de_pago' => [
                 'descripcion' => 'Contado',
                 'tipo' => '0'
             ],
-            'items' => $this->formatItems($this->invoice->getItemsCollection()->getItems()),
+            'metodo_de_pago' => 'Efectivo',
         ]);
     }
 
@@ -53,10 +53,10 @@ final class PseFormatter
     {
         return array_map(function (InvoiceItem $item) {
             return [
-                'unidad_de_medida' => $item->getUnitOfMeasure(),
-                'codigo_interno' => $item->getSku(),
-                'descripcion' => $item->getDescription(),
+                'codigo' => '',
+                'nombre' => $item->getDescription(),
                 'codigo_producto_sunat' => '',
+                'unidad_de_medida' => $item->getUnitOfMeasure(),
                 'cantidad' => $item->getQuantity(),
                 'valor_unitario' => $item->getUnitValue(),
                 'codigo_tipo_precio' => '01',
