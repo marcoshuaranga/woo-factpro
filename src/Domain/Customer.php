@@ -79,18 +79,4 @@ final class Customer
     {
         return $this->phoneNumber;
     }
-
-    public function toArray()
-    {
-        return [
-            'codigo_pais' => $this->countryCode,
-            'codigo_tipo_documento_identidad' => $this->documentType,
-            'numero_documento' => $this->documentNumber,
-            'apellidos_y_nombres_o_razon_social' => $this->nameOrCompany,
-            'ubigeo' => $this->postalCode,
-            'direccion' => $this->address,
-            'correo_electronico' => $this->email,
-            'telefono' => $this->phoneNumber,
-        ];
-    }
 }

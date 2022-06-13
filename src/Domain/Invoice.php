@@ -155,28 +155,4 @@ final class Invoice
     {
         return $this->invoiceSummary;
     }
-
-    public function toArray()
-    {
-        return [
-            'serie_documento' => $this->serie,
-            'numero_documento' => $this->number,
-            'fecha_de_emision' => $this->date->format('Y-m-d'),
-            'hora_de_emision' => $this->date->format('H:i:s'),
-            'codigo_tipo_operacion' => '0101',
-            'codigo_tipo_documento' => $this->documentType,
-            'codigo_tipo_moneda' => 'PEN',
-            'fecha_de_vencimiento' => $this->dueDate->format('Y-m-d H:i:s'),
-            'numero_orden_de_compra' => $this->orderId,
-            'nombre_almacen' => 'Almacen Virtual',
-            'datos_del_emisor' => [
-                'codigo_del_domicilio_fiscal' => '000',
-            ],
-            'datos_del_cliente_o_receptor' => $this->customer->toArray(),
-            'items' => $this->itemsCollection->toArray(),
-            'totales' => $this->invoiceSummary->toArray(),
-            'descuentos' => $this->invoiceSummary->getDiscount()->toArray(),
-            'additional_information' => 'Compra:Online|Web',
-        ];
-    }
 }

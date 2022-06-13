@@ -3,6 +3,7 @@
 namespace EBilling\InvoiceSender\Api;
 
 use EBilling\Domain\Invoice;
+use EBilling\InvoiceFormatter\FactPseFormatter;
 use EBilling\InvoiceSender\InvoiceSender;
 
 final class FactPseApi implements InvoiceSender
@@ -36,7 +37,8 @@ final class FactPseApi implements InvoiceSender
 
     public function send(Invoice $invoice)
     {
-        $json = json_encode($this->transformToBody($invoice));
+        $formatter = new FactPseFormatter($invoice);
+        $json = json_encode($formatter->toArray());
         $handler = curl_init($this->url);
 
         curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
@@ -55,33 +57,9 @@ final class FactPseApi implements InvoiceSender
         $this->requestDetails = [
             'url' => $this->url,
             'token' => $this->token,
-            'body' => $this->transformToBody($invoice)
+            'body' => $formatter->toArray()
         ];
 
         return $result;
-    }
-
-    private function transformToBody(Invoice $invoice)
-    {
-        return [
-            'serie_documento' => $invoice->getSerie(),
-            'numero_documento' => $invoice->getNumber(),
-            'fecha_de_emision' => $invoice->getDate()->format('Y-m-d'),
-            'hora_de_emision' => $invoice->getDate()->format('H:i:s'),
-            'codigo_tipo_operacion' => '0101',
-            'codigo_tipo_documento' => $invoice->getDocumentType(),
-            'codigo_tipo_moneda' => 'PEN',
-            'fecha_de_vencimiento' => $invoice->getDueDate()->format('Y-m-d H:i:s'),
-            'numero_orden_de_compra' => "{$invoice->getOrderId()}",
-            'nombre_almacen' => 'Almacen Virtual',
-            'datos_del_emisor' => [
-                'codigo_del_domicilio_fiscal' => '000',
-            ],
-            'datos_del_cliente_o_receptor' => $invoice->getCustomer()->toArray(),
-            'items' => $invoice->getItemsCollection()->toArray(),
-            'totales' => $invoice->getInvoiceSummary()->toArray(),
-            'descuentos' => $invoice->getInvoiceSummary()->getDiscount()->toArray(),
-            'additional_information' => 'Compra:Online|Web',
-        ];
     }
 }

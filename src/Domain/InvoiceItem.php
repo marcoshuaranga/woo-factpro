@@ -120,6 +120,36 @@ final class InvoiceItem
         return $discount;
     }
 
+    public function getSku()
+    {
+        return $this->sku;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    public function getUnitOfMeasure()
+    {
+        return $this->unitOfMeasure;
+    }
+
+    public function getUnitValue()
+    {
+        return $this->unitValue;
+    }
+
+    public function getUnitPrice()
+    {
+        return $this->unitPrice;
+    }
+
     /**
      * @return float
      */
@@ -168,24 +198,8 @@ final class InvoiceItem
         return $this->total;
     }
 
-    public function toArray()
+    public function getTaxExemptionReasonCode()
     {
-        return [
-            'unidad_de_medida' => $this->unitOfMeasure,
-            'codigo_interno' => $this->sku,
-            'descripcion' => $this->description,
-            'codigo_producto_sunat' => '',
-            'cantidad' => $this->quantity,
-            'valor_unitario' => $this->unitValue,
-            'codigo_tipo_precio' => '01',
-            'precio_unitario' => $this->unitPrice,
-            'codigo_tipo_afectacion_igv' => $this->taxExemptionReasonCode,
-            'total_base_igv' => round($this->subtotal, 2),
-            'porcentaje_igv' => ($this->totalIgv > 0) ? 18 : 0,
-            'total_igv' => round($this->totalIgv, 2),
-            'total_impuestos' => round($this->totalImpuestos, 2),
-            'total_valor_item' => round($this->totalValorItem, 2),
-            'total_item' => round($this->total, 2),
-        ];
+        return $this->taxExemptionReasonCode;
     }
 }

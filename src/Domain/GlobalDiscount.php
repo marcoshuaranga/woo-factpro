@@ -65,6 +65,14 @@ final class GlobalDiscount
 
     public function toArray()
     {
-        return array_map(function (DiscountLine $item) { return $item->toArray(); }, $this->items);
+        return array_map(function (DiscountLine $item) { 
+            return [
+                'codigo' => $item->getCode(),
+                'descripcion' => $item->getDescription(),
+                'porcentaje' => 1,
+                'monto' => round($item->getSubtotal(), 2),
+                'base' => round($item->getSubtotal(), 2),
+            ];
+        }, $this->items);
     }
 }

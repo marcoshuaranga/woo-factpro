@@ -20,6 +20,11 @@ final class DiscountLine
         $this->tax = $tax;
     }
 
+    public function getCode()
+    {
+        return $this->code;
+    }
+
     public function getDescription()
     {
         return $this->description;
@@ -33,16 +38,5 @@ final class DiscountLine
     public function getTax()
     {
         return $this->tax;
-    }
-
-    public function toArray()
-    {
-        return [
-            'codigo' => $this->code,
-            'descripcion' => $this->description,
-            'porcentaje' => 1,
-            'monto' => round($this->subtotal, 2),
-            'base' => round($this->subtotal, 2),
-        ];
     }
 }

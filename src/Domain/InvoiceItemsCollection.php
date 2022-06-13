@@ -80,9 +80,9 @@ final class InvoiceItemsCollection
         $this->itemsCollection[] = $item;
     }
 
-    public function toArray()
+    public function getItems()
     {
-        return array_map(function (InvoiceItem $item) { return $item->toArray(); }, $this->itemsCollection);
+        return $this->itemsCollection;
     }
 
     private function createSummaryWithExoneratedItems(GlobalDiscount $globalDiscount)
