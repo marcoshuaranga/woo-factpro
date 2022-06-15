@@ -24,7 +24,7 @@ final class PseFormatter
             'codigo_tipo_operacion' => '0101',
             'codigo_tipo_documento' => $this->invoice->getDocumentType(),
             'codigo_tipo_moneda' => 'PEN',
-            'fecha_de_vencimiento' => $this->invoice->getDueDate()->format('Y-m-d H:i:s'),
+            'fecha_de_vencimiento' => $this->invoice->getDueDate()->format('Y-m-d'),
             'numero_orden_de_compra' => $this->invoice->getOrderId(),
             'nombre_almacen' => 'Almacén - Oficina Principal',
             'datos_del_emisor' => [
