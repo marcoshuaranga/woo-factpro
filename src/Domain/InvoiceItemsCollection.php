@@ -44,7 +44,7 @@ final class InvoiceItemsCollection
         });
 
         foreach ($shippingItems as $shippingItem) {
-            $this->addItem(InvoiceItem::createFromWooExtraItem($shippingItem));
+            $this->addItem(InvoiceItem::createFromWooExtraItem('shipping', $shippingItem));
         }
     }
 

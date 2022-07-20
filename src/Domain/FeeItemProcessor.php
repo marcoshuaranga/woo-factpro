@@ -22,7 +22,7 @@ final class FeeItemProcessor
             $total_item = $subtotal_item + $tax_item;
 
             if ($total_item > 0) {
-                $items->addItem(InvoiceItem::createFromWooExtraItem($feeItem));
+                $items->addItem(InvoiceItem::createFromWooExtraItem('fee', $feeItem));
             } else {
                 $globalDiscount->addDiscount(
                     new DiscountLine($feeItem->get_name(), $subtotal_item * (-1), $tax_item * (-1))

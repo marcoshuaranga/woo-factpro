@@ -81,7 +81,7 @@ final class InvoiceItem
     /**
      * @param \WC_Order_Item_Shipping|\WC_Order_Item_Fee $item
      */
-    public static function createFromWooExtraItem(\WC_Order_Item $item)
+    public static function createFromWooExtraItem($sku, \WC_Order_Item $item)
     {
         $subtotal_item = (float) $item->get_total();
         $tax_item  = (float) $item->get_total_tax();
@@ -92,7 +92,7 @@ final class InvoiceItem
 
         return new self(
             $item->get_id(),
-            '',
+            $sku,
             $item->get_name(),
             $item->get_quantity(),
             'ZZ',
