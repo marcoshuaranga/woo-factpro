@@ -53,7 +53,7 @@ final class PseFormatter
     {
         return array_map(function (InvoiceItem $item) {
             return [
-                'codigo' => '',
+                'codigo' => $item->getSku(),
                 'nombre' => $item->getDescription(),
                 'codigo_producto_sunat' => '',
                 'unidad_de_medida' => $item->getUnitOfMeasure(),

@@ -52,7 +52,7 @@ final class FactPseFormatter
         return array_map(function (InvoiceItem $item) {
             return [
                 'unidad_de_medida' => $item->getUnitOfMeasure(),
-                'codigo_interno' => $item->getSku(),
+                'codigo_interno' => $item->getId(),
                 'descripcion' => $item->getDescription(),
                 'codigo_producto_sunat' => '',
                 'cantidad' => $item->getQuantity(),

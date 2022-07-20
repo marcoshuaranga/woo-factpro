@@ -7,6 +7,7 @@ final class InvoiceItem
     const TAX_EXEMPTION_GRAVADO = '10';
     const TAX_EXEMPTION_EXONERADO = '20';
 
+    private $id;
     private $sku;
     private $description;
     private $quantity;
@@ -21,6 +22,7 @@ final class InvoiceItem
     private $taxExemptionReasonCode;
 
     public function __construct(
+        $id,
         $sku,
         $description,
         $quantity,
@@ -32,6 +34,7 @@ final class InvoiceItem
         $total,
         $taxExemptionReasonCode = InvoiceItem::TAX_EXEMPTION_GRAVADO
     ) {
+        $this->id = $id;
         $this->sku = $sku;
         $this->description = $description;
         $this->quantity = $quantity;
@@ -62,7 +65,8 @@ final class InvoiceItem
         $unitPrice = $unitValue * 1.18;
 
         return new self(
-            $item->get_product()->get_sku() ?: $item->get_product()->get_id(), 
+            $item->get_product()->get_id(),
+            $item->get_product()->get_sku(), 
             $item->get_name(), 
             $item->get_quantity(),
             'NIU',
@@ -87,7 +91,8 @@ final class InvoiceItem
         $unitPrice = $unitValue * ($includeTax ?  1.18 : 1);
 
         return new self(
-            $item->get_id(),
+            $item->get_product()->get_id(),
+            '',
             $item->get_name(),
             $item->get_quantity(),
             'ZZ',
@@ -118,6 +123,11 @@ final class InvoiceItem
         $this->totalIgv -= ($this->totalIgv > 0) ? $discount * 0.18 : 0;
 
         return $discount;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getSku()
