@@ -65,7 +65,7 @@ final class InvoiceItem
         $unitPrice = $unitValue * 1.18;
 
         return new self(
-            $item->get_product()->get_id(),
+            $item->get_id(),
             $item->get_product()->get_sku(), 
             $item->get_name(), 
             $item->get_quantity(),
@@ -91,7 +91,7 @@ final class InvoiceItem
         $unitPrice = $unitValue * ($includeTax ?  1.18 : 1);
 
         return new self(
-            $item->get_product()->get_id(),
+            $item->get_id(),
             '',
             $item->get_name(),
             $item->get_quantity(),
