@@ -41,6 +41,7 @@ final class PseFormatter
                 'telefono' => $this->invoice->getCustomer()->getPhoneNumber(),
             ],
             'items' => $this->formatItems($this->invoice->getItemsCollection()->getItems()),
+            'descuentos' => $this->invoice->getInvoiceSummary()->getDiscount()->toArray(),
             'termino_de_pago' => [
                 'descripcion' => 'Contado',
                 'tipo' => '0'
