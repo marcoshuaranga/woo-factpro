@@ -48,6 +48,20 @@ final class InvoiceItemsCollection
         }
     }
 
+    /**
+     * @param \WC_Order_Item_Fee[] $items
+     */
+    public function addFeeItems(array $items)
+    {
+        $feeItems = array_filter($items, function (\WC_Order_Item_Fee $item) {
+            return $item->get_total() > 0;
+        });
+
+        foreach ($feeItems as $feeItem) {
+            $this->addItem(InvoiceItem::createFromWooExtraItem('fee', $feeItem));
+        }
+    }
+
     public function createSummary(GlobalDiscount $globalDiscount)
     {
         if ($this->containsExoneratedItems()) {

@@ -2,6 +2,7 @@
 
 namespace EBilling\InvoiceFormatter;
 
+use EBilling\Domain\DiscountLine;
 use EBilling\Domain\Invoice;
 use EBilling\Domain\InvoiceItem;
 
@@ -16,6 +17,8 @@ final class FactPseFormatter
 
     public function toArray()
     {
+        $summary = $this->invoice->getInvoiceSummary();
+        
         return [
             'serie_documento' => $this->invoice->getSerie(),
             'numero_documento' => $this->invoice->getNumber(),
@@ -41,8 +44,19 @@ final class FactPseFormatter
                 'telefono' => $this->invoice->getCustomer()->getPhoneNumber(),
             ],
             'items' => $this->formatItems($this->invoice->getItemsCollection()->getItems()),
-            'totales' => $this->invoice->getInvoiceSummary()->toArray(),
-            'descuentos' => $this->invoice->getInvoiceSummary()->getDiscount()->toArray(),
+            'totales' =>[
+                'total_exportacion' => round(0, 2),
+                'total_descuentos' => round($summary->getDiscount()->getSubtotal(), 2),
+                'total_operaciones_gravadas' => round($summary->getTotalGravadas(), 2),
+                'total_operaciones_inafectas' => round(0, 2),
+                'total_operaciones_exoneradas' => round($summary->getTotalExonerado(), 2),
+                'total_operaciones_gratuitas' => round(0, 2),
+                'total_igv' => round($summary->getTotalIgv(), 2),
+                'total_impuestos' => round($summary->getTotalImpuestos(), 2),
+                'total_valor' => round($summary->getTotalValor(), 2),
+                'total_venta' => round($summary->getTotal(), 2),
+            ],
+            'descuentos' => $this->formatDiscounts($summary->getDiscount()->getDiscounts()),
             'additional_information' => 'Compra:Online|Web',
         ];
     }
@@ -68,5 +82,18 @@ final class FactPseFormatter
                 'total_item' => round($item->getTotal(), 2),
             ];
         }, $items);
+    }
+
+    private function formatDiscounts(array $discounts)
+    {
+        return array_map(function (DiscountLine $item) { 
+            return [
+                'codigo' => $item->getCode(),
+                'descripcion' => $item->getDescription(),
+                'porcentaje' => 1,
+                'monto' => round($item->getSubtotal(), 2),
+                'base' => round($item->getSubtotal(), 2),
+            ];
+        }, $discounts);
     }
 }

@@ -3,7 +3,6 @@
 namespace EBilling\Domain;
 
 use EBilling\SunatCode\InvoiceType;
-use WC_Order;
 
 final class Invoice
 {
@@ -49,7 +48,7 @@ final class Invoice
         $this->invoiceSummary = $invoiceSummary;
     }
 
-    public static function createFromWooOrder($serie, $number, WC_Order $order, $includeTax)
+    public static function createFromWooOrder($serie, $number, \WC_Order $order, $includeTax)
     {
         $invoiceType = $order->get_meta('_ebilling_invoice_type');
         $nameOrCompany = "{$order->get_billing_first_name()} {$order->get_billing_last_name()}";
@@ -70,8 +69,8 @@ final class Invoice
         $customer = new Customer(
             $order->get_meta('_ebilling_customer_document_type'),
             $order->get_meta('_ebilling_customer_document_number'),
-            $nameOrCompany, 
-            $address, 
+            $nameOrCompany,
+            $address,
             $order->get_billing_email(),
             $ubigeo,
             $order->get_billing_phone(),
@@ -82,15 +81,10 @@ final class Invoice
         $shippingItems = $order->get_items('shipping');
 
         $collection = InvoiceItemsCollection::createFromWooItems($lineItems, $includeTax);
-        $globalDiscount = new GlobalDiscount($order->get_items('coupon'));
+        $collection->addShippingItems($shippingItems);
+        $collection->addFeeItems($feeItems);
 
-        if (is_array($shippingItems) && count($shippingItems) > 0) {
-            $collection->addShippingItems($shippingItems);
-        }
-
-        if (is_array($feeItems) && count($feeItems)) {
-            (new FeeItemProcessor($feeItems))->process($collection, $globalDiscount);
-        }
+        $globalDiscount = new GlobalDiscount($order->get_items('coupon'), $feeItems);
 
         $self = new self(
             $invoiceType,

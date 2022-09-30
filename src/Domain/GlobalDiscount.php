@@ -11,11 +11,15 @@ final class GlobalDiscount
 
     /**
      * @param \WC_Order_Item_Coupon[] $coupons
+     * @param \WC_Order_Item_Fee[] $feeItems
      */
-    public function __construct(array $coupons)
+    public function __construct(array $coupons, array $feeItems = [])
     {
-        foreach ($coupons as $coupon) {
+        $discountItems = array_filter($feeItems, function (\WC_Order_Item_Fee $itemFee) {
+            return $itemFee < 0;
+        });
 
+        foreach ($coupons as $coupon) {
             $subtotal = (float) $coupon->get_discount();
             $igv = (float) $coupon->get_discount_tax();
 
@@ -24,6 +28,13 @@ final class GlobalDiscount
                 $subtotal,
                 $igv
             );
+        }
+
+        foreach ($discountItems as $discountItem) {
+            $subtotal_item = (float) $discountItem->get_total();
+            $tax_item  = (float) $discountItem->get_total_tax();
+
+            $this->items[] = new DiscountLine($discountItem->get_name(), $subtotal_item * (-1), $tax_item * (-1));
         }
     }
 
@@ -61,18 +72,5 @@ final class GlobalDiscount
         return array_reduce($this->items, function ($carry, DiscountLine $item) {
             return $carry + $item->getTax();
         }, 0);
-    }
-
-    public function toArray()
-    {
-        return array_map(function (DiscountLine $item) { 
-            return [
-                'codigo' => $item->getCode(),
-                'descripcion' => $item->getDescription(),
-                'porcentaje' => 1,
-                'monto' => round($item->getSubtotal(), 2),
-                'base' => round($item->getSubtotal(), 2),
-            ];
-        }, $this->items);
     }
 }

@@ -39,24 +39,33 @@ final class InvoiceSummary
         return $this->globalDiscount;
     }
 
+    public function getTotalGravadas()
+    {
+        return $this->totalGravadas;
+    }
+
+    public function getTotalIgv()
+    {
+        return $this->totalIgv;
+    }
+
+    public function getTotalExonerado()
+    {
+        return $this->totalExonerado;
+    }
+
+    public function getTotalImpuestos()
+    {
+        return $this->totalImpuestos;
+    }
+
+    public function getTotalValor()
+    {
+        return $this->totalValor;
+    }
+
     public function getTotal()
     {
         return $this->totalVentas;
-    }
-
-    public function toArray()
-    {
-        return [
-            'total_exportacion' => round(0, 2),
-            'total_descuentos' => round($this->globalDiscount->getSubtotal(), 2),
-            'total_operaciones_gravadas' => round($this->totalGravadas, 2),
-            'total_operaciones_inafectas' => round(0, 2),
-            'total_operaciones_exoneradas' => round($this->totalExonerado, 2),
-            'total_operaciones_gratuitas' => round(0, 2),
-            'total_igv' => round($this->totalIgv, 2),
-            'total_impuestos' => round($this->totalImpuestos, 2),
-            'total_valor' => round($this->totalValor, 2),
-            'total_venta' => round($this->totalVentas, 2),
-        ];
     }
 }
