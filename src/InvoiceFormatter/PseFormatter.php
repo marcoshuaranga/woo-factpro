@@ -2,9 +2,10 @@
 
 namespace EBilling\InvoiceFormatter;
 
-use EBilling\Domain\DiscountLine;
+use EBilling\Domain\Discount;
 use EBilling\Domain\Invoice;
 use EBilling\Domain\InvoiceItem;
+use EBilling\Domain\InvoiceItems;
 
 final class PseFormatter
 {
@@ -17,7 +18,7 @@ final class PseFormatter
 
     public function toArray()
     {
-        $summary = $this->invoice->getInvoiceSummary();
+        $invoiceItems = $this->invoice->getInvoiceItems();
 
         return [
             'serie_documento' => $this->invoice->getSerie(),
@@ -43,18 +44,19 @@ final class PseFormatter
                 'correo_electronico' => $this->invoice->getCustomer()->getEmail(),
                 'telefono' => $this->invoice->getCustomer()->getPhoneNumber(),
             ],
-            'items' => $this->formatItems($this->invoice->getItemsCollection()->getItems()),
+            'items' => $this->formatItems($this->invoice->getInvoiceItems()->getItems()),
             'total_exportacion' => round(0, 2),
-            'total_descuentos' => round($summary->getDiscount()->getSubtotal(), 2),
-            'total_operaciones_gravadas' => round($summary->getTotalGravadas(), 2),
+            'total_descuentos' => 0,
+            'total_operaciones_gravadas' => round($invoiceItems->getSunatTotalGravado(), 2),
             'total_operaciones_inafectas' => round(0, 2),
-            'total_operaciones_exoneradas' => round($summary->getTotalExonerado(), 2),
+            'total_operaciones_exoneradas' => round($invoiceItems->getSunatTotalExonerado(), 2),
             'total_operaciones_gratuitas' => round(0, 2),
-            'total_igv' => round($summary->getTotalIgv(), 2),
-            'total_impuestos' => round($summary->getTotalImpuestos(), 2),
-            'total_valor' => round($summary->getTotalValor(), 2),
-            'total_venta' => round($summary->getTotal(), 2),
-            'descuentos' => $this->formatDiscounts($summary->getDiscount()->getDiscounts()),
+            'total_igv' => round($invoiceItems->getSunatTotalIgv(), 2),
+            'total_impuestos' => round($invoiceItems->getTotalTax(), 2),
+            'total_valor' => round($invoiceItems->getSubtotal(), 2),
+            'total_venta' => round($invoiceItems->getTotal(), 2),
+            'tipo_descuento' => 'monto',
+            'descuentos' => $this->formatDiscounts($invoiceItems),
             'termino_de_pago' => [
                 'descripcion' => 'Contado',
                 'tipo' => '0'
@@ -75,27 +77,27 @@ final class PseFormatter
                 'valor_unitario' => $item->getUnitValue(),
                 'codigo_tipo_precio' => '01',
                 'precio_unitario' => $item->getUnitPrice(),
-                'codigo_tipo_afectacion_igv' => $item->getTaxExemptionReasonCode(),
+                'codigo_tipo_afectacion_igv' => $item->isGravado() ? '10' : '20',
                 'total_base_igv' => round($item->getSubtotal(), 2),
-                'porcentaje_igv' => ($item->getTotalIgv() > 0) ? 18 : 0,
-                'total_igv' => round($item->getTotalIgv(), 2),
-                'total_impuestos' => round($item->getTotalImpuestos(), 2),
-                'total_valor_item' => round($item->getTotalValorItem(), 2),
+                'porcentaje_igv' => ($item->isGravado()) ? 18 : 0,
+                'total_igv' => round($item->getTotalTax(), 2),
+                'total_impuestos' => round($item->getTotalTax(), 2),
+                'total_valor_item' => round($item->getSubtotal(), 2),
                 'total_item' => round($item->getTotal(), 2),
             ];
         }, $items);
     }
 
-    private function formatDiscounts(array $discounts)
+    private function formatDiscounts(InvoiceItems $items)
     {
-        return array_map(function (DiscountLine $item) { 
-            return [
-                'codigo' => $item->getCode(),
-                'descripcion' => $item->getDescription(),
-                'porcentaje' => 1,
-                'monto' => round($item->getSubtotal(), 2),
-                'base' => round($item->getSubtotal(), 2),
-            ];
-        }, $discounts);
+        $total = $items->getSunatTotalDiscount() + $items->getSunatTotalGravado();
+
+        return count($items->getDiscounts()) ? [
+            'codigo' => 'descuento_global',
+            'descripcion' => 'Descuento Global',
+            'porcentaje' => round($items->getSunatTotalDiscount()/$total, 2),
+            'monto' => round($items->getSunatTotalDiscount(), 2),
+            'base' => round($items->getSunatTotalGravado(), 2),
+        ] : [];
     }
 }

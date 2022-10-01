@@ -4,9 +4,6 @@ namespace EBilling\Domain;
 
 final class InvoiceItem
 {
-    const TAX_EXEMPTION_GRAVADO = '10';
-    const TAX_EXEMPTION_EXONERADO = '20';
-
     private $id;
     private $sku;
     private $description;
@@ -15,11 +12,8 @@ final class InvoiceItem
     private $unitValue;
     private $unitPrice;
     private $subtotal;
-    private $totalIgv;
-    private $totalImpuestos;
-    private $totalValorItem;
+    private $totalTax;
     private $total;
-    private $taxExemptionReasonCode;
 
     public function __construct(
         $id,
@@ -30,9 +24,8 @@ final class InvoiceItem
         $unitValue,
         $unitPrice,
         $subtotal,
-        $totalIgv,
-        $total,
-        $taxExemptionReasonCode = InvoiceItem::TAX_EXEMPTION_GRAVADO
+        $totalTax,
+        $total
     ) {
         $this->id = $id;
         $this->sku = $sku;
@@ -42,11 +35,8 @@ final class InvoiceItem
         $this->unitValue = $unitValue;
         $this->unitPrice = $unitPrice;
         $this->subtotal = $subtotal;
-        $this->totalIgv = $totalIgv;
-        $this->totalValorItem = $subtotal;
-        $this->totalImpuestos = $totalIgv;
+        $this->totalTax = $totalTax;
         $this->total = $total;
-        $this->taxExemptionReasonCode = $taxExemptionReasonCode;
     }
 
     public static function createFromWooLineItem(\WC_Order_Item_Product $item, $includeTax)
@@ -101,28 +91,12 @@ final class InvoiceItem
             $subtotal_item,
             $tax_item,
             $total_item,
-            $includeTax ? InvoiceItem::TAX_EXEMPTION_GRAVADO : InvoiceItem::TAX_EXEMPTION_EXONERADO
         );
     }
 
-    /**
-     * @param float $totalSaleAmount
-     * @param float $totalDiscount
-     * 
-     * @return float
-     */
-    public function applyDiscount($totalSaleAmount, $totalDiscount)
+    public function isGravado()
     {
-        $discount = $this->total / $totalSaleAmount * $totalDiscount;
-
-        if ($this->taxExemptionReasonCode === self::TAX_EXEMPTION_GRAVADO) {
-            $discount /= 1.18;
-        }
-
-        $this->subtotal -= $discount;
-        $this->totalIgv -= ($this->totalIgv > 0) ? $discount * 0.18 : 0;
-
-        return $discount;
+        return $this->totalTax > 0;
     }
 
     public function getId()
@@ -160,56 +134,18 @@ final class InvoiceItem
         return $this->unitPrice;
     }
 
-    /**
-     * @return float
-     */
     public function getSubtotal()
     {
         return $this->subtotal;
     }
 
-    /**
-     * @return float
-     */
-    public function getTotalIgv()
+    public function getTotalTax()
     {
-        return $this->totalIgv;
+        return $this->totalTax;
     }
 
-    /**
-     * @return float
-     */
-    public function getTotalExonerado()
-    {
-        return $this->taxExemptionReasonCode === self::TAX_EXEMPTION_EXONERADO ? $this->subtotal : 0;
-    }
-
-    /**
-     * @return float
-     */
-    public function getTotalImpuestos()
-    {
-        return $this->totalImpuestos;
-    }
-
-    /**
-     * @return float
-     */
-    public function getTotalValorItem()
-    {
-        return $this->totalValorItem;
-    }
-
-    /**
-     * @return float
-     */
     public function getTotal()
     {
         return $this->total;
-    }
-
-    public function getTaxExemptionReasonCode()
-    {
-        return $this->taxExemptionReasonCode;
     }
 }

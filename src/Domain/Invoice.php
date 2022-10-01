@@ -22,9 +22,7 @@ final class Invoice
 
     private $customer;
 
-    private $itemsCollection;
-
-    private $invoiceSummary;
+    private $invoiceItems;
 
     public function __construct(
         $documentType,
@@ -33,8 +31,7 @@ final class Invoice
         $orderId,
         PaymentMethod $paymentMethod,
         Customer $customer,
-        InvoiceItemsCollection $itemsCollection,
-        InvoiceSummary $invoiceSummary
+        InvoiceItems $invoiceItems
     ) {
         $this->documentType = $documentType;
         $this->serie = $serie;
@@ -44,8 +41,7 @@ final class Invoice
         $this->orderId = $orderId;
         $this->paymentMethod = $paymentMethod;
         $this->customer = $customer;
-        $this->itemsCollection = $itemsCollection;
-        $this->invoiceSummary = $invoiceSummary;
+        $this->invoiceItems = $invoiceItems;
     }
 
     public static function createFromWooOrder($serie, $number, \WC_Order $order, $includeTax)
@@ -76,16 +72,6 @@ final class Invoice
             $order->get_billing_phone(),
         );
 
-        $lineItems = $order->get_items('line_item');
-        $feeItems = $order->get_items('fee');
-        $shippingItems = $order->get_items('shipping');
-
-        $collection = InvoiceItemsCollection::createFromWooItems($lineItems, $includeTax);
-        $collection->addShippingItems($shippingItems);
-        $collection->addFeeItems($feeItems);
-
-        $globalDiscount = new GlobalDiscount($order->get_items('coupon'), $feeItems);
-
         $self = new self(
             $invoiceType,
             $serie,
@@ -93,8 +79,11 @@ final class Invoice
             $order->get_id(),
             $paymentMethod,
             $customer,
-            $collection,
-            $collection->createSummary($globalDiscount)
+            new InvoiceItems(
+                $order->get_items(['line_item', 'shipping', 'fee']), 
+                $order->get_coupons(), 
+                $order->get_prices_include_tax()
+            )
         );
 
         return $self;
@@ -140,13 +129,8 @@ final class Invoice
         return $this->customer;
     }
 
-    public function getItemsCollection()
+    public function getInvoiceItems()
     {
-        return $this->itemsCollection;
-    }
-
-    public function getInvoiceSummary()
-    {
-        return $this->invoiceSummary;
+        return $this->invoiceItems;
     }
 }
