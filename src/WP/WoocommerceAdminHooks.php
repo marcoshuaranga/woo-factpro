@@ -73,14 +73,14 @@ final class WoocommerceAdminHooks
             return $columns;
         });
 
-        add_action('manage_shop_order_posts_custom_column', function ($column) {
+        add_action('manage_shop_order_posts_custom_column', function ($column, $order_id) {
         
             if ($column !== 'download_pdf_or_xml') {
                 return;
             }
-        
+
             $actions = [];
-            $order = wc_get_order();
+            $order = wc_get_order($order_id);
 
             if ($order->get_meta('_ebilling_invoice_pdf_url')) {
                 $actions[] = [
@@ -98,10 +98,9 @@ final class WoocommerceAdminHooks
                 ];
             }
 
-            print View::make(EBILLING_VIEW_DIR)->render('admin/orders-table/custom_column', [
-                'actions' => $actions,
-            ]);
-        });
+            print View::make(EBILLING_VIEW_DIR)->render('admin/orders-table/custom_column', ['actions' => $actions]);
+
+        }, 20, 2);
 
         /**
          * Show custom form fields on Edit order page
