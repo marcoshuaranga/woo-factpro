@@ -2,7 +2,6 @@
 
 namespace EBilling\InvoiceFormatter;
 
-use EBilling\Domain\Discount;
 use EBilling\Domain\Invoice;
 use EBilling\Domain\InvoiceItem;
 use EBilling\Domain\InvoiceItems;
@@ -39,7 +38,7 @@ final class PseFormatter
                 'numero_documento' => $this->invoice->getCustomer()->getDocumentNumber(),
                 'apellidos_y_nombres_o_razon_social' => $this->invoice->getCustomer()->getNameOrCompany(),
                 'codigo_pais' => $this->invoice->getCustomer()->getCountryCode(),
-                'ubigeo' => $this->invoice->getCustomer()->getPostalCode() ?? '150101',
+                'ubigeo' => $this->invoice->getCustomer()->getPostalCode() ?? '',
                 'direccion' => $this->invoice->getCustomer()->getAddress(),
                 'correo_electronico' => $this->invoice->getCustomer()->getEmail(),
                 'telefono' => $this->invoice->getCustomer()->getPhoneNumber(),

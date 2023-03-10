@@ -35,7 +35,7 @@
 
     woocommerce_wp_text_input([
       'id' => 'ebilling_company_address',
-      'label' => __('Domicilio fiscal', 'woo-ebilling'),
+      'label' => __('Dirección', 'woo-ebilling'),
       'value' => $order->get_meta('_ebilling_company_address'),
       'wrapper_class' => 'form-field-wide',
     ]);
