@@ -18,8 +18,9 @@ final class PseFormatter
     public function toArray()
     {
         $invoiceItems = $this->invoice->getInvoiceItems();
+        $discounts = $this->formatDiscounts($invoiceItems);
 
-        return [
+        return array_merge([
             'serie_documento' => $this->invoice->getSerie(),
             'numero_documento' => $this->invoice->getNumber(),
             'fecha_de_emision' => $this->invoice->getDate()->format('Y-m-d'),
@@ -54,14 +55,15 @@ final class PseFormatter
             'total_impuestos' => round($invoiceItems->getTotalTax(), 2),
             'total_valor' => round($invoiceItems->getSubtotal(), 2),
             'total_venta' => round($invoiceItems->getTotal(), 2),
-            'tipo_descuento' => 'monto',
-            'descuentos' => $this->formatDiscounts($invoiceItems),
             'termino_de_pago' => [
                 'descripcion' => 'Contado',
                 'tipo' => '0'
             ],
             'metodo_de_pago' => 'Efectivo',
-        ];
+        ], empty($discounts) ? [] : [
+            'tipo_descuento' => 'monto',
+            'descuentos' => $discounts,
+        ]);
     }
 
     private function formatItems(array $items)
