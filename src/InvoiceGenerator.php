@@ -43,7 +43,7 @@ final class InvoiceGenerator
         try {
             $invoice = Invoice::createFromWooOrder($serie, $number, $order, $includeTax);
 
-            $invoiceSender = InvoiceSenderFactory::create(
+            $invoiceSender = new InvoiceSender(
                 get_option('wc_settings_ebilling_url_api'),
                 get_option('wc_settings_ebilling_token')
             );
