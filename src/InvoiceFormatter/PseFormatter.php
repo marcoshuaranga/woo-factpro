@@ -94,7 +94,7 @@ final class PseFormatter
         $total = $items->getSunatTotalDiscount() + $items->getSunatTotalGravado();
 
         return count($items->getDiscounts()) ? [
-            'codigo' => 'descuento_global',
+            'codigo' => '02',
             'descripcion' => 'Descuento Global',
             'porcentaje' => round($items->getSunatTotalDiscount()/$total, 2),
             'monto' => round($items->getSunatTotalDiscount(), 2),
