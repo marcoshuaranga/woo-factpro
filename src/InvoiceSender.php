@@ -3,8 +3,7 @@
 namespace EBilling;
 
 use EBilling\Domain\Invoice;
-use EBilling\InvoiceFormatter\FactPseFormatter;
-use EBilling\InvoiceFormatter\PseFormatter;
+use EBilling\InvoiceFormatter\OldPseFormatter;
 
 final class InvoiceSender
 {
@@ -37,8 +36,7 @@ final class InvoiceSender
 
     public function send(Invoice $invoice)
     {
-        $isFactPse = \str_contains($this->url, 'factpse.com');
-        $formatter = $isFactPse ? new FactPseFormatter($invoice) : new PseFormatter($invoice);
+        $formatter = new InvoiceFormatter($invoice, $this->url);
         $json = json_encode($formatter->toArray());
         $handler = curl_init($this->url);
         $headers = [
@@ -47,7 +45,9 @@ final class InvoiceSender
             'Authorization: Bearer ' . $this->token
         ];
 
-        (! $isFactPse) && array_push($headers, 'x-access-token: ' . $this->token);
+        if ($formatter->is(OldPseFormatter::class)) {
+            array_push($headers, 'x-access-token: ' . $this->token);
+        }
 
         curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($handler, CURLOPT_CUSTOMREQUEST, 'POST');

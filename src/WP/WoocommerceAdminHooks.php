@@ -43,12 +43,16 @@ final class WoocommerceAdminHooks
         });
 
         add_filter( 'woocommerce_order_actions',  function ($actions) {
+            $testmode = get_option('wc_settings_ebilling_testmode', 'no') === 'yes';
+
             $actions['generate_ebilling'] = __('Generar comprobante electrónico');
+            $testmode && $actions['generate_ebilling_preview'] = __('Generar JSON de comprobante electrónico');
 
             return $actions;
         });
 
         add_action('woocommerce_order_action_generate_ebilling', [InvoiceGenerator::class, 'generate']);
+        add_action('woocommerce_order_action_generate_ebilling_preview', [InvoiceGenerator::class, 'preview']);
 
         add_action('admin_post_ebilling_download_invoice', function () {
             $order_id = wc_sanitize_order_id($_REQUEST['order']);

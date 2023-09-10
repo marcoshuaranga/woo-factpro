@@ -3,12 +3,12 @@ jQuery(function ($) {
     const RUC = '6';
 
     $('.ebilling_company_name_field').fadeOut();
-    //$('.ebilling_company_address_field').fadeOut();
+    $('.ebilling_company_address_field').fadeOut();
     $('.ebilling_company_ubigeo_field').fadeOut();
 
     if ($('#ebilling_customer_document_type').val() === RUC) {
         $('.ebilling_company_name_field').fadeIn();
-        //$('.ebilling_company_address_field').fadeIn();
+        $('.ebilling_company_address_field').fadeIn();
         $('.ebilling_company_ubigeo_field').fadeIn();
     }
 
@@ -39,12 +39,12 @@ jQuery(function ($) {
         switch (this.value) {
             case RUC:
                 $('.ebilling_company_name_field').fadeIn();
-                //$('.ebilling_company_address_field').fadeIn();
+                $('.ebilling_company_address_field').fadeIn();
                 $('.ebilling_company_ubigeo_field').fadeIn();
                 break;
             default:
                 $('.ebilling_company_name_field').fadeOut();
-                //$('.ebilling_company_address_field').fadeOut();
+                $('.ebilling_company_address_field').fadeOut();
                 $('.ebilling_company_ubigeo_field').fadeOut();
         }
     });

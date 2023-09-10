@@ -1,0 +1,32 @@
+<?php
+
+namespace EBilling;
+
+use EBilling\Domain\Invoice;
+use EBilling\InvoiceFormatter\FactProFormatter;
+use EBilling\InvoiceFormatter\OldPseFormatter;
+
+final class InvoiceFormatter {
+  private $formatter;
+
+  public function __construct(Invoice $invoice, string $apiUrl)
+  {
+    if ($this->isFactPro($apiUrl)) {
+      $this->formatter = new FactProFormatter($invoice);
+    } else {
+      $this->formatter = new OldPseFormatter($invoice);
+    }
+  }
+
+  public function is($className) {
+    return get_class($this->formatter) === $className;
+  }
+
+  public function toArray() {
+    return $this->formatter->toArray();
+  }
+
+  private function isFactPro(string $apiUrl) {
+    return \str_contains($apiUrl, 'factpro.pe') || \str_contains($apiUrl, 'factpse.com');
+  }
+}

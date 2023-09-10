@@ -14,8 +14,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use EBilling\InvoiceFormatter\FactPseFormatter;
-use EBilling\InvoiceFormatter\PseFormatter;
 use EBilling\WP\AdminHooks;
 use EBilling\WP\RestApiHooks;
 use EBilling\WP\WoocommerceAdminHooks;
@@ -32,25 +30,3 @@ RestApiHooks::init();
 WoocommerceAdminHooks::init();
 WoocommerceHooks::init();
 WoocommerceEmailHooks::init();
-
-add_action('admin_post_show_invoice', function () {
-    $order = new WC_Order(filter_input(INPUT_GET, 'order_id'));
-    $canSend = filter_input(INPUT_GET, 'send', FILTER_VALIDATE_BOOLEAN);
-    $invoice = EBilling\Domain\Invoice::createFromWooOrder('F001', '#', $order, get_option('woocommerce_calc_taxes', 'yes') === 'yes');
-
-    if (\str_contains(get_option('wc_settings_ebilling_url_api'), 'factpse.com')) {
-        $formatter = new FactPseFormatter($invoice);
-    } else {
-        $formatter = new PseFormatter($invoice);
-    }
-
-    print('<pre>');
-    print(json_encode($formatter->toArray(), JSON_PRETTY_PRINT));
-    print('</pre>');
-
-    if ($canSend) {
-        EBilling\InvoiceGenerator::generate($order);
-    }
-    
-    die();
-});
