@@ -27,12 +27,12 @@ final class WoocommerceAdminHooks
             update_post_meta($order_id, '_ebilling_invoice_type', $invoiceType);
             update_post_meta($order_id, '_ebilling_customer_document_type', wc_clean($_POST['ebilling_customer_document_type']));
             update_post_meta($order_id, '_ebilling_customer_document_number', wc_clean($_POST['ebilling_customer_document_number']));
+            update_post_meta($order_id, '_ebilling_company_address', wc_clean($_POST['ebilling_company_address']));
 
             if (InvoiceType::is_factura($invoiceType)) {
                 $isCompany = substr(wc_clean($_POST['ebilling_customer_document_number']), 0, 2) === '20';
 
                 update_post_meta($order_id, '_ebilling_company_name', wc_clean($_POST['ebilling_company_name']));
-                update_post_meta($order_id, '_ebilling_company_address', wc_clean($_POST['ebilling_company_address']));
 
                 if ($isCompany) {
                     update_post_meta($order_id, '_ebilling_company_ubigeo', wc_clean($_POST['ebilling_company_ubigeo']));
@@ -73,14 +73,14 @@ final class WoocommerceAdminHooks
             return $columns;
         });
 
-        add_action('manage_shop_order_posts_custom_column', function ($column) {
+        add_action('manage_shop_order_posts_custom_column', function ($column, $order_id) {
         
             if ($column !== 'download_pdf_or_xml') {
                 return;
             }
-        
+
             $actions = [];
-            $order = wc_get_order();
+            $order = wc_get_order($order_id);
 
             if ($order->get_meta('_ebilling_invoice_pdf_url')) {
                 $actions[] = [
@@ -98,10 +98,9 @@ final class WoocommerceAdminHooks
                 ];
             }
 
-            print View::make(EBILLING_VIEW_DIR)->render('admin/orders-table/custom_column', [
-                'actions' => $actions,
-            ]);
-        });
+            print View::make(EBILLING_VIEW_DIR)->render('admin/orders-table/custom_column', ['actions' => $actions]);
+
+        }, 20, 2);
 
         /**
          * Show custom form fields on Edit order page
@@ -128,7 +127,7 @@ final class WoocommerceAdminHooks
         
             $publicUrl = plugins_url('public', EBILLING_PLUGIN_FILE);
         
-            wp_register_script('woo_order', $publicUrl . '/admin/woo_order.js', ['jquery'], 1.0, true);
+            wp_register_script('woo_order', $publicUrl . '/admin/woo_order.js', ['jquery'], 1.1, true);
         
             if (get_post_type() === 'shop_order') {
                 wp_enqueue_script('woo_order');

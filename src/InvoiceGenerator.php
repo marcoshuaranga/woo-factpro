@@ -3,7 +3,6 @@
 namespace EBilling;
 
 use EBilling\Domain\Invoice;
-use EBilling\InvoiceSender\InvoiceSenderFactory;
 use EBilling\SunatCode\InvoiceType;
 use WC_Order;
 
