@@ -16,6 +16,7 @@ final class Invoice
 
     private $dueDate;
 
+    /** @var int */
     private $orderId;
 
     private $paymentMethod;

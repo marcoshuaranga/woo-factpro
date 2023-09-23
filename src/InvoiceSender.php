@@ -11,12 +11,14 @@ final class InvoiceSender
 
     private $token;
 
-    private $requestDetails;
+    /** @var \WC_Logger */
+    private $logger;
 
-    public function __construct($url, $token)
+    public function __construct($url, $token, \WC_Logger $logger)
     {
         $this->url = $url;
         $this->token = $token;
+        $this->logger = $logger;
     }
 
     public function getUrl()
@@ -27,11 +29,6 @@ final class InvoiceSender
     public function getToken()
     {
         return $this->token;
-    }
-
-    public function getRequestDetails()
-    {
-        return $this->requestDetails;
     }
 
     public function send(Invoice $invoice)
@@ -58,11 +55,11 @@ final class InvoiceSender
 
         curl_close($handler);
 
-        $this->requestDetails = [
-            'url' => $this->url,
-            'token' => $this->token,
-            'body' => $formatter->toArray()
-        ];
+        $this->logger->info(
+            'Response for order #' . $invoice->getOrderId() . ': ' . PHP_EOL .
+            json_encode(json_decode($result), JSON_PRETTY_PRINT) . PHP_EOL,
+            ['source' => 'woo-ebilling']
+        );
 
         return $result;
     }

@@ -44,33 +44,31 @@ final class InvoiceGenerator
 
             $invoiceSender = new InvoiceSender(
                 get_option('wc_settings_ebilling_url_api'),
-                get_option('wc_settings_ebilling_token')
+                get_option('wc_settings_ebilling_token'),
+                wc_get_logger()
             );
 
-            $response = $invoiceSender->send($invoice);
-            $results = json_decode($response);
+            $result = json_decode($invoiceSender->send($invoice), true);
+            $success = isset($result['success']) ? $result['success'] : isset($result['links']);
+            $message = isset($result['message']) ? $result['message'] : '';
+            $isBoleta = $invoiceType === InvoiceType::BOLETA;
+            $isFactura = $invoiceType === InvoiceType::FACTURA;
 
-            if (! $results->success) {
-                throw new \Exception(is_string($results->message) ? $results->message : json_encode($results->message));
+            if (! $success) {
+                throw new \Exception(is_string($message) ? $message : json_encode($message));
             }
 
-            update_post_meta($order->get_id(), '_ebilling_invoice_xml_url', $results->links->xml);
-            update_post_meta($order->get_id(), '_ebilling_invoice_pdf_url', $results->links->pdf);
+            update_post_meta($order->get_id(), '_ebilling_invoice_xml_url', $result['links']['xml']);
+            update_post_meta($order->get_id(), '_ebilling_invoice_pdf_url', $result['links']['pdf']);
 
-            $invoiceType === InvoiceType::FACTURA && ! $testmode && update_option('wc_settings_ebilling_nsiglafactura', $number + 1);
-            $invoiceType === InvoiceType::BOLETA && ! $testmode && update_option('wc_settings_ebilling_bnsiglafactura', $number + 1);
+            $isBoleta && ! $testmode && update_option('wc_settings_ebilling_bnsiglafactura', $number + 1);
+            $isFactura && ! $testmode && update_option('wc_settings_ebilling_nsiglafactura', $number + 1);
 
-            $order->add_order_note('El comprobante electrónico fue generado correctamente.');
-
-            wc_get_logger()->info("Pedido #{$order->get_id()}: \n" . $response . "\n", ['source' => 'woo-ebilling']);
-
+            $order->add_order_note(
+               "El compronante electrónico {$serie}-{$number} fue generado correctamente."
+            );
         } catch (\Exception $e) {
             $order->add_order_note('Falló al generar el comprobante electrónico: ' . $e->getMessage());
-
-            wc_get_logger()->error(
-                "Pedido #{$order->get_id()}: " . $e->getMessage() . "\n" . 
-                "Request Failed: " .  json_encode($invoiceSender->getRequestDetails()) . "\n", ['source' => 'woo-ebilling']
-            );
         }
     }
 
