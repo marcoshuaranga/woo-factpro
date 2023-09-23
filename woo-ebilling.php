@@ -3,7 +3,7 @@
 /**
 * Plugin Name: Factpro.pe
 * Description: Factpro.pe para facturación electrónica en el Perú
-* Version: 2.9.8
+* Version: 3.0.0
 * Author: Factpro.pe
 * Requires at least: 5.0
 * Requires PHP: 7.4
