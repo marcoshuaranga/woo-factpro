@@ -27,6 +27,6 @@ final class InvoiceFormatter {
   }
 
   private function isFactPro(string $apiUrl) {
-    return \str_contains($apiUrl, 'factpro.pe') || \str_contains($apiUrl, 'factpse.com');
+    return \str_contains($apiUrl, 'factpro') || \str_contains($apiUrl, 'factpse');
   }
 }
