@@ -68,22 +68,26 @@ final class WoocommerceHooks
                 $identityDocument = $_POST['ebilling_customer_document_type'];
             }
 
-            update_post_meta($order_id, '_ebilling_invoice_type', wc_clean($_POST['ebilling_invoice_type']));
-            update_post_meta($order_id, '_ebilling_customer_document_type', $identityDocument);
-            update_post_meta($order_id, '_ebilling_customer_document_number', wc_clean($_POST['ebilling_customer_document_number']));
+            $order = wc_get_order($order_id);
+
+            $order->update_meta_data('_ebilling_invoice_type', wc_clean($_POST['ebilling_invoice_type']));
+            $order->update_meta_data('_ebilling_customer_document_type', $identityDocument);
+            $order->update_meta_data('_ebilling_customer_document_number', wc_clean($_POST['ebilling_customer_document_number']));
 
             if (InvoiceType::is_factura($_POST['ebilling_invoice_type'])) {
                 $isCompany = substr(wc_clean($_POST['ebilling_customer_document_number']), 0, 2) === '20';
 
-                update_post_meta($order_id, '_ebilling_company_name', wc_clean($_POST['ebilling_company_name']));
-                update_post_meta($order_id, '_ebilling_company_address', wc_clean($_POST['ebilling_company_address']));
+                $order->update_meta_data('_ebilling_company_name', wc_clean($_POST['ebilling_company_name']));
+                $order->update_meta_data('_ebilling_company_address', wc_clean($_POST['ebilling_company_address']));
 
                 if ($isCompany) {
-                    update_post_meta($order_id, '_ebilling_company_ubigeo', wc_clean($_POST['ebilling_company_ubigeo']));
+                    $order->update_meta_data('_ebilling_company_ubigeo', wc_clean($_POST['ebilling_company_ubigeo']));
                 } else {
-                    update_post_meta($order_id, '_ebilling_company_ubigeo', '140101');
-                }   
+                    $order->update_meta_data('_ebilling_company_ubigeo', '140101');
+                }
             }
+
+            $order->save();
         });
 
         add_action('woocommerce_order_status_completed', [InvoiceGenerator::class, 'generate']);
