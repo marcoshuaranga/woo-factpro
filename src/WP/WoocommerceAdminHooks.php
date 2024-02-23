@@ -132,14 +132,11 @@ final class WoocommerceAdminHooks
             $publicUrl = plugins_url('public', EBILLING_PLUGIN_FILE);
         
             wp_register_script('woo_order', $publicUrl . '/admin/woo_order.js', ['jquery'], 1.1, true);
-        
-            if (get_post_type() === 'shop_order') {
-                wp_enqueue_script('woo_order');
-                wp_localize_script('woo_order', 'ebillingSettings', [
-                    'root' => esc_url_raw( rest_url('woo-ebilling/v1') ),
-                    'nonce' => wp_create_nonce( 'wp_rest' ),
-                ]);
-            }
+            wp_enqueue_script('woo_order');
+            wp_localize_script('woo_order', 'ebillingSettings', [
+                'root' => esc_url_raw( rest_url('woo-ebilling/v1') ),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+            ]);
         });
     }
 }
