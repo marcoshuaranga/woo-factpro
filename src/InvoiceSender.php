@@ -4,9 +4,12 @@ namespace EBilling;
 
 use EBilling\Domain\Invoice;
 use EBilling\InvoiceFormatter\OldPseFormatter;
+use GuzzleHttp\Client;
 
 final class InvoiceSender
 {
+    private Client $http;
+
     private $url;
 
     private $token;
@@ -16,6 +19,14 @@ final class InvoiceSender
 
     public function __construct($url, $token, \WC_Logger $logger)
     {
+        $this->http = new Client([
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json; charset=utf-8',
+            ]
+        ]);
+
         $this->url = $url;
         $this->token = $token;
         $this->logger = $logger;
@@ -34,32 +45,30 @@ final class InvoiceSender
     public function send(Invoice $invoice)
     {
         $formatter = new InvoiceFormatter($invoice, $this->url);
-        $json = json_encode($formatter->toArray());
-        $handler = curl_init($this->url);
-        $headers = [
-            'Content-Type: application/json; charset=utf-8',
-            'Content-Length: ' . strlen($json),
-            'Authorization: Bearer ' . $this->token
-        ];
-
+ 
         if ($formatter->is(OldPseFormatter::class)) {
             array_push($headers, 'x-access-token: ' . $this->token);
         }
 
-        curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($handler, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($handler, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($handler, CURLOPT_HTTPHEADER, $headers);
+        $response = $this->http->post($this->url, [], [
+            'json' => $formatter->toArray()
+        ]);
 
-        $result = curl_exec($handler);
+        $result = json_decode($response->getBody()->getContents(), true);
 
-        curl_close($handler);
-
-        $this->logger->info(
-            'Response for order #' . $invoice->getOrderId() . ': ' . PHP_EOL .
-            json_encode(json_decode($result), JSON_PRETTY_PRINT) . PHP_EOL,
-            ['source' => 'woo-ebilling']
-        );
+        if ($response->getStatusCode() >= 400) {
+            $this->logger->error(
+                'Error sending invoice for order #' . $invoice->getOrderId() . ': ' . PHP_EOL .
+                $response->getBody()->getContents() . PHP_EOL,
+                ['source' => 'woo-ebilling', 'body' => $formatter->toArray()]
+            );
+        } else {
+            $this->logger->info(
+                'Response for order #' . $invoice->getOrderId() . ': ' . PHP_EOL .
+                $response->getBody()->getContents() . PHP_EOL,
+                ['source' => 'woo-ebilling']
+            );
+        }
 
         return $result;
     }
