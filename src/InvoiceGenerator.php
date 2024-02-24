@@ -58,8 +58,8 @@ final class InvoiceGenerator
                 throw new \Exception(is_string($message) ? $message : json_encode($message));
             }
 
-            update_post_meta($order->get_id(), '_ebilling_invoice_xml_url', $result['links']['xml']);
-            update_post_meta($order->get_id(), '_ebilling_invoice_pdf_url', $result['links']['pdf']);
+            $order->add_meta_data('_ebilling_invoice_xml_url', $result['links']['xml'], true);
+            $order->add_meta_data('_ebilling_invoice_pdf_url', $result['links']['pdf'], true);
 
             $isBoleta && ! $testmode && update_option('wc_settings_ebilling_bnsiglafactura', $number + 1);
             $isFactura && ! $testmode && update_option('wc_settings_ebilling_nsiglafactura', $number + 1);
