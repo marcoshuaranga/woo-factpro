@@ -43,7 +43,7 @@ final class WoocommerceAdminHooks
                 }
             }
 
-            $order->save();
+            $order->save_meta_data();
         });
 
         add_filter( 'woocommerce_order_actions',  function ($actions) {

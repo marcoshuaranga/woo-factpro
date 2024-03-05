@@ -60,6 +60,7 @@ final class InvoiceGenerator
 
             $order->add_meta_data('_ebilling_invoice_xml_url', $result['links']['xml'], true);
             $order->add_meta_data('_ebilling_invoice_pdf_url', $result['links']['pdf'], true);
+            $order->save_meta_data();
 
             $isBoleta && ! $testmode && update_option('wc_settings_ebilling_bnsiglafactura', $number + 1);
             $isFactura && ! $testmode && update_option('wc_settings_ebilling_nsiglafactura', $number + 1);

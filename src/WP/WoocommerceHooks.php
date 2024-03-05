@@ -87,7 +87,7 @@ final class WoocommerceHooks
                 }
             }
 
-            $order->save();
+            $order->save_meta_data();
         });
 
         add_action('woocommerce_order_status_completed', [InvoiceGenerator::class, 'generate']);
