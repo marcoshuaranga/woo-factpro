@@ -31,7 +31,7 @@ final class FactProFormatter
             'numero_orden_de_compra' => "{$this->invoice->getOrderId()}",
             'nombre_almacen' => 'Almacen Virtual',
             'datos_del_emisor' => [
-                'codigo_del_domicilio_fiscal' => '000',
+                'codigo_del_domicilio_fiscal' => '0000',
             ],
             'datos_del_cliente_o_receptor' => [
                 'codigo_pais' => $this->invoice->getCustomer()->getCountryCode(),
@@ -57,7 +57,15 @@ final class FactProFormatter
                 'total_venta' => round($invoiceItems->getTotal(), 2),
             ],
             'descuentos' => $this->formatDiscounts($invoiceItems->getDiscounts()),
-            'additional_information' => 'Compra:Online|Web',
+            'acciones' => [
+                'formato_pdf' => 'a4'
+            ],
+            'additional_information' => '',
+            'termino_de_pago' => [
+                'descripcion' => 'Contado',
+                'tipo' => '0'
+            ],
+            'metodo_de_pago' => '',
         ];
     }
 
