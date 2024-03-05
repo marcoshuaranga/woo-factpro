@@ -20,6 +20,7 @@ final class InvoiceSender
     public function __construct($url, $token, \WC_Logger $logger)
     {
         $this->http = new Client([
+            'http_errors' => false,
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
                 'Accept' => 'application/json',
@@ -50,26 +51,26 @@ final class InvoiceSender
             array_push($headers, 'x-access-token: ' . $this->token);
         }
 
-        $response = $this->http->post($this->url, [], [
+        $response = $this->http->post($this->url, [
             'json' => $formatter->toArray()
         ]);
 
-        $result = json_decode($response->getBody()->getContents(), true);
+        $jsonResponse = $response->getBody()->getContents();
 
-        if ($response->getStatusCode() >= 400) {
-            $this->logger->error(
-                'Error sending invoice for order #' . $invoice->getOrderId() . ': ' . PHP_EOL .
-                $response->getBody()->getContents() . PHP_EOL,
-                ['source' => 'woo-ebilling', 'body' => $formatter->toArray()]
-            );
-        } else {
+        if (in_array($response->getStatusCode(), [200, 201])) {
             $this->logger->info(
                 'Response for order #' . $invoice->getOrderId() . ': ' . PHP_EOL .
-                $response->getBody()->getContents() . PHP_EOL,
+                $jsonResponse . PHP_EOL,
                 ['source' => 'woo-ebilling']
+            );
+        } else {
+            $this->logger->error(
+                'Error sending invoice for order #' . $invoice->getOrderId() . ': ' . PHP_EOL .
+                $jsonResponse . PHP_EOL,
+                ['source' => 'woo-ebilling', 'body' => $formatter->toArray()]
             );
         }
 
-        return $result;
+        return $jsonResponse;
     }
 }
