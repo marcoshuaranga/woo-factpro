@@ -4,12 +4,9 @@ namespace EBilling;
 
 use EBilling\Domain\Invoice;
 use EBilling\InvoiceFormatter\OldPseFormatter;
-use GuzzleHttp\Client;
 
 final class InvoiceSender
 {
-    private Client $http;
-
     private $url;
 
     private $token;
@@ -19,18 +16,22 @@ final class InvoiceSender
 
     public function __construct($url, $token, \WC_Logger $logger)
     {
-        $this->http = new Client([
-            'http_errors' => false,
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token,
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json; charset=utf-8',
-            ]
-        ]);
-
         $this->url = $url;
         $this->token = $token;
         $this->logger = $logger;
+
+        add_action('http_api_debug', function ($response, $type, $class, $args, $url) {
+            return;
+            
+            $this->logger->info(
+                'Request to ' . $url . PHP_EOL .
+                'Type: ' . $type . PHP_EOL .
+                'Class: ' . $class . PHP_EOL .
+                'Args: ' . print_r($args, true) . PHP_EOL .
+                'Response: ' . print_r($response, true),
+                ['source' => 'woo-ebilling']
+            );
+        }, 10, 5);
     }
 
     public function getUrl()
@@ -51,13 +52,23 @@ final class InvoiceSender
             array_push($headers, 'x-access-token: ' . $this->token);
         }
 
-        $response = $this->http->post($this->url, [
-            'json' => $formatter->toArray()
+        $response = wp_remote_post($this->url, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->token,
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json; charset=utf-8',
+            ],
+            'body' => json_encode($formatter->toArray(), true)
         ]);
+        
+        if (is_wp_error($response)) {
+            throw new \WP_Error($response->get_error_message());
+        }
 
-        $jsonResponse = $response->getBody()->getContents();
+        $statusCode = wp_remote_retrieve_response_code($response);
+        $jsonResponse = wp_remote_retrieve_body($response);
 
-        if (in_array($response->getStatusCode(), [200, 201])) {
+        if (in_array($statusCode, [200, 201])) {
             $this->logger->info(
                 'Response for order #' . $invoice->getOrderId() . ': ' . PHP_EOL .
                 $jsonResponse . PHP_EOL,

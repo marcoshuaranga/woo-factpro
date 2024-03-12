@@ -7,6 +7,7 @@ use EBilling\InvoiceDownloader;
 use EBilling\InvoiceGenerator;
 use EBilling\SunatCode\IdentityDocument;
 use EBilling\SunatCode\InvoiceType;
+use EBilling\WP\AdminPanel\OrderTable;
 
 final class WoocommerceAdminHooks
 {
@@ -73,42 +74,17 @@ final class WoocommerceAdminHooks
         });
 
         /**
+         * Add custom column in Orders Table (LEGACY)
+         */
+        add_filter('manage_edit-shop_order_columns', [OrderTable::class, 'addColumn']);
+
+        /**
          * Add custom column in Orders Table
          */
-        add_filter('manage_edit-shop_order_columns', function (array $columns) {
-            $columns['download_pdf_or_xml'] = __('Comprobante', 'woocommerce');
-        
-            return $columns;
-        });
+        add_filter('manage_woocommerce_page_wc-orders_columns', [OrderTable::class, 'addColumn']);
 
-        add_action('manage_shop_order_posts_custom_column', function ($column, $order_id) {
-        
-            if ($column !== 'download_pdf_or_xml') {
-                return;
-            }
-
-            $actions = [];
-            $order = wc_get_order($order_id);
-
-            if ($order->get_meta('_ebilling_invoice_pdf_url')) {
-                $actions[] = [
-                    'url'  => $order->get_meta('_ebilling_invoice_pdf_url'),
-                    'name' => __('PDF', 'woo-ebilling'),
-                    'action' => 'pdf',
-                ];
-            }
-
-            if ($order->get_meta('_ebilling_invoice_xml_url')) {
-                $actions[] = [
-                    'url'  => $order->get_meta('_ebilling_invoice_xml_url'),
-                    'name' => __('XML', 'woo-ebilling'),
-                    'action' => 'xml',
-                ];
-            }
-
-            print View::make(EBILLING_VIEW_DIR)->render('admin/orders-table/custom_column', ['actions' => $actions]);
-
-        }, 20, 2);
+        add_action('manage_shop_order_posts_custom_column', [OrderTable::class, 'renderColumn'], 20, 2);
+        add_action('manage_woocommerce_page_wc-orders_custom_column', [OrderTable::class, 'renderColumn'], 20, 2 );
 
         /**
          * Show custom form fields on Edit order page

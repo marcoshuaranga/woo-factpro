@@ -9,9 +9,7 @@
             "php": "7.4"
         }
     },
-    "require": {
-        "guzzlehttp/guzzle": "^7.8"
-    },
+    "require": {},
     "autoload": {
         "psr-4": {
             "EBilling\\": "src/"
