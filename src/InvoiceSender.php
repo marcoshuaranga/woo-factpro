@@ -60,9 +60,9 @@ final class InvoiceSender
             ],
             'body' => json_encode($formatter->toArray(), true)
         ]);
-        
+
         if (is_wp_error($response)) {
-            throw new \WP_Error($response->get_error_message());
+            throw new \Exception($response->get_error_message());
         }
 
         $statusCode = wp_remote_retrieve_response_code($response);
