@@ -5,37 +5,33 @@ namespace EBilling\Sunat\Client;
 use EBilling\Sunat\Response\DniResponse;
 use EBilling\Sunat\Response\RucResponse;
 use EBilling\Sunat\SunatClient;
-use GuzzleHttp\Client as GuzzleHttpClient;
-use GuzzleHttp\Exception\RequestException;
 
 final class PeruDevApiClient implements SunatClient
 {
-    private $http;
-
-    public function __construct()
-    {
-        $this->http = new GuzzleHttpClient([
-            'base_uri' => 'https://apiperu.dev/api/',
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . get_option('wc_settings_ebilling_client_token'),
-                'Content-Type' => 'application/json',
-            ],
-        ]);
-    }
-
     public function findPersonByDni($dni)
     {
-        try {
-            $response = $this->http->get('dni/' . $dni);
-        } catch (RequestException $e) {
-            return new \WP_Error('guzzle_request_exception', $e->getMessage(), ['status' => $e->getResponse()->getStatusCode()]);
+        $token = get_option('wc_settings_ebilling_client_token');
+        $url = sprintf('https://apiperu.dev/api/dni/%s', $dni);
+
+        $response = wp_remote_get($url, [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $token,
+                'Content-Type' => 'application/json',
+            ]
+        ]);
+
+        if (is_wp_error($response)) {
+            return $response;
         }
 
-        $data = json_decode($response->getBody()->getContents(), true);
+        $statusCode = wp_remote_retrieve_response_code($response);
+        $jsonResponse = wp_remote_retrieve_body($response);
+
+        $data = json_decode($jsonResponse, true);
 
         if (! $data['success']) {
-            return new \WP_Error('id_not_found', $data['message'], ['status' => 404]);
+            return new \WP_Error('id_not_found', $data['message'], ['status' => $statusCode]);
         }
 
         return new DniResponse(
@@ -47,16 +43,28 @@ final class PeruDevApiClient implements SunatClient
 
     public function findCompanyByRuc($ruc)
     {
-        try {
-            $response = $this->http->get('ruc/' . $ruc);
-        } catch (RequestException $e) {
-            return new \WP_Error('guzzle_request_exception', $e->getMessage(), ['status' => $e->getResponse()->getStatusCode()]);
+        $token = get_option('wc_settings_ebilling_client_token');
+        $url = sprintf('https://apiperu.dev/api/ruc/%s', $ruc);
+
+        $response = wp_remote_get($url, [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $token,
+                'Content-Type' => 'application/json',
+            ]
+        ]);
+
+        if (is_wp_error($response)) {
+            return $response;
         }
 
-        $data = json_decode($response->getBody()->getContents(), true);
+        $statusCode = wp_remote_retrieve_response_code($response);
+        $jsonResponse = wp_remote_retrieve_body($response);
+
+        $data = json_decode($jsonResponse, true);
 
         if (! $data['success']) {
-            return new \WP_Error('id_not_found', $data['message'], ['status' => 404]);
+            return new \WP_Error('id_not_found', $data['message'], ['status' => $statusCode]);
         }
 
         $ubigeo = $data['data']['ubigeo'];
