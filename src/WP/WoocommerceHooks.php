@@ -96,7 +96,7 @@ final class WoocommerceHooks
          * Display in Website
          */
         add_action('woocommerce_after_checkout_billing_form', function (\WC_Checkout $checkout) {
-            print View::make(EBILLING_VIEW_DIR)->render('invoice-address-section', [
+            print View::make(WOO_FACTPRO_VIEW_DIR)->render('invoice-address-section', [
                 'checkout' => $checkout,
                 'identity_documents' => [
                     IdentityDocument::DNI => __('DNI', 'woo-factpro'),
@@ -110,7 +110,7 @@ final class WoocommerceHooks
 
         add_action('wp_enqueue_scripts', function () {
 
-            $publicUrl = plugins_url('public', EBILLING_PLUGIN_FILE);
+            $publicUrl = plugins_url('public', WOO_FACTPRO_PLUGIN_FILE);
 
             wp_register_script('woo_checkout', $publicUrl . '/woo_checkout.js', ['jquery'], 1.2, true);
 

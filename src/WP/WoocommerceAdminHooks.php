@@ -99,7 +99,7 @@ final class WoocommerceAdminHooks
                 $pdf_url = $order->get_meta('_factpro_invoice_pdf_url');
             }
 
-            print View::make(EBILLING_VIEW_DIR)->render('admin/invoice-address-section', [
+            print View::make(WOO_FACTPRO_VIEW_DIR)->render('admin/invoice-address-section', [
                 'factpro_invoice_was_generated' => !!$pdf_url,
                 'factpro_invoice_pdf_url' =>  $pdf_url,
                 'identity_documents' => IdentityDocument::getOptions(),
@@ -109,7 +109,7 @@ final class WoocommerceAdminHooks
 
         add_action('admin_enqueue_scripts', function () {
 
-            $publicUrl = plugins_url('public', EBILLING_PLUGIN_FILE);
+            $publicUrl = plugins_url('public', WOO_FACTPRO_PLUGIN_FILE);
 
             wp_register_script('woo_order', $publicUrl . '/admin/woo_order.js', ['jquery'], 1.1, true);
             wp_enqueue_script('woo_order');

@@ -20,8 +20,8 @@ use Factpro\WP\WoocommerceAdminHooks;
 use Factpro\WP\WoocommerceEmailHooks;
 use Factpro\WP\WoocommerceHooks;
 
-define('EBILLING_VIEW_DIR', __DIR__ . '/views');
-define('EBILLING_PLUGIN_FILE', __FILE__);
+define('WOO_FACTPRO_VIEW_DIR', __DIR__ . '/views');
+define('WOO_FACTPRO_PLUGIN_FILE', __FILE__);
 
 require __DIR__ . '/vendor/autoload.php';
 

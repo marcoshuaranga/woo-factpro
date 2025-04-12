@@ -38,6 +38,6 @@ final class OrderTable
             ];
         }
 
-        print View::make(EBILLING_VIEW_DIR)->render('admin/orders-table/custom_column', ['actions' => $actions]);
+        print View::make(WOO_FACTPRO_VIEW_DIR)->render('admin/orders-table/custom_column', ['actions' => $actions]);
     }
 }

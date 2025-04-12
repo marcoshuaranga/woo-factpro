@@ -30,7 +30,7 @@ final class WoocommerceEmailHooks
                 'key' => $order->get_order_key(),
             ], admin_url('admin-post.php'));
 
-            print View::make(EBILLING_VIEW_DIR)->render('emails/email-factpro-pdf-url', [
+            print View::make(WOO_FACTPRO_VIEW_DIR)->render('emails/email-factpro-pdf-url', [
                 'factpro_invoice_pdf_url' =>  $factpro_invoice_pdf_url,
             ]);
         }, 10, 4);
