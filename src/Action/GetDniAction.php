@@ -1,15 +1,15 @@
 <?php
 
-namespace EBilling\Action;
+namespace Factpro\Action;
 
-use EBilling\Sunat\SunatClientFactory;
+use Factpro\Sunat\SunatClientFactory;
 
 final class GetDniAction
 {
     public function __invoke(\WP_REST_Request $request)
     {
         $sunat = SunatClientFactory::createClient(
-            get_option('wc_settings_ebilling_client_types')
+            get_option('wc_settings_factpro_client_types')
         );
 
         $response = $sunat->findPersonByDni($request->get_param('dni'));

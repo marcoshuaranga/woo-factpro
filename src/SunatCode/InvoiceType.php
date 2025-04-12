@@ -1,6 +1,6 @@
 <?php
 
-namespace EBilling\SunatCode;
+namespace Factpro\SunatCode;
 
 final class InvoiceType
 {

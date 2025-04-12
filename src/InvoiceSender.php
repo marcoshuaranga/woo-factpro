@@ -1,9 +1,9 @@
 <?php
 
-namespace EBilling;
+namespace Factpro;
 
-use EBilling\Domain\Invoice;
-use EBilling\InvoiceFormatter\OldPseFormatter;
+use Factpro\Domain\Invoice;
+use Factpro\InvoiceFormatter\OldPseFormatter;
 
 final class InvoiceSender
 {
@@ -22,14 +22,14 @@ final class InvoiceSender
 
         add_action('http_api_debug', function ($response, $type, $class, $args, $url) {
             return;
-            
+
             $this->logger->info(
                 'Request to ' . $url . PHP_EOL .
-                'Type: ' . $type . PHP_EOL .
-                'Class: ' . $class . PHP_EOL .
-                'Args: ' . print_r($args, true) . PHP_EOL .
-                'Response: ' . print_r($response, true),
-                ['source' => 'woo-ebilling']
+                    'Type: ' . $type . PHP_EOL .
+                    'Class: ' . $class . PHP_EOL .
+                    'Args: ' . print_r($args, true) . PHP_EOL .
+                    'Response: ' . print_r($response, true),
+                ['source' => 'woo-factpro']
             );
         }, 10, 5);
     }
@@ -47,7 +47,7 @@ final class InvoiceSender
     public function send(Invoice $invoice)
     {
         $formatter = new InvoiceFormatter($invoice, $this->url);
- 
+
         if ($formatter->is(OldPseFormatter::class)) {
             array_push($headers, 'x-access-token: ' . $this->token);
         }
@@ -71,14 +71,14 @@ final class InvoiceSender
         if (in_array($statusCode, [200, 201])) {
             $this->logger->info(
                 'Response for order #' . $invoice->getOrderId() . ': ' . PHP_EOL .
-                $jsonResponse . PHP_EOL,
-                ['source' => 'woo-ebilling']
+                    $jsonResponse . PHP_EOL,
+                ['source' => 'woo-factpro']
             );
         } else {
             $this->logger->error(
                 'Error sending invoice for order #' . $invoice->getOrderId() . ': ' . PHP_EOL .
-                $jsonResponse . PHP_EOL,
-                ['source' => 'woo-ebilling', 'body' => $formatter->toArray()]
+                    $jsonResponse . PHP_EOL,
+                ['source' => 'woo-factpro', 'body' => $formatter->toArray()]
             );
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace EBilling\Domain;
+namespace Factpro\Domain;
 
 final class Customer
 {
@@ -74,7 +74,7 @@ final class Customer
     {
         return $this->postalCode;
     }
-    
+
     public function getPhoneNumber()
     {
         return $this->phoneNumber;

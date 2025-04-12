@@ -1,8 +1,9 @@
 <?php
 
-namespace EBilling\Sunat\Response;
+namespace Factpro\Sunat\Response;
 
-final class DniResponse {
+final class DniResponse
+{
     private $firstName;
 
     private $lastNameOne;

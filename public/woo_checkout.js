@@ -6,23 +6,23 @@ jQuery(function($) {
         $('div.invoice_address').toggle(450);
     });
 
-    $('#ebilling_invoice_type_field input[type="radio"]').change(function() {
+    $('#factpro_invoice_type_field input[type="radio"]').change(function() {
         switch (this.value) {
             case BOLETA:
-                $('#ebilling_customer_document_type_wrapper').show();
+                $('#factpro_customer_document_type_wrapper').show();
                 $('#factura-fields').hide();
                 break;
                 
             case FACTURA:
-                $('#ebilling_customer_document_type_wrapper').hide();
+                $('#factpro_customer_document_type_wrapper').hide();
                 $('#factura-fields').show();
                 break;
         }
     });
 
     $('#find_apiperu').click(function () {
-        var documentType = $('input[name="ebilling_invoice_type"]:checked').val();
-        var documentNumber = $('#ebilling_customer_document_number').val();
+        var documentType = $('input[name="factpro_invoice_type"]:checked').val();
+        var documentNumber = $('#factpro_customer_document_number').val();
 
         switch (documentType) {
             case BOLETA:
@@ -33,9 +33,9 @@ jQuery(function($) {
                 break;
             case FACTURA:
                 documentNumber.length === 11 && findBy('ruc', documentNumber, function (data) {
-                    $('#ebilling_company_name').val(data.nombre_o_razon_social);
-                    $('#ebilling_company_address').val(data.direccion_completa);
-                    $('#ebilling_company_ubigeo').val(data.ubigeo);
+                    $('#factpro_company_name').val(data.nombre_o_razon_social);
+                    $('#factpro_company_address').val(data.direccion_completa);
+                    $('#factpro_company_ubigeo').val(data.ubigeo);
                 });
                 break;
         }
@@ -44,7 +44,7 @@ jQuery(function($) {
     const findBy = function (documentType, documentNumber, cb) {
         $('#find_apiperu').prop('disabled', true);
 
-        $.get(`${ebillingSettings.root}/${documentType}/${documentNumber}`, cb).always(function () {
+        $.get(`${factproSettings.root}/${documentType}/${documentNumber}`, cb).always(function () {
             $('#find_apiperu').prop('disabled', false);
         });
     }

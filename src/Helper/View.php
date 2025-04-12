@@ -1,6 +1,6 @@
 <?php
 
-namespace EBilling\Helper;
+namespace Factpro\Helper;
 
 final class View
 {
@@ -8,7 +8,7 @@ final class View
 
     public function __construct($baseDir)
     {
-        $this->baseDir = $baseDir;        
+        $this->baseDir = $baseDir;
     }
 
     public static function make($baseDir)

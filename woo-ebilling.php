@@ -1,24 +1,24 @@
 <?php
 
 /**
-* Plugin Name: Factpro.pe
-* Description: Factpro.pe para facturación electrónica en el Perú
-* Version: 3.0.0
-* Author: Factpro.pe
-* Requires at least: 5.0
-* Requires PHP: 7.4
-* Text Domain: woo-ebilling
-* Domain Path: /languages/
-* License: MIT
-*/
+ * Plugin Name: Factpro.pe
+ * Description: Factpro.pe para facturación electrónica en el Perú
+ * Version: 3.0.0
+ * Author: Factpro.pe
+ * Requires at least: 5.0
+ * Requires PHP: 7.4
+ * Text Domain: woo-factpro
+ * Domain Path: /languages/
+ * License: MIT
+ */
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
-use EBilling\WP\AdminHooks;
-use EBilling\WP\RestApiHooks;
-use EBilling\WP\WoocommerceAdminHooks;
-use EBilling\WP\WoocommerceEmailHooks;
-use EBilling\WP\WoocommerceHooks;
+use Factpro\WP\AdminHooks;
+use Factpro\WP\RestApiHooks;
+use Factpro\WP\WoocommerceAdminHooks;
+use Factpro\WP\WoocommerceEmailHooks;
+use Factpro\WP\WoocommerceHooks;
 
 define('EBILLING_VIEW_DIR', __DIR__ . '/views');
 define('EBILLING_PLUGIN_FILE', __FILE__);

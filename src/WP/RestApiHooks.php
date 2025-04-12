@@ -1,16 +1,16 @@
 <?php
 
-namespace EBilling\WP;
+namespace Factpro\WP;
 
-use EBilling\Action\GetDniAction;
-use EBilling\Action\GetRucAction;
+use Factpro\Action\GetDniAction;
+use Factpro\Action\GetRucAction;
 
 final class RestApiHooks
 {
     public static function init()
     {
         add_action('rest_api_init', function () {
-            register_rest_route('woo-ebilling/v1', '/dni/(?P<dni>\d+)', [
+            register_rest_route('woo-factpro/v1', '/dni/(?P<dni>\d+)', [
                 'methods'  => 'GET',
                 'callback' => new GetDniAction(),
                 'permission_callback' => '__return_true',
@@ -20,8 +20,8 @@ final class RestApiHooks
                     }],
                 ],
             ]);
-        
-            register_rest_route('woo-ebilling/v1', '/ruc/(?P<ruc>\d+)', [
+
+            register_rest_route('woo-factpro/v1', '/ruc/(?P<ruc>\d+)', [
                 'methods'  => 'GET',
                 'callback' => new GetRucAction(),
                 'permission_callback' => '__return_true',

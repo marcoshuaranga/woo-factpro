@@ -1,6 +1,6 @@
 <?php
 
-namespace EBilling\Domain;
+namespace Factpro\Domain;
 
 final class InvoiceItem
 {
@@ -56,8 +56,8 @@ final class InvoiceItem
 
         return new self(
             $item->get_id(),
-            $item->get_product()->get_sku(), 
-            $item->get_name(), 
+            $item->get_product()->get_sku(),
+            $item->get_name(),
             $item->get_quantity(),
             'NIU',
             round($unitValue, 2),

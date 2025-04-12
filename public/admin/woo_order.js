@@ -2,19 +2,19 @@ jQuery(function ($) {
     const DNI = '1';
     const RUC = '6';
 
-    $('.ebilling_company_name_field').fadeOut();
-    $('.ebilling_company_address_field').fadeOut();
-    $('.ebilling_company_ubigeo_field').fadeOut();
+    $('.factpro_company_name_field').fadeOut();
+    $('.factpro_company_address_field').fadeOut();
+    $('.factpro_company_ubigeo_field').fadeOut();
 
-    if ($('#ebilling_customer_document_type').val() === RUC) {
-        $('.ebilling_company_name_field').fadeIn();
-        $('.ebilling_company_address_field').fadeIn();
-        $('.ebilling_company_ubigeo_field').fadeIn();
+    if ($('#factpro_customer_document_type').val() === RUC) {
+        $('.factpro_company_name_field').fadeIn();
+        $('.factpro_company_address_field').fadeIn();
+        $('.factpro_company_ubigeo_field').fadeIn();
     }
 
-    $('#ebilling_customer_document_number').change(function(){
-        var documentType = $('#ebilling_customer_document_type').val();
-        var documentNumber = $('#ebilling_customer_document_number').val();
+    $('#factpro_customer_document_number').change(function(){
+        var documentType = $('#factpro_customer_document_type').val();
+        var documentNumber = $('#factpro_customer_document_number').val();
 
         switch (documentType) {
             case DNI:
@@ -25,9 +25,9 @@ jQuery(function ($) {
                 break;
             case RUC:
                 documentNumber.length === 11 && findBy('ruc', documentNumber, function (data) {
-                    $('#ebilling_company_name').val(data.nombre_o_razon_social);
-                    $('#ebilling_company_address').val(data.direccion_completa);
-                    $('#ebilling_company_ubigeo').val(data.ubigeo);
+                    $('#factpro_company_name').val(data.nombre_o_razon_social);
+                    $('#factpro_company_address').val(data.direccion_completa);
+                    $('#factpro_company_ubigeo').val(data.ubigeo);
                 });
                 break;
             default:
@@ -35,21 +35,21 @@ jQuery(function ($) {
         }
     });
 
-    $('#ebilling_customer_document_type').change(function(){
+    $('#factpro_customer_document_type').change(function(){
         switch (this.value) {
             case RUC:
-                $('.ebilling_company_name_field').fadeIn();
-                $('.ebilling_company_address_field').fadeIn();
-                $('.ebilling_company_ubigeo_field').fadeIn();
+                $('.factpro_company_name_field').fadeIn();
+                $('.factpro_company_address_field').fadeIn();
+                $('.factpro_company_ubigeo_field').fadeIn();
                 break;
             default:
-                $('.ebilling_company_name_field').fadeOut();
-                $('.ebilling_company_address_field').fadeOut();
-                $('.ebilling_company_ubigeo_field').fadeOut();
+                $('.factpro_company_name_field').fadeOut();
+                $('.factpro_company_address_field').fadeOut();
+                $('.factpro_company_ubigeo_field').fadeOut();
         }
     });
 
     const findBy = function (documentType, documentNumber, cb) {
-        $.get(`${ebillingSettings.root}/${documentType}/${documentNumber}`, cb);
+        $.get(`${factproSettings.root}/${documentType}/${documentNumber}`, cb);
     }
 });

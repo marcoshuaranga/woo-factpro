@@ -1,8 +1,9 @@
 <?php
 
-namespace EBilling\Sunat\Response;
+namespace Factpro\Sunat\Response;
 
-final class RucResponse {
+final class RucResponse
+{
     private $companyName;
 
     private $companyAddress;

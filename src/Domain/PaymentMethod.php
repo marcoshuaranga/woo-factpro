@@ -1,6 +1,6 @@
 <?php
 
-namespace EBilling\Domain;
+namespace Factpro\Domain;
 
 final class PaymentMethod
 {

@@ -1,18 +1,19 @@
 <?php
+
 /**
  * Checkout billing information form
  * @global WC_Checkout $checkout
  */
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 ?>
 <style>
-   #ebilling_invoice_type_field label.radio {
-      display: inline!important;
+   #factpro_invoice_type_field label.radio {
+      display: inline !important;
       margin-left: 5px;
    }
 
-   #ebilling_invoice_type_field input[type="radio"] {
+   #factpro_invoice_type_field input[type="radio"] {
       margin-left: 15px;
    }
 </style>
@@ -29,57 +30,57 @@ defined( 'ABSPATH' ) || exit;
       <h3>Detalles de Comprobante</h3>
    <?php endif; ?>
 
-	<div class="invoice_address" style="display: <?=$invoice_is_mandatory ? 'block' : 'none' ?>;">
+   <div class="invoice_address" style="display: <?= $invoice_is_mandatory ? 'block' : 'none' ?>;">
 
-		<div class="woocommerce-invoice-address-fields__field-wrapper">
-		<?php
-         woocommerce_form_field('ebilling_invoice_type', [
-           'label' => '',
-           'type' => 'radio',
-           'options' => $invoices_types,
-         ], $checkout->get_value('ebilling_invoice_type'));
-      ?>
-
-      <div id="ebilling_customer_document_type_wrapper" style="display: none;">
+      <div class="woocommerce-invoice-address-fields__field-wrapper">
          <?php
-            woocommerce_form_field('ebilling_customer_document_type', [
-               'label' => __('Tipo de Documento', 'woo-ebilling'),
+         woocommerce_form_field('factpro_invoice_type', [
+            'label' => '',
+            'type' => 'radio',
+            'options' => $invoices_types,
+         ], $checkout->get_value('factpro_invoice_type'));
+         ?>
+
+         <div id="factpro_customer_document_type_wrapper" style="display: none;">
+            <?php
+            woocommerce_form_field('factpro_customer_document_type', [
+               'label' => __('Tipo de Documento', 'woo-factpro'),
                'type' => 'select',
                'required' => true,
                'options' => $identity_documents,
-            ], $checkout->get_value('ebilling_customer_document_type'));
-         ?>
-      </div>
-      <?php
-         woocommerce_form_field('ebilling_customer_document_number', [
-           'label' => __('Número de Documento', 'woo-ebilling'),
-           'type' => 'text',
-           'required' => true,
-         ], $checkout->get_value('ebilling_customer_document_number'));
-      ?>
-      <p class="form-row">
-         <button type="button" id="find_apiperu">Buscar</button>
-      </p>
-      <div id="factura-fields" style="display: none;">
+            ], $checkout->get_value('factpro_customer_document_type'));
+            ?>
+         </div>
          <?php
-            woocommerce_form_field('ebilling_company_name', [
-               'label' => __('Nombre razón social', 'woo-ebilling'),
+         woocommerce_form_field('factpro_customer_document_number', [
+            'label' => __('Número de Documento', 'woo-factpro'),
+            'type' => 'text',
+            'required' => true,
+         ], $checkout->get_value('factpro_customer_document_number'));
+         ?>
+         <p class="form-row">
+            <button type="button" id="find_apiperu">Buscar</button>
+         </p>
+         <div id="factura-fields" style="display: none;">
+            <?php
+            woocommerce_form_field('factpro_company_name', [
+               'label' => __('Nombre razón social', 'woo-factpro'),
                'type' => 'text',
                'required' => true,
-            ], $checkout->get_value('ebilling_company_name'));
+            ], $checkout->get_value('factpro_company_name'));
 
-            woocommerce_form_field('ebilling_company_address', [
-               'label' => __('Domicilio Fiscal', 'woo-ebilling'),
+            woocommerce_form_field('factpro_company_address', [
+               'label' => __('Domicilio Fiscal', 'woo-factpro'),
                'type' => 'text',
                'required' => true,
-            ], $checkout->get_value('ebilling_company_address'));
+            ], $checkout->get_value('factpro_company_address'));
 
-            woocommerce_form_field('ebilling_company_ubigeo', [
+            woocommerce_form_field('factpro_company_ubigeo', [
                'type' => 'hidden',
                'required' => true,
-            ], $checkout->get_value('ebilling_company_ubigeo'));
-         ?>
+            ], $checkout->get_value('factpro_company_ubigeo'));
+            ?>
+         </div>
       </div>
-		</div>
-	</div>
+   </div>
 </div>

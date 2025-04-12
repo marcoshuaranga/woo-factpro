@@ -1,6 +1,6 @@
 <?php
 
-namespace EBilling\Domain;
+namespace Factpro\Domain;
 
 final class InvoiceItems
 {
@@ -24,7 +24,8 @@ final class InvoiceItems
      * @param \WC_Order_Item_Coupon[] $coupons
      * @param bool $includeTax
      */
-    public function __construct(array $items, array $coupons, $includeTax) {
+    public function __construct(array $items, array $coupons, $includeTax)
+    {
         foreach ($items as $item) {
             if ($item->get_total() <= 0) {
                 continue;

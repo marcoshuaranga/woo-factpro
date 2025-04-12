@@ -7,14 +7,14 @@ namespace Composer\Autoload;
 class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
 {
     public static $prefixLengthsPsr4 = array (
-        'E' => 
+        'F' => 
         array (
-            'EBilling\\' => 9,
+            'Factpro\\' => 8,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'EBilling\\' => 
+        'Factpro\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
@@ -22,36 +22,36 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'EBilling\\Action\\GetDniAction' => __DIR__ . '/../..' . '/src/Action/GetDniAction.php',
-        'EBilling\\Action\\GetRucAction' => __DIR__ . '/../..' . '/src/Action/GetRucAction.php',
-        'EBilling\\Domain\\Customer' => __DIR__ . '/../..' . '/src/Domain/Customer.php',
-        'EBilling\\Domain\\Discount' => __DIR__ . '/../..' . '/src/Domain/Discount.php',
-        'EBilling\\Domain\\Invoice' => __DIR__ . '/../..' . '/src/Domain/Invoice.php',
-        'EBilling\\Domain\\InvoiceItem' => __DIR__ . '/../..' . '/src/Domain/InvoiceItem.php',
-        'EBilling\\Domain\\InvoiceItems' => __DIR__ . '/../..' . '/src/Domain/InvoiceItems.php',
-        'EBilling\\Domain\\PaymentMethod' => __DIR__ . '/../..' . '/src/Domain/PaymentMethod.php',
-        'EBilling\\Helper\\View' => __DIR__ . '/../..' . '/src/Helper/View.php',
-        'EBilling\\InvoiceDownloader' => __DIR__ . '/../..' . '/src/InvoiceDownloader.php',
-        'EBilling\\InvoiceFormatter' => __DIR__ . '/../..' . '/src/InvoiceFormatter.php',
-        'EBilling\\InvoiceFormatter\\FactProFormatter' => __DIR__ . '/../..' . '/src/InvoiceFormatter/FactProFormatter.php',
-        'EBilling\\InvoiceFormatter\\OldPseFormatter' => __DIR__ . '/../..' . '/src/InvoiceFormatter/OldPseFormatter.php',
-        'EBilling\\InvoiceGenerator' => __DIR__ . '/../..' . '/src/InvoiceGenerator.php',
-        'EBilling\\InvoiceSender' => __DIR__ . '/../..' . '/src/InvoiceSender.php',
-        'EBilling\\SunatCode\\IdentityDocument' => __DIR__ . '/../..' . '/src/SunatCode/IdentityDocument.php',
-        'EBilling\\SunatCode\\InvoiceType' => __DIR__ . '/../..' . '/src/SunatCode/InvoiceType.php',
-        'EBilling\\Sunat\\Client\\MigoApiClient' => __DIR__ . '/../..' . '/src/Sunat/Client/MigoApiClient.php',
-        'EBilling\\Sunat\\Client\\PeruDevApiClient' => __DIR__ . '/../..' . '/src/Sunat/Client/PeruDevApiClient.php',
-        'EBilling\\Sunat\\Response\\DniResponse' => __DIR__ . '/../..' . '/src/Sunat/Response/DniResponse.php',
-        'EBilling\\Sunat\\Response\\RucResponse' => __DIR__ . '/../..' . '/src/Sunat/Response/RucResponse.php',
-        'EBilling\\Sunat\\SunatClient' => __DIR__ . '/../..' . '/src/Sunat/SunatClient.php',
-        'EBilling\\Sunat\\SunatClientFactory' => __DIR__ . '/../..' . '/src/Sunat/SunatClientFactory.php',
-        'EBilling\\WP\\AdminHooks' => __DIR__ . '/../..' . '/src/WP/AdminHooks.php',
-        'EBilling\\WP\\AdminPanel\\OrderTable' => __DIR__ . '/../..' . '/src/WP/AdminPanel/OrderTable.php',
-        'EBilling\\WP\\AdminPanel\\WCSettingsTab' => __DIR__ . '/../..' . '/src/WP/AdminPanel/WCSettingsTab.php',
-        'EBilling\\WP\\RestApiHooks' => __DIR__ . '/../..' . '/src/WP/RestApiHooks.php',
-        'EBilling\\WP\\WoocommerceAdminHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceAdminHooks.php',
-        'EBilling\\WP\\WoocommerceEmailHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceEmailHooks.php',
-        'EBilling\\WP\\WoocommerceHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceHooks.php',
+        'Factpro\\Action\\GetDniAction' => __DIR__ . '/../..' . '/src/Action/GetDniAction.php',
+        'Factpro\\Action\\GetRucAction' => __DIR__ . '/../..' . '/src/Action/GetRucAction.php',
+        'Factpro\\Domain\\Customer' => __DIR__ . '/../..' . '/src/Domain/Customer.php',
+        'Factpro\\Domain\\Discount' => __DIR__ . '/../..' . '/src/Domain/Discount.php',
+        'Factpro\\Domain\\Invoice' => __DIR__ . '/../..' . '/src/Domain/Invoice.php',
+        'Factpro\\Domain\\InvoiceItem' => __DIR__ . '/../..' . '/src/Domain/InvoiceItem.php',
+        'Factpro\\Domain\\InvoiceItems' => __DIR__ . '/../..' . '/src/Domain/InvoiceItems.php',
+        'Factpro\\Domain\\PaymentMethod' => __DIR__ . '/../..' . '/src/Domain/PaymentMethod.php',
+        'Factpro\\Helper\\View' => __DIR__ . '/../..' . '/src/Helper/View.php',
+        'Factpro\\InvoiceDownloader' => __DIR__ . '/../..' . '/src/InvoiceDownloader.php',
+        'Factpro\\InvoiceFormatter' => __DIR__ . '/../..' . '/src/InvoiceFormatter.php',
+        'Factpro\\InvoiceFormatter\\FactProFormatter' => __DIR__ . '/../..' . '/src/InvoiceFormatter/FactProFormatter.php',
+        'Factpro\\InvoiceFormatter\\OldPseFormatter' => __DIR__ . '/../..' . '/src/InvoiceFormatter/OldPseFormatter.php',
+        'Factpro\\InvoiceGenerator' => __DIR__ . '/../..' . '/src/InvoiceGenerator.php',
+        'Factpro\\InvoiceSender' => __DIR__ . '/../..' . '/src/InvoiceSender.php',
+        'Factpro\\SunatCode\\IdentityDocument' => __DIR__ . '/../..' . '/src/SunatCode/IdentityDocument.php',
+        'Factpro\\SunatCode\\InvoiceType' => __DIR__ . '/../..' . '/src/SunatCode/InvoiceType.php',
+        'Factpro\\Sunat\\Client\\MigoApiClient' => __DIR__ . '/../..' . '/src/Sunat/Client/MigoApiClient.php',
+        'Factpro\\Sunat\\Client\\PeruDevApiClient' => __DIR__ . '/../..' . '/src/Sunat/Client/PeruDevApiClient.php',
+        'Factpro\\Sunat\\Response\\DniResponse' => __DIR__ . '/../..' . '/src/Sunat/Response/DniResponse.php',
+        'Factpro\\Sunat\\Response\\RucResponse' => __DIR__ . '/../..' . '/src/Sunat/Response/RucResponse.php',
+        'Factpro\\Sunat\\SunatClient' => __DIR__ . '/../..' . '/src/Sunat/SunatClient.php',
+        'Factpro\\Sunat\\SunatClientFactory' => __DIR__ . '/../..' . '/src/Sunat/SunatClientFactory.php',
+        'Factpro\\WP\\AdminHooks' => __DIR__ . '/../..' . '/src/WP/AdminHooks.php',
+        'Factpro\\WP\\AdminPanel\\OrderTable' => __DIR__ . '/../..' . '/src/WP/AdminPanel/OrderTable.php',
+        'Factpro\\WP\\AdminPanel\\WCSettingsTab' => __DIR__ . '/../..' . '/src/WP/AdminPanel/WCSettingsTab.php',
+        'Factpro\\WP\\RestApiHooks' => __DIR__ . '/../..' . '/src/WP/RestApiHooks.php',
+        'Factpro\\WP\\WoocommerceAdminHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceAdminHooks.php',
+        'Factpro\\WP\\WoocommerceEmailHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceEmailHooks.php',
+        'Factpro\\WP\\WoocommerceHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceHooks.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -1,10 +1,10 @@
 <?php
 
-namespace EBilling\InvoiceFormatter;
+namespace Factpro\InvoiceFormatter;
 
-use EBilling\Domain\Discount;
-use EBilling\Domain\Invoice;
-use EBilling\Domain\InvoiceItem;
+use Factpro\Domain\Discount;
+use Factpro\Domain\Invoice;
+use Factpro\Domain\InvoiceItem;
 
 final class FactProFormatter
 {
@@ -18,7 +18,7 @@ final class FactProFormatter
     public function toArray()
     {
         $invoiceItems = $this->invoice->getInvoiceItems();
-        
+
         return [
             'serie_documento' => $this->invoice->getSerie(),
             'numero_documento' => $this->invoice->getNumber(),
@@ -44,7 +44,7 @@ final class FactProFormatter
                 'telefono' => $this->invoice->getCustomer()->getPhoneNumber(),
             ],
             'items' => $this->formatItems($this->invoice->getInvoiceItems()->getItems()),
-            'totales' =>[
+            'totales' => [
                 'total_exportacion' => round(0, 2),
                 'total_descuentos' => 0,
                 'total_operaciones_gravadas' => round($invoiceItems->getSunatTotalGravado(), 2),
@@ -94,7 +94,7 @@ final class FactProFormatter
 
     private function formatDiscounts(array $discounts)
     {
-        return array_map(function (Discount $item) { 
+        return array_map(function (Discount $item) {
             return [
                 'codigo' => $item->getCode(),
                 'descripcion' => $item->getCode(),

@@ -1,8 +1,8 @@
 <?php
 
-namespace EBilling\Domain;
+namespace Factpro\Domain;
 
-use EBilling\SunatCode\InvoiceType;
+use Factpro\SunatCode\InvoiceType;
 
 final class Invoice
 {
@@ -47,15 +47,15 @@ final class Invoice
 
     public static function createFromWooOrder($serie, $number, \WC_Order $order, $includeTax)
     {
-        $invoiceType = $order->get_meta('_ebilling_invoice_type');
+        $invoiceType = $order->get_meta('_factpro_invoice_type');
         $nameOrCompany = "{$order->get_billing_first_name()} {$order->get_billing_last_name()}";
         $address = $order->get_billing_address_1();
         $ubigeo = null;
 
         if (InvoiceType::is_factura($invoiceType)) {
-            $nameOrCompany = $order->get_meta('_ebilling_company_name');
-            $address = $order->get_meta('_ebilling_company_address');
-            $ubigeo = $order->get_meta('_ebilling_company_ubigeo');
+            $nameOrCompany = $order->get_meta('_factpro_company_name');
+            $address = $order->get_meta('_factpro_company_address');
+            $ubigeo = $order->get_meta('_factpro_company_ubigeo');
         }
 
         $paymentMethod = new PaymentMethod(
@@ -64,8 +64,8 @@ final class Invoice
         );
 
         $customer = new Customer(
-            $order->get_meta('_ebilling_customer_document_type'),
-            $order->get_meta('_ebilling_customer_document_number'),
+            $order->get_meta('_factpro_customer_document_type'),
+            $order->get_meta('_factpro_customer_document_number'),
             $nameOrCompany,
             $address,
             $order->get_billing_email(),
@@ -81,8 +81,8 @@ final class Invoice
             $paymentMethod,
             $customer,
             new InvoiceItems(
-                $order->get_items(['line_item', 'shipping', 'fee']), 
-                $order->get_coupons(), 
+                $order->get_items(['line_item', 'shipping', 'fee']),
+                $order->get_coupons(),
                 $order->get_prices_include_tax()
             )
         );

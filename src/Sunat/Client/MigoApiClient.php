@@ -1,10 +1,10 @@
 <?php
 
-namespace EBilling\Sunat\Client;
+namespace Factpro\Sunat\Client;
 
-use EBilling\Sunat\Response\DniResponse;
-use EBilling\Sunat\Response\RucResponse;
-use EBilling\Sunat\SunatClient;
+use Factpro\Sunat\Response\DniResponse;
+use Factpro\Sunat\Response\RucResponse;
+use Factpro\Sunat\SunatClient;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use GuzzleHttp\Exception\RequestException;
 
@@ -25,7 +25,7 @@ final class MigoApiClient implements SunatClient
 
     public function findPersonByDni($dni)
     {
-        $token = get_option('wc_settings_ebilling_client_token');
+        $token = get_option('wc_settings_factpro_client_token');
         $url = 'https://api.migo.pe/api/v1/dni';
 
         $response = wp_remote_post($url, [
@@ -63,7 +63,7 @@ final class MigoApiClient implements SunatClient
 
     public function findCompanyByRuc($ruc)
     {
-        $token = get_option('wc_settings_ebilling_client_token');
+        $token = get_option('wc_settings_factpro_client_token');
         $url = 'https://api.migo.pe/api/v1/ruc';
 
         $response = wp_remote_post($url, [

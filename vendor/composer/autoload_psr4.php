@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'EBilling\\' => array($baseDir . '/src'),
+    'Factpro\\' => array($baseDir . '/src'),
 );

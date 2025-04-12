@@ -1,6 +1,6 @@
 <?php
 
-namespace EBilling\Domain;
+namespace Factpro\Domain;
 
 final class Discount
 {
@@ -28,7 +28,7 @@ final class Discount
         $totalTax = $coupon->get_discount_tax();
 
         if ($totalTax <= 0) {
-            $subtotal = round($coupon->get_discount()/1.18, 2);
+            $subtotal = round($coupon->get_discount() / 1.18, 2);
             $totalTax = round($coupon->get_discount() - $subtotal, 2);
         }
 

@@ -1,11 +1,12 @@
 <?php
 
-namespace EBilling\Sunat;
+namespace Factpro\Sunat;
 
-use EBilling\Sunat\Response\DniResponse;
-use EBilling\Sunat\Response\RucResponse;
+use Factpro\Sunat\Response\DniResponse;
+use Factpro\Sunat\Response\RucResponse;
 
-interface SunatClient {
+interface SunatClient
+{
     /**
      * @return DniResponse|\WP_Error
      */

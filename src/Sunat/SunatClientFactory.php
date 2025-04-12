@@ -1,9 +1,9 @@
 <?php
 
-namespace EBilling\Sunat;
+namespace Factpro\Sunat;
 
-use EBilling\Sunat\Client\MigoApiClient;
-use EBilling\Sunat\Client\PeruDevApiClient;
+use Factpro\Sunat\Client\MigoApiClient;
+use Factpro\Sunat\Client\PeruDevApiClient;
 
 final class SunatClientFactory
 {

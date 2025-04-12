@@ -1,8 +1,8 @@
 <?php
 
-namespace EBilling\WP;
+namespace Factpro\WP;
 
-use EBilling\Helper\View;
+use Factpro\Helper\View;
 
 final class WoocommerceEmailHooks
 {
@@ -24,14 +24,14 @@ final class WoocommerceEmailHooks
              * This is because when the order is completed, the ticket or invoice is not yet generated.
              * So there is no link in the database.
              */
-            $ebilling_invoice_pdf_url = add_query_arg([
-                'action' => 'ebilling_download_invoice',
+            $factpro_invoice_pdf_url = add_query_arg([
+                'action' => 'factpro_download_invoice',
                 'order' => $order->get_id(),
                 'key' => $order->get_order_key(),
             ], admin_url('admin-post.php'));
 
-            print View::make(EBILLING_VIEW_DIR)->render('emails/email-ebilling-pdf-url', [
-                'ebilling_invoice_pdf_url' =>  $ebilling_invoice_pdf_url,
+            print View::make(EBILLING_VIEW_DIR)->render('emails/email-factpro-pdf-url', [
+                'factpro_invoice_pdf_url' =>  $factpro_invoice_pdf_url,
             ]);
         }, 10, 4);
     }

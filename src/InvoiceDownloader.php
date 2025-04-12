@@ -1,6 +1,6 @@
 <?php
 
-namespace EBilling;
+namespace Factpro;
 
 final class InvoiceDownloader
 {
@@ -18,11 +18,11 @@ final class InvoiceDownloader
             wp_die('No tiene permisos para descargar el comprobante.');
         }
 
-        if (! $order->get_meta('_ebilling_invoice_pdf_url')) {
+        if (! $order->get_meta('_factpro_invoice_pdf_url')) {
             wp_die('No hay ningún comprobante asociado al pedido.');
         }
 
-        wp_redirect($order->get_meta('_ebilling_invoice_pdf_url'));
+        wp_redirect($order->get_meta('_factpro_invoice_pdf_url'));
 
         exit();
     }

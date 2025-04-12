@@ -1,10 +1,10 @@
 <?php
 
-namespace EBilling\InvoiceFormatter;
+namespace Factpro\InvoiceFormatter;
 
-use EBilling\Domain\Invoice;
-use EBilling\Domain\InvoiceItem;
-use EBilling\Domain\InvoiceItems;
+use Factpro\Domain\Invoice;
+use Factpro\Domain\InvoiceItem;
+use Factpro\Domain\InvoiceItems;
 
 final class OldPseFormatter
 {
@@ -96,7 +96,7 @@ final class OldPseFormatter
         return count($items->getDiscounts()) ? [
             'codigo' => '02',
             'descripcion' => 'Descuento Global',
-            'porcentaje' => round($items->getSunatTotalDiscount()/$total, 2),
+            'porcentaje' => round($items->getSunatTotalDiscount() / $total, 2),
             'monto' => round($items->getSunatTotalDiscount(), 2),
             'base' => round($items->getSunatTotalGravado(), 2),
         ] : [];

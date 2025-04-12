@@ -6,11 +6,11 @@
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'reference' => null,
-        'name' => 'dimacros/woo-ebilling',
+        'name' => 'dimacros/woo-factpro',
         'dev' => true,
     ),
     'versions' => array(
-        'dimacros/woo-ebilling' => array(
+        'dimacros/woo-factpro' => array(
             'pretty_version' => '1.0.0+no-version-set',
             'version' => '1.0.0.0',
             'type' => 'wp-plugin',

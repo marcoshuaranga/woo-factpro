@@ -1,14 +1,15 @@
 <?php
 
-namespace EBilling\WP\AdminPanel;
+namespace Factpro\WP\AdminPanel;
 
-use EBilling\Helper\View;
+use Factpro\Helper\View;
 
 final class OrderTable
 {
-    public static function addColumn($columns) {
+    public static function addColumn($columns)
+    {
         $columns['download_pdf_or_xml'] = __('Comprobante', 'woocommerce');
-        
+
         return $columns;
     }
 
@@ -21,18 +22,18 @@ final class OrderTable
         $actions = [];
         $order = wc_get_order($order_id);
 
-        if ($order->get_meta('_ebilling_invoice_pdf_url')) {
+        if ($order->get_meta('_factpro_invoice_pdf_url')) {
             $actions[] = [
-                'url'  => $order->get_meta('_ebilling_invoice_pdf_url'),
-                'name' => __('PDF', 'woo-ebilling'),
+                'url'  => $order->get_meta('_factpro_invoice_pdf_url'),
+                'name' => __('PDF', 'woo-factpro'),
                 'action' => 'pdf',
             ];
         }
 
-        if ($order->get_meta('_ebilling_invoice_xml_url')) {
+        if ($order->get_meta('_factpro_invoice_xml_url')) {
             $actions[] = [
-                'url'  => $order->get_meta('_ebilling_invoice_xml_url'),
-                'name' => __('XML', 'woo-ebilling'),
+                'url'  => $order->get_meta('_factpro_invoice_xml_url'),
+                'name' => __('XML', 'woo-factpro'),
                 'action' => 'xml',
             ];
         }
