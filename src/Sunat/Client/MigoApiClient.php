@@ -5,24 +5,9 @@ namespace Factpro\Sunat\Client;
 use Factpro\Sunat\Response\DniResponse;
 use Factpro\Sunat\Response\RucResponse;
 use Factpro\Sunat\SunatClient;
-use GuzzleHttp\Client as GuzzleHttpClient;
-use GuzzleHttp\Exception\RequestException;
 
 final class MigoApiClient implements SunatClient
 {
-    private $http;
-
-    public function __construct()
-    {
-        $this->http = new GuzzleHttpClient([
-            'base_uri' => 'https://api.migo.pe/api/v1/',
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ],
-        ]);
-    }
-
     public function findPersonByDni($dni)
     {
         $token = get_option('wc_settings_factpro_client_token');

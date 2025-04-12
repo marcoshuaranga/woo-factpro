@@ -83,6 +83,7 @@ final class WCSettingsTab
                 'name' => __('Cliente API', 'woo-factpro'),
                 'type' => 'select',
                 'options' => [
+                    'factpro' => 'Factpro API (https://docs.factpro.la/api-consulta-ruc-y-dni)',
                     'migo' => 'API MIGO (https://api.migo.pe)',
                     'perudev' => 'API PERU DEV (https://apiperu.dev)',
                 ],

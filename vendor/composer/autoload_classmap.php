@@ -24,6 +24,7 @@ return array(
     'Factpro\\InvoiceSender' => $baseDir . '/src/InvoiceSender.php',
     'Factpro\\SunatCode\\IdentityDocument' => $baseDir . '/src/SunatCode/IdentityDocument.php',
     'Factpro\\SunatCode\\InvoiceType' => $baseDir . '/src/SunatCode/InvoiceType.php',
+    'Factpro\\Sunat\\Client\\FactproClient' => $baseDir . '/src/Sunat/Client/FactproClient.php',
     'Factpro\\Sunat\\Client\\MigoApiClient' => $baseDir . '/src/Sunat/Client/MigoApiClient.php',
     'Factpro\\Sunat\\Client\\PeruDevApiClient' => $baseDir . '/src/Sunat/Client/PeruDevApiClient.php',
     'Factpro\\Sunat\\Response\\DniResponse' => $baseDir . '/src/Sunat/Response/DniResponse.php',

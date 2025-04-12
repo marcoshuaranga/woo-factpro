@@ -2,12 +2,14 @@
 
 namespace Factpro\Sunat;
 
+use Factpro\Sunat\Client\FactproClient;
 use Factpro\Sunat\Client\MigoApiClient;
 use Factpro\Sunat\Client\PeruDevApiClient;
 
 final class SunatClientFactory
 {
     static $clientTypes = [
+        'factpro' => FactproClient::class,
         'migo' => MigoApiClient::class,
         'perudev' => PeruDevApiClient::class,
     ];

@@ -10,10 +10,10 @@ interface SunatClient
     /**
      * @return DniResponse|\WP_Error
      */
-    public function findPersonByDni($dni);
+    public function findPersonByDni(string $dni);
 
     /**
      * @return RucResponse|\WP_Error
      */
-    public function findCompanyByRuc($ruc);
+    public function findCompanyByRuc(string $ruc);
 }

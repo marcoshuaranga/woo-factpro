@@ -39,6 +39,7 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
         'Factpro\\InvoiceSender' => __DIR__ . '/../..' . '/src/InvoiceSender.php',
         'Factpro\\SunatCode\\IdentityDocument' => __DIR__ . '/../..' . '/src/SunatCode/IdentityDocument.php',
         'Factpro\\SunatCode\\InvoiceType' => __DIR__ . '/../..' . '/src/SunatCode/InvoiceType.php',
+        'Factpro\\Sunat\\Client\\FactproClient' => __DIR__ . '/../..' . '/src/Sunat/Client/FactproClient.php',
         'Factpro\\Sunat\\Client\\MigoApiClient' => __DIR__ . '/../..' . '/src/Sunat/Client/MigoApiClient.php',
         'Factpro\\Sunat\\Client\\PeruDevApiClient' => __DIR__ . '/../..' . '/src/Sunat/Client/PeruDevApiClient.php',
         'Factpro\\Sunat\\Response\\DniResponse' => __DIR__ . '/../..' . '/src/Sunat/Response/DniResponse.php',
