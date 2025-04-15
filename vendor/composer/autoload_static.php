@@ -6,7 +6,36 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
 {
+    public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
+        'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
+        '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
+        'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
+        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Php80\\' => 23,
+            'Symfony\\Polyfill\\Php73\\' => 23,
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
+            'Symfony\\Polyfill\\Intl\\Grapheme\\' => 31,
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Contracts\\Service\\' => 26,
+            'Symfony\\Component\\VarDumper\\' => 28,
+            'Symfony\\Component\\String\\' => 25,
+            'Symfony\\Component\\Console\\' => 26,
+        ),
+        'P' => 
+        array (
+            'Psr\\Container\\' => 14,
+        ),
         'F' => 
         array (
             'Factpro\\' => 8,
@@ -14,6 +43,50 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
     );
 
     public static $prefixDirsPsr4 = array (
+        'Symfony\\Polyfill\\Php80\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+        ),
+        'Symfony\\Polyfill\\Php73\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php73',
+        ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Polyfill\\Intl\\Normalizer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer',
+        ),
+        'Symfony\\Polyfill\\Intl\\Grapheme\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme',
+        ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Symfony\\Contracts\\Service\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/service-contracts',
+        ),
+        'Symfony\\Component\\VarDumper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/var-dumper',
+        ),
+        'Symfony\\Component\\String\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/string',
+        ),
+        'Symfony\\Component\\Console\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
         'Factpro\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
@@ -21,38 +94,14 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
     );
 
     public static $classMap = array (
+        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Factpro\\Action\\GetDniAction' => __DIR__ . '/../..' . '/src/Action/GetDniAction.php',
-        'Factpro\\Action\\GetRucAction' => __DIR__ . '/../..' . '/src/Action/GetRucAction.php',
-        'Factpro\\Domain\\Customer' => __DIR__ . '/../..' . '/src/Domain/Customer.php',
-        'Factpro\\Domain\\Discount' => __DIR__ . '/../..' . '/src/Domain/Discount.php',
-        'Factpro\\Domain\\Invoice' => __DIR__ . '/../..' . '/src/Domain/Invoice.php',
-        'Factpro\\Domain\\InvoiceItem' => __DIR__ . '/../..' . '/src/Domain/InvoiceItem.php',
-        'Factpro\\Domain\\InvoiceItems' => __DIR__ . '/../..' . '/src/Domain/InvoiceItems.php',
-        'Factpro\\Domain\\PaymentMethod' => __DIR__ . '/../..' . '/src/Domain/PaymentMethod.php',
-        'Factpro\\Helper\\View' => __DIR__ . '/../..' . '/src/Helper/View.php',
-        'Factpro\\InvoiceDownloader' => __DIR__ . '/../..' . '/src/InvoiceDownloader.php',
-        'Factpro\\InvoiceFormatter' => __DIR__ . '/../..' . '/src/InvoiceFormatter.php',
-        'Factpro\\InvoiceFormatter\\FactProFormatter' => __DIR__ . '/../..' . '/src/InvoiceFormatter/FactProFormatter.php',
-        'Factpro\\InvoiceFormatter\\OldPseFormatter' => __DIR__ . '/../..' . '/src/InvoiceFormatter/OldPseFormatter.php',
-        'Factpro\\InvoiceGenerator' => __DIR__ . '/../..' . '/src/InvoiceGenerator.php',
-        'Factpro\\InvoiceSender' => __DIR__ . '/../..' . '/src/InvoiceSender.php',
-        'Factpro\\SunatCode\\IdentityDocument' => __DIR__ . '/../..' . '/src/SunatCode/IdentityDocument.php',
-        'Factpro\\SunatCode\\InvoiceType' => __DIR__ . '/../..' . '/src/SunatCode/InvoiceType.php',
-        'Factpro\\Sunat\\Client\\FactproClient' => __DIR__ . '/../..' . '/src/Sunat/Client/FactproClient.php',
-        'Factpro\\Sunat\\Client\\MigoApiClient' => __DIR__ . '/../..' . '/src/Sunat/Client/MigoApiClient.php',
-        'Factpro\\Sunat\\Client\\PeruDevApiClient' => __DIR__ . '/../..' . '/src/Sunat/Client/PeruDevApiClient.php',
-        'Factpro\\Sunat\\Response\\DniResponse' => __DIR__ . '/../..' . '/src/Sunat/Response/DniResponse.php',
-        'Factpro\\Sunat\\Response\\RucResponse' => __DIR__ . '/../..' . '/src/Sunat/Response/RucResponse.php',
-        'Factpro\\Sunat\\SunatClient' => __DIR__ . '/../..' . '/src/Sunat/SunatClient.php',
-        'Factpro\\Sunat\\SunatClientFactory' => __DIR__ . '/../..' . '/src/Sunat/SunatClientFactory.php',
-        'Factpro\\WP\\AdminHooks' => __DIR__ . '/../..' . '/src/WP/AdminHooks.php',
-        'Factpro\\WP\\AdminPanel\\OrderTable' => __DIR__ . '/../..' . '/src/WP/AdminPanel/OrderTable.php',
-        'Factpro\\WP\\AdminPanel\\WCSettingsTab' => __DIR__ . '/../..' . '/src/WP/AdminPanel/WCSettingsTab.php',
-        'Factpro\\WP\\RestApiHooks' => __DIR__ . '/../..' . '/src/WP/RestApiHooks.php',
-        'Factpro\\WP\\WoocommerceAdminHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceAdminHooks.php',
-        'Factpro\\WP\\WoocommerceEmailHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceEmailHooks.php',
-        'Factpro\\WP\\WoocommerceHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceHooks.php',
+        'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
+        'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
+        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
