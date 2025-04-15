@@ -2,6 +2,8 @@
 
 namespace Factpro\Domain;
 
+use Automattic\WooCommerce\Utilities\NumberUtil;
+
 final class InvoiceItem
 {
     private $id;
@@ -41,18 +43,21 @@ final class InvoiceItem
 
     public static function createFromWooLineItem(\WC_Order_Item_Product $item, $includeTax)
     {
-        $subtotal_item = (float) $item->get_subtotal();
-        $tax_item = (float) $item->get_subtotal_tax();
+        $subtotal_item = NumberUtil::round($item->get_subtotal(), 4);
+        $tax_item = NumberUtil::round($item->get_subtotal_tax(), 4);
         $total_item = $subtotal_item + $tax_item;
+        $has_dicount = $item->get_subtotal() !== $item->get_total();
+        $is_taxable = $item->get_tax_status() === 'taxable';
+        $is_zero_rate = $item->get_tax_class() === 'zero-rate';
 
-        //No tiene los impuestos configurados. Por lo tanto debo extraer el subtotal y el igv.
-        if (! $includeTax) {
-            $subtotal_item = round($total_item / 1.18, 4);
-            $tax_item = round($total_item - $subtotal_item, 4);
+        //No tiene los impuestos configurados. Por tanto, se debe extraer el subtotal y el igv.
+        if (! $is_taxable) {
+            $subtotal_item = NumberUtil::round($total_item / 1.18, 4);
+            $tax_item = NumberUtil::round($total_item - $subtotal_item, 4);
         }
 
-        $unitValue = $subtotal_item / $item->get_quantity();
-        $unitPrice = $unitValue * 1.18;
+        $unitValue = NumberUtil::round($subtotal_item / $item->get_quantity(), 4);
+        $unitPrice = NumberUtil::round($unitValue * ($is_zero_rate ? 1 : 1.18), 4);
 
         return new self(
             $item->get_id(),
@@ -60,8 +65,8 @@ final class InvoiceItem
             $item->get_name(),
             $item->get_quantity(),
             'NIU',
-            round($unitValue, 2),
-            round($unitPrice, 2),
+            $unitValue,
+            $unitPrice,
             $subtotal_item,
             $tax_item,
             $total_item
@@ -73,12 +78,12 @@ final class InvoiceItem
      */
     public static function createFromWooExtraItem($sku, \WC_Order_Item $item)
     {
-        $subtotal_item = (float) $item->get_total();
-        $tax_item  = (float) $item->get_total_tax();
-        $includeTax = $tax_item > 0;
+        $subtotal_item = NumberUtil::round($item->get_total(), 4);
+        $tax_item  = NumberUtil::round($item->get_total_tax(), 4);
+        $has_tax = $tax_item > 0;
         $total_item = $subtotal_item + $tax_item;
-        $unitValue = $subtotal_item / $item->get_quantity();
-        $unitPrice = $unitValue * ($includeTax ?  1.18 : 1);
+        $unitValue = NumberUtil::round($subtotal_item / $item->get_quantity(), 4);
+        $unitPrice = NumberUtil::round($unitValue * ($has_tax ?  1.18 : 1), 4);
 
         return new self(
             $item->get_id(),
@@ -86,8 +91,8 @@ final class InvoiceItem
             $item->get_name(),
             $item->get_quantity(),
             'ZZ',
-            round($unitValue, 2),
-            round($unitPrice, 2),
+            $unitValue,
+            $unitPrice,
             $subtotal_item,
             $tax_item,
             $total_item,

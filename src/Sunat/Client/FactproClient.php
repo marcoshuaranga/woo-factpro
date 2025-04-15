@@ -8,13 +8,12 @@ use Factpro\Sunat\SunatClient;
 
 final class FactproClient implements SunatClient
 {
-    private string $baseUrl = 'https://consultas.factpro.la/api';
+    private string $baseUrl = 'https://consultas.factpro.la/api/v1';
     private string $token;
 
-    public function __construct(
-        string $token = get_option('wc_settings_factpro_client_token')
-    ) {
-        $this->token = $token;
+    public function __construct()
+    {
+        $this->token = get_option('wc_settings_factpro_client_token');
     }
 
     public function findPersonByDni(string $dni)

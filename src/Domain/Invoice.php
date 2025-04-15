@@ -19,6 +19,9 @@ final class Invoice
     /** @var int */
     private $orderId;
 
+    /** @var OrderSummary */
+    private $orderSummary;
+
     private $paymentMethod;
 
     private $customer;
@@ -30,6 +33,7 @@ final class Invoice
         $serie,
         $number,
         $orderId,
+        OrderSummary $orderSummary,
         PaymentMethod $paymentMethod,
         Customer $customer,
         InvoiceItems $invoiceItems
@@ -40,6 +44,7 @@ final class Invoice
         $this->date = new \DateTimeImmutable('now');
         $this->dueDate = $this->date->add(new \DateInterval('P10D')); //add 10 days
         $this->orderId = $orderId;
+        $this->orderSummary = $orderSummary;
         $this->paymentMethod = $paymentMethod;
         $this->customer = $customer;
         $this->invoiceItems = $invoiceItems;
@@ -57,6 +62,8 @@ final class Invoice
             $address = $order->get_meta('_factpro_company_address');
             $ubigeo = $order->get_meta('_factpro_company_ubigeo');
         }
+
+        $orderSummary = OrderSummary::createFromWooOrder($order);
 
         $paymentMethod = new PaymentMethod(
             $order->get_payment_method(),
@@ -78,6 +85,7 @@ final class Invoice
             $serie,
             $number,
             $order->get_id(),
+            $orderSummary,
             $paymentMethod,
             $customer,
             new InvoiceItems(
@@ -118,6 +126,11 @@ final class Invoice
     public function getOrderId()
     {
         return $this->orderId;
+    }
+
+    public function getOrderSummary()
+    {
+        return $this->orderSummary;
     }
 
     public function getPaymentMethod()

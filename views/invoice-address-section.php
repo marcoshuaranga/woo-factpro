@@ -64,7 +64,7 @@ defined('ABSPATH') || exit;
          <div id="factura-fields" style="display: none;">
             <?php
             woocommerce_form_field('factpro_company_name', [
-               'label' => __('Nombre razón social', 'woo-factpro'),
+               'label' => __('Nombre de razón social', 'woo-factpro'),
                'type' => 'text',
                'required' => true,
             ], $checkout->get_value('factpro_company_name'));
@@ -77,7 +77,8 @@ defined('ABSPATH') || exit;
 
             woocommerce_form_field('factpro_company_ubigeo', [
                'type' => 'hidden',
-               'required' => true,
+               'default' => '',
+               'required' => false,
             ], $checkout->get_value('factpro_company_ubigeo'));
             ?>
          </div>

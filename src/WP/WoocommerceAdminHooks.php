@@ -40,7 +40,7 @@ final class WoocommerceAdminHooks
                 if ($isCompany) {
                     $order->update_meta_data('_factpro_company_ubigeo', wc_clean($_POST['factpro_company_ubigeo']));
                 } else {
-                    $order->update_meta_data('_factpro_company_ubigeo', '140101');
+                    $order->update_meta_data('_factpro_company_ubigeo', '');
                 }
             }
 

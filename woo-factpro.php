@@ -14,19 +14,22 @@
 
 defined('ABSPATH') || exit;
 
+define('WOO_FACTPRO_VIEW_DIR', __DIR__ . '/views');
+define('WOO_FACTPRO_PLUGIN_FILE', __FILE__);
+
+require __DIR__ . '/vendor/autoload.php';
+
 use Factpro\WP\AdminHooks;
 use Factpro\WP\RestApiHooks;
 use Factpro\WP\WoocommerceAdminHooks;
 use Factpro\WP\WoocommerceEmailHooks;
 use Factpro\WP\WoocommerceHooks;
 
-define('WOO_FACTPRO_VIEW_DIR', __DIR__ . '/views');
-define('WOO_FACTPRO_PLUGIN_FILE', __FILE__);
-
-require __DIR__ . '/vendor/autoload.php';
-
 AdminHooks::init();
 RestApiHooks::init();
 WoocommerceAdminHooks::init();
-WoocommerceHooks::init();
 WoocommerceEmailHooks::init();
+WoocommerceHooks::init();
+WoocommerceHooks::initWoocommerceFields();
+
+// add_action('woocommerce_init', [WoocommerceHooks::class, 'initBlockFields']);

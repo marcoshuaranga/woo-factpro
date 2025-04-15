@@ -2,6 +2,8 @@
 
 namespace Factpro\Domain;
 
+use Automattic\WooCommerce\Utilities\NumberUtil;
+
 final class Discount
 {
     private $code;
@@ -24,12 +26,12 @@ final class Discount
 
     public static function createFromWooCoupon(\WC_Order_Item_Coupon $coupon)
     {
-        $subtotal = $coupon->get_discount();
-        $totalTax = $coupon->get_discount_tax();
+        $subtotal = NumberUtil::round($coupon->get_discount(), 2);
+        $totalTax = NumberUtil::round($coupon->get_discount_tax(), 2);
 
         if ($totalTax <= 0) {
-            $subtotal = round($coupon->get_discount() / 1.18, 2);
-            $totalTax = round($coupon->get_discount() - $subtotal, 2);
+            $subtotal = NumberUtil::round($coupon->get_discount() / 1.18, 2);
+            $totalTax = NumberUtil::round($coupon->get_discount() - $subtotal, 2);
         }
 
         return new Discount($coupon->get_code(), $subtotal, $totalTax);

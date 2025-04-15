@@ -9,8 +9,8 @@ final class InvoiceItems
     private $total = 0;
 
     private $sunatTotalExonerado = 0;
-    private $sunatTotalGravado = 0;
-    private $sunatTotalIgv = 0;
+    private $sunatTotalGravadas = 0;
+    private $sunatTotalTax = 0;
     private $sunatTotalDiscount = 0;
 
     /** @var InvoiceItem[] */
@@ -51,24 +51,23 @@ final class InvoiceItems
     {
         foreach ($this->items as $item) {
             $this->sunatTotalExonerado += $item->isGravado() ? 0 : $item->getSubtotal();
-            $this->sunatTotalGravado += $item->isGravado() ? $item->getSubtotal() : 0;
-            $this->sunatTotalIgv += $item->getTotalTax();
+            $this->sunatTotalGravadas += $item->isGravado() ? $item->getSubtotal() : 0;
+            $this->sunatTotalTax += $item->getTotalTax();
         }
 
-        count($this->discounts) && $this->applyDiscounts();
-
-        $this->subtotal = $this->sunatTotalGravado + $this->sunatTotalExonerado;
-        $this->totalTax = $this->sunatTotalIgv;
-        $this->total = $this->subtotal + $this->totalTax;
-    }
-
-    private function applyDiscounts()
-    {
         foreach ($this->discounts as $discount) {
             $this->sunatTotalDiscount += $discount->getSubtotal();
-            $this->sunatTotalGravado -= $discount->getSubtotal();
-            $this->sunatTotalIgv -= $discount->getTotalTax();
+
+            // Apply discount to subtotal
+            // $this->sunatTotalGravadas -= $discount->getSubtotal();
+            // $this->sunatTotalTax -= $discount->getTotalTax();
         }
+
+        // count($this->discounts) && $this->applyDiscounts();
+
+        $this->subtotal = $this->sunatTotalGravadas + $this->sunatTotalExonerado;
+        $this->totalTax = $this->sunatTotalTax;
+        $this->total = $this->subtotal + $this->totalTax;
     }
 
     public function getDiscounts()
@@ -106,13 +105,13 @@ final class InvoiceItems
         return $this->sunatTotalExonerado;
     }
 
-    public function getSunatTotalGravado()
+    public function getSunatTotalGravadas()
     {
-        return $this->sunatTotalGravado;
+        return $this->sunatTotalGravadas;
     }
 
-    public function getSunatTotalIgv()
+    public function getSunatTotalTax()
     {
-        return $this->sunatTotalIgv;
+        return $this->sunatTotalTax;
     }
 }
