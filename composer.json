@@ -13,9 +13,5 @@
         "psr-4": {
             "Factpro\\": "src/"
         }
-    },
-    "require-dev": {
-        "symfony/var-dumper": "^5.4",
-        "symfony/console": "^5.4"
     }
 }
