@@ -73,7 +73,7 @@ final class FactproClient implements SunatClient
 
         return new RucResponse(
             $data['nombre'],
-            $data['direccion'],
+            $data['direccion_completa'],
             $data['ubigeo']
         );
     }

@@ -54,8 +54,13 @@ final class Invoice
     {
         $invoiceType = $order->get_meta('_factpro_invoice_type');
         $nameOrCompany = "{$order->get_billing_first_name()} {$order->get_billing_last_name()}";
-        $address = $order->get_billing_address_1();
-        $ubigeo = null;
+        $address = sprintf(
+            '%s, %s, %s',
+            $order->get_billing_address_1(),
+            $order->get_billing_city(),
+            $order->get_billing_state()
+        );
+        $ubigeo = '';
 
         if (InvoiceType::is_factura($invoiceType)) {
             $nameOrCompany = $order->get_meta('_factpro_company_name');
