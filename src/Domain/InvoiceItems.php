@@ -2,6 +2,8 @@
 
 namespace Factpro\Domain;
 
+use Automattic\WooCommerce\Utilities\NumberUtil;
+
 final class InvoiceItems
 {
     private $subtotal = 0;
@@ -11,28 +13,29 @@ final class InvoiceItems
     private $sunatTotalExonerado = 0;
     private $sunatTotalGravadas = 0;
     private $sunatTotalTax = 0;
-    private $sunatTotalDiscount = 0;
 
     /** @var InvoiceItem[] */
     private $items = [];
 
-    /** @var Discount[] */
-    private $discounts = [];
+    private $orderTotalDiscount;
+    private $orderTotalShipping;
+    private $orderTotalPaid;
 
-    /**
-     * @param \WC_Order_Item_Fee[]|\WC_Order_Item_Product[]|\WC_Order_Item_Shipping[] $items
-     * @param \WC_Order_Item_Coupon[] $coupons
-     * @param bool $includeTax
-     */
-    public function __construct(array $items, array $coupons, $includeTax)
+    private function __construct(\WC_Order $order)
     {
+        $items = $order->get_items(['line_item', 'shipping', 'fee']);
+        $pricesIncludeTax = $order->get_prices_include_tax();
+
+        /**
+         * @var \WC_Order_Item_Product|\WC_Order_Item_Fee|\WC_Order_Item_Shipping $item
+         */
         foreach ($items as $item) {
             if ($item->get_total() <= 0) {
                 continue;
             }
 
             if ($item instanceof \WC_Order_Item_Product) {
-                $this->items[] = InvoiceItem::createFromWooLineItem($item, $includeTax);
+                $this->items[] = InvoiceItem::createFromWooLineItem($item, $pricesIncludeTax);
             } elseif ($item instanceof \WC_Order_Item_Fee) {
                 $this->items[] = InvoiceItem::createFromWooExtraItem('fee', $item);
             } elseif ($item instanceof \WC_Order_Item_Shipping) {
@@ -40,39 +43,43 @@ final class InvoiceItems
             }
         }
 
-        foreach ($coupons as $coupon) {
-            $this->discounts[] = Discount::createFromWooCoupon($coupon);
-        }
-
-        $this->calculateTotals();
-    }
-
-    private function calculateTotals()
-    {
         foreach ($this->items as $item) {
             $this->sunatTotalExonerado += $item->isGravado() ? 0 : $item->getSubtotal();
             $this->sunatTotalGravadas += $item->isGravado() ? $item->getSubtotal() : 0;
             $this->sunatTotalTax += $item->getTotalTax();
         }
 
-        foreach ($this->discounts as $discount) {
-            $this->sunatTotalDiscount += $discount->getSubtotal();
-
-            // Apply discount to subtotal
-            // $this->sunatTotalGravadas -= $discount->getSubtotal();
-            // $this->sunatTotalTax -= $discount->getTotalTax();
-        }
-
-        // count($this->discounts) && $this->applyDiscounts();
-
         $this->subtotal = $this->sunatTotalGravadas + $this->sunatTotalExonerado;
         $this->totalTax = $this->sunatTotalTax;
         $this->total = $this->subtotal + $this->totalTax;
+
+        $this->orderTotalDiscount = array_reduce(
+            $order->get_items('coupon'),
+            function ($acc, \WC_Order_Item_Coupon $item) {
+                return $acc + $item->get_discount() + $item->get_discount_tax();
+            },
+            0
+        );
+
+        $this->orderTotalShipping = array_reduce(
+            $order->get_items('shipping'),
+            function ($acc, \WC_Order_Item_Shipping $item) {
+                return $acc + $item->get_total() + $item->get_total_tax();
+            },
+            0
+        );
+
+        $this->orderTotalPaid = NumberUtil::round($order->get_total(), 2);
     }
 
-    public function getDiscounts()
+    public static function createFromWooOrder(\WC_Order $order)
     {
-        return $this->discounts;
+        return new self($order);
+    }
+
+    public function hasDiscount()
+    {
+        return $this->orderTotalDiscount > 0;
     }
 
     public function getItems()
@@ -95,23 +102,57 @@ final class InvoiceItems
         return $this->total;
     }
 
-    public function getSunatTotalDiscount()
-    {
-        return $this->sunatTotalDiscount;
-    }
-
     public function getSunatTotalExonerado()
     {
-        return $this->sunatTotalExonerado;
+        return NumberUtil::round($this->sunatTotalExonerado, 4);
     }
 
-    public function getSunatTotalGravadas()
+    public function getSunatTotalGravadas($applyDiscount = false)
     {
-        return $this->sunatTotalGravadas;
+        if ($applyDiscount) {
+            return NumberUtil::round($this->sunatTotalGravadas, 4) - $this->getTotalDiscountForSunat();
+        }
+
+        return NumberUtil::round($this->sunatTotalGravadas, 4);
     }
 
-    public function getSunatTotalTax()
+    public function getSunatTotalTax($applyDiscount = false)
     {
-        return $this->sunatTotalTax;
+        if ($applyDiscount) {
+            return NumberUtil::round($this->sunatTotalTax, 4) - $this->getTotalDiscountTaxForSunat();
+        }
+
+        return NumberUtil::round($this->sunatTotalTax, 4);
+    }
+
+    public function getSunatDiscountPercentage()
+    {
+        return NumberUtil::round($this->getTotalDiscountForSunat() * 100 / $this->getSunatTotalGravadas(), 4);
+    }
+
+    public function getTotalDiscount(): float
+    {
+        return NumberUtil::round($this->orderTotalDiscount, 4);
+    }
+
+    public function getTotalDiscountForSunat()
+    {
+        return NumberUtil::round($this->orderTotalDiscount / 1.18, 4);
+    }
+
+    public function getTotalDiscountTaxForSunat()
+    {
+        return $this->getTotalDiscount() - $this->getTotalDiscountForSunat();
+    }
+
+
+    public function getTotalShipping(): float
+    {
+        return NumberUtil::round($this->orderTotalShipping, 4);
+    }
+
+    public function getTotalPaid(): float
+    {
+        return NumberUtil::round($this->orderTotalPaid, 4);
     }
 }

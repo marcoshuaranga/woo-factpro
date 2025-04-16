@@ -19,13 +19,17 @@ final class WCSettingsTab
             ],
 
             'url_api' => [
-                'name' => __('URL', 'woo-factpro'),
-                'type' => 'text',
-                'id'   => 'wc_settings_factpro_url_api'
+                'name' => __('Factpro Url', 'woo-factpro'),
+                'type' => 'url',
+                'id'   => 'wc_settings_factpro_url_api',
+                'default' => 'https://dev.factpro.la/api/v2/documentos',
+                'custom_attributes' => [
+                    'readonly' => 'true',
+                ],
             ],
 
             'token' => [
-                'name' => __('Token', 'woo-factpro'),
+                'name' => __('Factpro Token', 'woo-factpro'),
                 'type' => 'text',
                 'id'   => 'wc_settings_factpro_token'
             ],
@@ -59,6 +63,14 @@ final class WCSettingsTab
                 'type' => 'checkbox',
                 'desc' => __('Todos los pedidos deben tener comprobantes electrónicos.', 'woo-factpro'),
                 'id'   => 'wc_settings_factpro_invoice_is_mandatory'
+            ],
+
+            'send_email_automatically' => [
+                'name' => __('Envío de correo electrónico', 'woo-factpro'),
+                'type' => 'checkbox',
+                'desc' => __('Permite enviar automáticamente los comprobantes electrónicos a los clientes.', 'woo-factpro'),
+                'id'   => 'wc_settings_factpro_send_email_automatically',
+                'default' => 'yes',
             ],
 
             'testmode' => [

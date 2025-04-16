@@ -19,8 +19,7 @@ final class Invoice
     /** @var int */
     private $orderId;
 
-    /** @var OrderSummary */
-    private $orderSummary;
+    private InvoiceOptions $options;
 
     private $paymentMethod;
 
@@ -33,7 +32,7 @@ final class Invoice
         $serie,
         $number,
         $orderId,
-        OrderSummary $orderSummary,
+        InvoiceOptions $options,
         PaymentMethod $paymentMethod,
         Customer $customer,
         InvoiceItems $invoiceItems
@@ -44,7 +43,7 @@ final class Invoice
         $this->date = new \DateTimeImmutable('now');
         $this->dueDate = $this->date->add(new \DateInterval('P10D')); //add 10 days
         $this->orderId = $orderId;
-        $this->orderSummary = $orderSummary;
+        $this->options = $options;
         $this->paymentMethod = $paymentMethod;
         $this->customer = $customer;
         $this->invoiceItems = $invoiceItems;
@@ -68,7 +67,9 @@ final class Invoice
             $ubigeo = $order->get_meta('_factpro_company_ubigeo');
         }
 
-        $orderSummary = OrderSummary::createFromWooOrder($order);
+        $invoiceOptions = new InvoiceOptions(
+            get_option('wc_settings_factpro_send_email_automatically', 'yes') === 'yes'
+        );
 
         $paymentMethod = new PaymentMethod(
             $order->get_payment_method(),
@@ -83,6 +84,7 @@ final class Invoice
             $order->get_billing_email(),
             $ubigeo,
             $order->get_billing_phone(),
+            $order->get_customer_note(),
         );
 
         $self = new self(
@@ -90,14 +92,10 @@ final class Invoice
             $serie,
             $number,
             $order->get_id(),
-            $orderSummary,
+            $invoiceOptions,
             $paymentMethod,
             $customer,
-            new InvoiceItems(
-                $order->get_items(['line_item', 'shipping', 'fee']),
-                $order->get_coupons(),
-                $order->get_prices_include_tax()
-            )
+            InvoiceItems::createFromWooOrder($order)
         );
 
         return $self;
@@ -133,9 +131,9 @@ final class Invoice
         return $this->orderId;
     }
 
-    public function getOrderSummary()
+    public function getOptions()
     {
-        return $this->orderSummary;
+        return $this->options;
     }
 
     public function getPaymentMethod()
