@@ -1,10 +1,10 @@
 <?php
 
-namespace Factpro;
+namespace Factpro\Woo\Actions;
 
-final class InvoiceDownloader
+final class DownloadInvoice
 {
-    public static function download($order_id, $order_key)
+    public static function invoke($order_id, $order_key)
     {
         $order_id = wc_sanitize_order_id($_REQUEST['order']);
         $order_key = sanitize_text_field($_REQUEST['key']);

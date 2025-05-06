@@ -2,13 +2,12 @@
 
 namespace Factpro\WP;
 
-use Factpro\CreateInvoice;
 use Factpro\Helper\View;
-use Factpro\InvoiceDownloader;
-use Factpro\InvoiceGenerator;
 use Factpro\SunatCode\IdentityDocument;
 use Factpro\SunatCode\InvoiceType;
 use Factpro\Woo\Actions\CancelInvoice;
+use Factpro\Woo\Actions\CreateInvoice;
+use Factpro\Woo\Actions\DownloadInvoice;
 use Factpro\Woo\Actions\PreviewInvoice;
 use Factpro\Woo\Actions\ViewInvoiceStatus;
 use Factpro\WP\AdminPanel\OrderTable;
@@ -73,14 +72,14 @@ final class WoocommerceAdminHooks
             $order_id = wc_sanitize_order_id($_REQUEST['order']);
             $order_key = sanitize_text_field($_REQUEST['key']);
 
-            InvoiceDownloader::download($order_id, $order_key);
+            DownloadInvoice::invoke($order_id, $order_key);
         });
 
         add_action('admin_post_nopriv_factpro_download_invoice', function () {
             $order_id = wc_sanitize_order_id($_REQUEST['order']);
             $order_key = sanitize_text_field($_REQUEST['key']);
 
-            InvoiceDownloader::download($order_id, $order_key);
+            DownloadInvoice::invoke($order_id, $order_key);
         });
 
         /**
