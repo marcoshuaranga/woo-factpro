@@ -48,7 +48,13 @@ final class InvoiceGenerator
                 wc_get_logger()
             );
 
-            $result = json_decode($invoiceSender->send($invoice), true);
+            $jsonResult = $invoiceSender->send($invoice);
+
+            // Save the json result in the order meta
+            $order->add_meta_data('_factpro_invoice_json', $jsonResult, true);
+
+            $result = json_decode($jsonResult, true);
+
             $success = isset($result['success']) ? $result['success'] : isset($result['links']);
             $message = isset($result['message']) ? $result['message'] : '';
             $isBoleta = $invoiceType === InvoiceType::BOLETA;
@@ -71,18 +77,5 @@ final class InvoiceGenerator
         } catch (\Exception $e) {
             $order->add_order_note('Falló al generar el comprobante electrónico: ' . $e->getMessage());
         }
-    }
-
-    public static function preview($id_or_order)
-    {
-        $order = is_a($id_or_order, WC_Order::class) ? $id_or_order : new WC_Order($id_or_order);
-        $invoice = Invoice::createFromWooOrder('F001', '#', $order, get_option('woocommerce_calc_taxes', 'yes') === 'yes');
-        $formatter = new InvoiceFormatter($invoice, get_option('wc_settings_factpro_url_api'));
-
-        print('<pre>');
-        print(json_encode($formatter->toArray(), JSON_PRETTY_PRINT));
-        print('</pre>');
-
-        die();
     }
 }

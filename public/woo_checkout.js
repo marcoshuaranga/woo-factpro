@@ -1,18 +1,29 @@
-jQuery(function($) {
+jQuery(function ($) {
+    const DNI = '1';
     const FACTURA = '01';
     const BOLETA = '03';
 
-    $('#has-invoice-address').on('change', 'input', function() {
+    let factproContainerFields = $('.woocommerce-invoice-address-fields__field-wrapper');
+    let factproInvoiceTypeField = $('#factpro_invoice_type_field');
+    let factproHasInvoiceAddress = $('#has-invoice-address');
+    let factproCustomerDocumentType = $('#factpro_customer_document_type');
+    let factproCustomerDocumentNumber = $('#factpro_customer_document_number');
+    let factproCompanyRuc = $('#factpro_company_ruc');
+    let factproCompanyName = $('#factpro_company_name');
+    let factproCompanyAddress = $('#factpro_company_address');
+    let factproCompanyUbigeo = $('#factpro_company_ubigeo');
+
+    factproHasInvoiceAddress.on('change', 'input', function () {
         $('div.invoice_address').toggle(450);
     });
 
-    $('#factpro_invoice_type_field input[type="radio"]').change(function() {
-        switch (this.value) {
+    factproInvoiceTypeField.on('change', 'input[type="radio"]', function () {
+        switch ($(this).val()) {
             case BOLETA:
                 $('#factpro_customer_document_type_wrapper').show();
                 $('#factura-fields').hide();
                 break;
-                
+
             case FACTURA:
                 $('#factpro_customer_document_type_wrapper').hide();
                 $('#factura-fields').show();
@@ -20,32 +31,40 @@ jQuery(function($) {
         }
     });
 
-    $('#find_apiperu').click(function () {
-        var documentType = $('input[name="factpro_invoice_type"]:checked').val();
-        var documentNumber = $('#factpro_customer_document_number').val();
+    factproCustomerDocumentNumber.on('input', function () {
+        $(this).val($(this).val().replace(/[^0-9]/g, ''));
 
-        switch (documentType) {
-            case BOLETA:
-                documentNumber.length === 8 && findBy('dni', documentNumber, function (data) {
-                    $('#billing_first_name').val(data.nombres);
-                    $('#billing_last_name').val(`${data.apellido_paterno} ${data.apellido_materno}`);
-                });
-                break;
-            case FACTURA:
-                documentNumber.length === 11 && findBy('ruc', documentNumber, function (data) {
-                    $('#factpro_company_name').val(data.nombre_o_razon_social);
-                    $('#factpro_company_address').val(data.direccion_completa);
-                    $('#factpro_company_ubigeo').val(data.ubigeo);
-                });
-                break;
+        if (factproCustomerDocumentType.val() !== DNI) {
+            return;
         }
+
+        $(this).val().length === 8 && findBy('dni', $(this).val(), function (data) {
+            $('#billing_first_name').val(data.nombres);
+            $('#billing_last_name').val(`${data.apellido_paterno} ${data.apellido_materno}`);
+        });
+    });
+
+    factproCompanyRuc.on('input', function () {
+        $(this).val($(this).val().replace(/[^0-9]/g, ''));
+
+        $(this).val().length === 11 && findBy('ruc', $(this).val(), function (data) {
+            factproCompanyName.val(data.nombre_o_razon_social);
+            factproCompanyAddress.val(data.direccion_completa);
+            factproCompanyUbigeo.val(data.ubigeo);
+        });
     });
 
     const findBy = function (documentType, documentNumber, cb) {
-        $('#find_apiperu').prop('disabled', true);
+        factproContainerFields.block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
 
         $.get(`${factproSettings.root}/${documentType}/${documentNumber}`, cb).always(function () {
-            $('#find_apiperu').prop('disabled', false);
+            factproContainerFields.unblock();
         });
     }
 });

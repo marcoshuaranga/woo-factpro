@@ -7,6 +7,9 @@ use Factpro\InvoiceDownloader;
 use Factpro\InvoiceGenerator;
 use Factpro\SunatCode\IdentityDocument;
 use Factpro\SunatCode\InvoiceType;
+use Factpro\Woo\Actions\CancelInvoice;
+use Factpro\Woo\Actions\PreviewInvoice;
+use Factpro\Woo\Actions\ViewInvoiceStatus;
 use Factpro\WP\AdminPanel\OrderTable;
 
 final class WoocommerceAdminHooks
@@ -50,14 +53,20 @@ final class WoocommerceAdminHooks
         add_filter('woocommerce_order_actions',  function ($actions) {
             $testmode = get_option('wc_settings_factpro_testmode', 'no') === 'yes';
 
-            $actions['generate_factpro'] = __('Generar comprobante electrónico');
-            $testmode && $actions['generate_factpro_preview'] = __('Generar JSON de comprobante electrónico');
+            $actions['factpro_invoice'] = __('Generar comprobante electrónico');
+
+            $testmode && $actions['factpro_invoice_preview'] = __('Generar JSON de comprobante electrónico');
+
+            $actions['factpro_invoice_status'] = __('Consultar comprobante electrónico');
+            $actions['factpro_invoice_cancel'] = __('Anular comprobante electrónico');
 
             return $actions;
         });
 
-        add_action('woocommerce_order_action_generate_factpro', [InvoiceGenerator::class, 'generate']);
-        add_action('woocommerce_order_action_generate_factpro_preview', [InvoiceGenerator::class, 'preview']);
+        add_action('woocommerce_order_action_factpro_invoice', [InvoiceGenerator::class, 'generate']);
+        add_action('woocommerce_order_action_factpro_invoice_preview', [PreviewInvoice::class, 'invoke']);
+        add_action('woocommerce_order_action_factpro_invoice_status', [ViewInvoiceStatus::class, 'invoke']);
+        add_action('woocommerce_order_action_factpro_invoice_cancel', [CancelInvoice::class, 'invoke']);
 
         add_action('admin_post_factpro_download_invoice', function () {
             $order_id = wc_sanitize_order_id($_REQUEST['order']);

@@ -19,6 +19,7 @@ define('WOO_FACTPRO_PLUGIN_FILE', __FILE__);
 
 require __DIR__ . '/vendor/autoload.php';
 
+use Factpro\WP\Admin\WoocommerceEditOrder;
 use Factpro\WP\AdminHooks;
 use Factpro\WP\RestApiHooks;
 use Factpro\WP\WoocommerceAdminHooks;
@@ -32,4 +33,4 @@ WoocommerceEmailHooks::init();
 WoocommerceHooks::init();
 WoocommerceHooks::initWoocommerceFields();
 
-// add_action('woocommerce_init', [WoocommerceHooks::class, 'initBlockFields']);
+WoocommerceEditOrder::init();

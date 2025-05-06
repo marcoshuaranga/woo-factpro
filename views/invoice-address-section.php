@@ -5,6 +5,8 @@
  * @global WC_Checkout $checkout
  */
 
+use Factpro\SunatCode\InvoiceType;
+
 defined('ABSPATH') || exit;
 ?>
 <style>
@@ -35,34 +37,46 @@ defined('ABSPATH') || exit;
       <div class="woocommerce-invoice-address-fields__field-wrapper">
          <?php
          woocommerce_form_field('factpro_invoice_type', [
+            'default' =>  $invoice_is_mandatory ? InvoiceType::BOLETA : '',
             'label' => '',
             'type' => 'radio',
+            'required' => $invoice_is_mandatory,
             'options' => $invoices_types,
          ], $checkout->get_value('factpro_invoice_type'));
          ?>
 
-         <div id="factpro_customer_document_type_wrapper" style="display: none;">
+         <div id="factpro_customer_document_type_wrapper" style="display: <?= $invoice_is_mandatory ? 'block' : 'none' ?>;">
             <?php
             woocommerce_form_field('factpro_customer_document_type', [
+               'class' => [],
                'label' => __('Tipo de Documento', 'woo-factpro'),
                'type' => 'select',
                'required' => true,
                'options' => $identity_documents,
             ], $checkout->get_value('factpro_customer_document_type'));
+
+            woocommerce_form_field('factpro_customer_document_number', [
+               'class' => [],
+               'label' => __('Número de Documento', 'woo-factpro'),
+               'type' => 'text',
+               'required' => true,
+               'minlength' => 8,
+               'maxlength' => 16,
+            ], $checkout->get_value('factpro_customer_document_number'));
             ?>
          </div>
-         <?php
-         woocommerce_form_field('factpro_customer_document_number', [
-            'label' => __('Número de Documento', 'woo-factpro'),
-            'type' => 'text',
-            'required' => true,
-         ], $checkout->get_value('factpro_customer_document_number'));
-         ?>
-         <p class="form-row">
-            <button type="button" id="find_apiperu">Buscar</button>
-         </p>
+
          <div id="factura-fields" style="display: none;">
             <?php
+            woocommerce_form_field('factpro_company_ruc', [
+               'label' => __('RUC de la empresa', 'woo-factpro'),
+               'placeholder' => __('RUC de la empresa', 'woo-factpro'),
+               'type' => 'text',
+               'required' => true,
+               'minlength' => 11,
+               'maxlength' => 11,
+            ], $checkout->get_value('factpro_company_ruc'));
+
             woocommerce_form_field('factpro_company_name', [
                'label' => __('Nombre de razón social', 'woo-factpro'),
                'type' => 'text',

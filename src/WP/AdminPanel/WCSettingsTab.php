@@ -80,6 +80,13 @@ final class WCSettingsTab
                 'id'   => 'wc_settings_factpro_testmode'
             ],
 
+            'order_note_as_attribute' => [
+                'name' => __('Nota de Pedido', 'woo-factpro'),
+                'type' => 'checkbox',
+                'desc' => __('Enviar la nota de pedido como observaciones en el comprobante', 'woo-factpro'),
+                'id'   => 'wc_settings_factpro_order_note_as_comment'
+            ],
+
             'section_end' => [
                 'type' => 'sectionend',
                 'id' => 'wc_settings_factpro_section_end'

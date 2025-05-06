@@ -43,9 +43,14 @@ final class WoocommerceHooks
                     ! $_POST['factpro_customer_document_number'] && wc_add_notice(__('El número de documento no es válido.', 'woo-factpro'), 'error');
                     break;
                 case InvoiceType::FACTURA:
-                    ! $_POST['factpro_customer_document_number'] && wc_add_notice(__('El número de documento no es válido.', 'woo-factpro'), 'error');
+                    ! $_POST['factpro_company_ruc'] && wc_add_notice(__('El número de RUC no es válido.', 'woo-factpro'), 'error');
                     ! $_POST['factpro_company_name'] && wc_add_notice(__('El nombre de razón social no es válido.', 'woo-factpro'), 'error');
                     ! $_POST['factpro_company_address'] && wc_add_notice(__('El domicilio fiscal no es es válido.', 'woo-factpro'), 'error');
+
+                    if (\strlen($_POST['factpro_company_ruc']) !== 11) {
+                        wc_add_notice(__('El RUC debe tener 11 dígitos.', 'woo-factpro'), 'error');
+                    }
+
                     break;
                 default:
                     wc_add_notice(__('Debe seleccionar el tipo de comprobante.', 'woo-factpro'), 'error');
@@ -61,29 +66,25 @@ final class WoocommerceHooks
                 return;
             }
 
-            if (InvoiceType::is_factura($_POST['factpro_invoice_type'])) {
-                $identityDocument = IdentityDocument::RUC;
-            } else {
-                $identityDocument = $_POST['factpro_customer_document_type'];
-            }
-
             $order = wc_get_order($order_id);
 
             $order->update_meta_data('_factpro_invoice_type', wc_clean($_POST['factpro_invoice_type']));
-            $order->update_meta_data('_factpro_customer_document_type', $identityDocument);
-            $order->update_meta_data('_factpro_customer_document_number', wc_clean($_POST['factpro_customer_document_number']));
 
             if (InvoiceType::is_factura($_POST['factpro_invoice_type'])) {
-                $isCompany = substr(wc_clean($_POST['factpro_customer_document_number']), 0, 2) === '20';
+                $isCompany = substr(wc_clean($_POST['factpro_company_ruc']), 0, 2) === '20';
 
                 $order->update_meta_data('_factpro_company_name', wc_clean($_POST['factpro_company_name']));
                 $order->update_meta_data('_factpro_company_address', wc_clean($_POST['factpro_company_address']));
-
-                if ($isCompany) {
-                    $order->update_meta_data('_factpro_company_ubigeo', wc_clean($_POST['factpro_company_ubigeo']));
-                } else {
-                    $order->update_meta_data('_factpro_company_ubigeo', '');
-                }
+                $order->update_meta_data('_factpro_company_ubigeo', $isCompany ? wc_clean($_POST['factpro_company_ubigeo']) : '');
+                $order->update_meta_data('_factpro_company_ruc', wc_clean($_POST['factpro_company_ruc']));
+                $order->update_meta_data('_factpro_customer_document_type', IdentityDocument::RUC);
+                $order->update_meta_data('_factpro_customer_document_number', wc_clean($_POST['factpro_company_ruc']));
+            } else if (InvoiceType::is_boleta($_POST['factpro_invoice_type'])) {
+                $order->update_meta_data('_factpro_company_name', '');
+                $order->update_meta_data('_factpro_company_address', '');
+                $order->update_meta_data('_factpro_company_ubigeo', '');
+                $order->update_meta_data('_factpro_customer_document_type', wc_clean($_POST['factpro_customer_document_type']));
+                $order->update_meta_data('_factpro_customer_document_number', wc_clean($_POST['factpro_customer_document_number']));
             }
 
             $order->save_meta_data();
