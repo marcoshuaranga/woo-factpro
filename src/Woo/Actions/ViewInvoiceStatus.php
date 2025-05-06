@@ -2,6 +2,9 @@
 
 namespace Factpro\Woo\Actions;
 
+use Factpro\ThirdParties\Factpro\FactproApi;
+use Factpro\ThirdParties\Factpro\Request\ConsultDocumentRequest;
+use Factpro\ThirdParties\Factpro\Response\DocumentResponse;
 use WC_Order;
 
 final class ViewInvoiceStatus
@@ -11,18 +14,32 @@ final class ViewInvoiceStatus
    */
   public static function invoke($id_or_order)
   {
-    $order = is_a($id_or_order, WC_Order::class) ? $id_or_order : new WC_Order($id_or_order);
+    try {
+      $order = is_a($id_or_order, WC_Order::class) ? $id_or_order : new WC_Order($id_or_order);
+      $document = DocumentResponse::fromJson($order->get_meta('_factpro_invoice_json', '{}'));
+      $documentType = $order->get_meta('_factpro_invoice_type');
 
-    $a = json_encode([
-      'status' => $order->get_meta('_factpro_invoice_status'),
-      'message' => $order->get_meta('_factpro_invoice_message'),
-      'pdf_url' => $order->get_meta('_factpro_invoice_pdf_url'),
-      'json_url' => $order->get_meta('_factpro_invoice_json_url'),
-    ]);
+      $factproApi = new FactproApi(
+        get_option('wc_settings_factpro_base_url'),
+        get_option('wc_settings_factpro_token'),
+        wc_get_logger()
+      );
 
-    print('<pre>');
-    print($a);
-    print('</pre>');
-    die();
+      [$serie, $number] = explode('-', $document->getSerialNumber());
+
+      $jsonResult = $factproApi->send(new ConsultDocumentRequest([
+        'documentType' => $documentType,
+        'serie' => $serie,
+        'number' => $number,
+      ]));
+      dump($jsonResult);
+      $order->add_meta_data('_factpro_invoice_json', $jsonResult, true);
+
+      $order->add_order_note(
+        "El comprobante electrónico {$serie}-{$number} fue consultado correctamente."
+      );
+    } catch (\Exception $e) {
+      $order->add_order_note('Falló al consultar el estado del comprobante electrónico: ' . $e->getMessage());
+    }
   }
 }

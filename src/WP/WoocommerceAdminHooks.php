@@ -31,20 +31,23 @@ final class WoocommerceAdminHooks
             $order = wc_get_order($order_id);
 
             $order->update_meta_data('_factpro_invoice_type', $invoiceType);
-            $order->update_meta_data('_factpro_customer_document_type', wc_clean($_POST['factpro_customer_document_type']));
-            $order->update_meta_data('_factpro_customer_document_number', wc_clean($_POST['factpro_customer_document_number']));
-            $order->update_meta_data('_factpro_company_address', wc_clean($_POST['factpro_company_address']));
 
             if (InvoiceType::is_factura($invoiceType)) {
-                $isCompany = substr(wc_clean($_POST['factpro_customer_document_number']), 0, 2) === '20';
+                $company_ruc = wc_clean($_POST['factpro_customer_document_number']);
+                $isCompany = substr(wc_clean($company_ruc), 0, 2) === '20';
 
                 $order->update_meta_data('_factpro_company_name', wc_clean($_POST['factpro_company_name']));
-
-                if ($isCompany) {
-                    $order->update_meta_data('_factpro_company_ubigeo', wc_clean($_POST['factpro_company_ubigeo']));
-                } else {
-                    $order->update_meta_data('_factpro_company_ubigeo', '');
-                }
+                $order->update_meta_data('_factpro_company_address', wc_clean($_POST['factpro_company_address']));
+                $order->update_meta_data('_factpro_company_ubigeo', $isCompany ? wc_clean($_POST['factpro_company_ubigeo']) : '');
+                $order->update_meta_data('_factpro_company_ruc', wc_clean($company_ruc));
+                $order->update_meta_data('_factpro_customer_document_type', IdentityDocument::RUC);
+                $order->update_meta_data('_factpro_customer_document_number', wc_clean($company_ruc));
+            } else if (InvoiceType::is_boleta($_POST['factpro_invoice_type'])) {
+                $order->update_meta_data('_factpro_company_name', '');
+                $order->update_meta_data('_factpro_company_address', wc_clean($_POST['factpro_company_address']));
+                $order->update_meta_data('_factpro_company_ubigeo', '');
+                $order->update_meta_data('_factpro_customer_document_type', wc_clean($_POST['factpro_customer_document_type']));
+                $order->update_meta_data('_factpro_customer_document_number', wc_clean($_POST['factpro_customer_document_number']));
             }
 
             $order->save_meta_data();

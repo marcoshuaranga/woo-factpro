@@ -4,6 +4,7 @@ namespace Factpro\WP\Admin;
 
 use Automattic\WooCommerce\Utilities\OrderUtil;
 use Factpro\Helper\View;
+use Factpro\ThirdParties\Factpro\Response\DocumentResponse;
 
 final class WoocommerceEditOrder
 {
@@ -24,23 +25,14 @@ final class WoocommerceEditOrder
       'woo-factpro-invoice',
       __('Comprobante', 'woo-factpro'),
       function ($post_or_order) {
+        $order = is_a($post_or_order, \WC_Order::class) ? $post_or_order : new \WC_Order($post_or_order->ID);
+        $documentResponse = DocumentResponse::fromJson($order->get_meta('_factpro_invoice_json'));
+        $template = $documentResponse->isEmpty() ? 'admin/order-edit/invoice-metabox-empty' : 'admin/order-edit/invoice-metabox';
+
         echo View::make(WOO_FACTPRO_VIEW_DIR)->render(
-          'admin/order-edit/invoice-metabox',
+          $template,
           [
-            'wc_order' => wc_get_order($post_or_order),
-            'meta' => [
-              'origin' => 'Google Ads',
-              'source_type' => 'Paid Search',
-              'utm_campaign' => 'Summer_Sale_2025',
-              'utm_source' => 'google',
-              'utm_medium' => 'cpc',
-              'utm_source_platform' => 'Desktop',
-              'utm_creative_format' => 'Banner',
-              'utm_marketing_tactic' => 'Retargeting',
-              'device_type' => 'Desktop',
-              'session_pages' => 5,
-            ],
-            'has_more_details' => false,
+            'documentResponse' => DocumentResponse::fromJson($post_or_order->get_meta('_factpro_invoice_json', '{}')),
           ]
         );
       },

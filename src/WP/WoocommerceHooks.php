@@ -71,17 +71,18 @@ final class WoocommerceHooks
             $order->update_meta_data('_factpro_invoice_type', wc_clean($_POST['factpro_invoice_type']));
 
             if (InvoiceType::is_factura($_POST['factpro_invoice_type'])) {
+                $company_ruc = wc_clean($_POST['factpro_company_ruc']);
                 $isCompany = substr(wc_clean($_POST['factpro_company_ruc']), 0, 2) === '20';
 
                 $order->update_meta_data('_factpro_company_name', wc_clean($_POST['factpro_company_name']));
                 $order->update_meta_data('_factpro_company_address', wc_clean($_POST['factpro_company_address']));
                 $order->update_meta_data('_factpro_company_ubigeo', $isCompany ? wc_clean($_POST['factpro_company_ubigeo']) : '');
-                $order->update_meta_data('_factpro_company_ruc', wc_clean($_POST['factpro_company_ruc']));
+                $order->update_meta_data('_factpro_company_ruc', $company_ruc);
                 $order->update_meta_data('_factpro_customer_document_type', IdentityDocument::RUC);
-                $order->update_meta_data('_factpro_customer_document_number', wc_clean($_POST['factpro_company_ruc']));
+                $order->update_meta_data('_factpro_customer_document_number', $company_ruc);
             } else if (InvoiceType::is_boleta($_POST['factpro_invoice_type'])) {
                 $order->update_meta_data('_factpro_company_name', '');
-                $order->update_meta_data('_factpro_company_address', '');
+                $order->update_meta_data('_factpro_company_address', wc_clean($_POST['factpro_company_address']));
                 $order->update_meta_data('_factpro_company_ubigeo', '');
                 $order->update_meta_data('_factpro_customer_document_type', wc_clean($_POST['factpro_customer_document_type']));
                 $order->update_meta_data('_factpro_customer_document_number', wc_clean($_POST['factpro_customer_document_number']));

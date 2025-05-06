@@ -9,19 +9,6 @@ defined('ABSPATH') || exit;
 /**
  * @var DocumentResponse $documentResponse
  */
-
-$state_classes = [
-  '01' => 'success', // Aceptado
-  '05' => 'success', // Registrado
-  '09' => 'danger', // Rechazado
-  '11' => 'danger', // Anulado
-  '13' => 'warning', // Por anular
-  '19' => '', // sin respuesta
-];
-
-$status_class = isset($state_classes[$documentResponse->getStateTypeId()]) ?
-  $state_classes[$documentResponse->getStateTypeId()] :
-  'warning';
 ?>
 <style>
   .woo-factpro {
@@ -76,23 +63,23 @@ $status_class = isset($state_classes[$documentResponse->getStateTypeId()]) ?
       padding: 5px 10px;
       font-size: 12px;
       font-weight: bold;
-      color: #fff;
-      background-color: #0073aa;
+      color: #666666;
+      background-color: #cccccc;
       border-radius: 50px;
       text-align: center;
       text-transform: uppercase;
       white-space: nowrap;
     }
 
-    .pill-tag.warning {
+    .pill-tag.pending {
       background-color: #ffb900;
     }
 
-    .pill-tag.success {
+    .pill-tag.completed {
       background-color: #46b450;
     }
 
-    .pill-tag.danger {
+    .pill-tag.cancelled {
       background-color: #dc3232;
     }
   }
@@ -101,7 +88,7 @@ $status_class = isset($state_classes[$documentResponse->getStateTypeId()]) ?
   <div class="row">
     <div class="column">
       <h4 class="mt-0 mb-0">
-        <?php esc_html_e($documentResponse->getSerialNumber(), 'woo-factpro'); ?>
+        No tiene comprobante
       </h4>
     </div>
   </div>
@@ -110,22 +97,9 @@ $status_class = isset($state_classes[$documentResponse->getStateTypeId()]) ?
       <h4 class="mt-0 mb-0"><?= esc_html('Estado', 'woo-factpro') ?> </h4>
     </div>
     <div class="column">
-      <span class="pill-tag <?= $status_class ?>">
-        <?= esc_html($documentResponse->getStateDescription(), 'woo-factpro') ?>
+      <span class="pill-tag">
+        Ninguno
       </span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="column">
-      <h4 class="mt-0 mb-2"><?= esc_html('Descarga', 'woo-factpro') ?></h4>
-      <div class="woocommerce-order-invoice-download-container">
-        <div class="button-group">
-          <a class="button" href="<?= $documentResponse->getPdfUrl() ?>" target="_blank" aria-label="PDF" title="PDF">
-            <span class="dashicons dashicons-download" style="vertical-align: middle;"></span> PDF </a>
-          <a class="button" href="<?= $documentResponse->getXmlUrl() ?>" target="_blank" aria-label="XML" title="XML">
-            <span class="dashicons dashicons-download" style="vertical-align: middle;"></span> XML </a>
-        </div>
-      </div>
     </div>
   </div>
   <div class="row">
@@ -138,12 +112,12 @@ $status_class = isset($state_classes[$documentResponse->getStateTypeId()]) ?
           </button>
         </div>
         <div class="mb-2">
-          <button class="button" id="factpro-invoice-status-btn">
+          <button class="button" id="factpro-invoice-status-btn" disabled>
             Consultar estado
           </button>
         </div>
         <div>
-          <button class="button button-delete" id="factpro-invoice-cancel-btn">
+          <button class="button button-delete" id="factpro-invoice-cancel-btn" disabled>
             Anular
           </button>
         </div>

@@ -1,3 +1,44 @@
+jQuery(document).ready(function ($) {
+    const factproInvoiceCreateBtn = $('#factpro-invoice-create-btn');
+    const factproInvoiceStatusBtn = $('#factpro-invoice-status-btn');
+    const factproInvoiceCancelBtn = $('#factpro-invoice-cancel-btn');
+
+    const actionSelect = $('#actions select');
+
+    factproInvoiceCreateBtn.on('click', function (e) {
+        $(actionSelect).val('factpro_invoice_create');
+        $('#woo-factpro-invoice').block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+    });
+
+    factproInvoiceStatusBtn.on('click', function (e) {
+        $(actionSelect).val('factpro_invoice_status');
+        $('#woo-factpro-invoice').block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+    })
+
+    factproInvoiceCancelBtn.on('click', function (e) {
+        $(actionSelect).val('factpro_invoice_cancel');
+        $('#woo-factpro-invoice').block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+    })
+});
+
 jQuery(function ($) {
     const DNI = '1';
     const RUC = '6';
@@ -12,7 +53,7 @@ jQuery(function ($) {
         $('.factpro_company_ubigeo_field').fadeIn();
     }
 
-    $('#factpro_customer_document_number').change(function(){
+    $('#factpro_customer_document_number').change(function () {
         var documentType = $('#factpro_customer_document_type').val();
         var documentNumber = $('#factpro_customer_document_number').val();
 
@@ -35,7 +76,7 @@ jQuery(function ($) {
         }
     });
 
-    $('#factpro_customer_document_type').change(function(){
+    $('#factpro_customer_document_type').change(function () {
         switch (this.value) {
             case RUC:
                 $('.factpro_company_name_field').fadeIn();

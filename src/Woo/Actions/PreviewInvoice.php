@@ -15,7 +15,7 @@ final class PreviewInvoice
   {
     $order = is_a($id_or_order, WC_Order::class) ? $id_or_order : new WC_Order($id_or_order);
     $invoice = Invoice::createFromWooOrder('F001', '#', $order, get_option('woocommerce_calc_taxes', 'yes') === 'yes');
-    $formatter = new InvoiceFormatter($invoice, get_option('wc_settings_factpro_url_api'));
+    $formatter = new InvoiceFormatter($invoice);
 
     print('<pre>');
     print(json_encode($formatter->toArray(), JSON_PRETTY_PRINT));

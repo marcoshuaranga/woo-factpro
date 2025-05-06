@@ -4,6 +4,8 @@ namespace Factpro\Woo\Actions;
 
 use Factpro\Domain\Invoice;
 use Factpro\SunatCode\InvoiceType;
+use Factpro\ThirdParties\Factpro\FactproApi;
+use Factpro\ThirdParties\Factpro\Request\CreateDocumentRequest;
 use WC_Order;
 
 final class CreateInvoice
@@ -42,13 +44,13 @@ final class CreateInvoice
         try {
             $invoice = Invoice::createFromWooOrder($serie, $number, $order, $includeTax);
 
-            $invoiceSender = new InvoiceSender(
-                get_option('wc_settings_factpro_url_api'),
+            $factproApi = new FactproApi(
+                get_option('wc_settings_factpro_base_url'),
                 get_option('wc_settings_factpro_token'),
                 wc_get_logger()
             );
 
-            $jsonResult = $invoiceSender->send($invoice);
+            $jsonResult = $factproApi->send(new CreateDocumentRequest($invoice));
 
             // Save the json result in the order meta
             $order->add_meta_data('_factpro_invoice_json', $jsonResult, true);

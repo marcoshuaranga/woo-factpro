@@ -18,11 +18,11 @@ final class WCSettingsTab
                 'id'       => 'wc_settings_factpro_section_title'
             ],
 
-            'url_api' => [
-                'name' => __('Factpro Url', 'woo-factpro'),
+            'base_url' => [
+                'name' => __('Factpro Base Url', 'woo-factpro'),
                 'type' => 'url',
-                'id'   => 'wc_settings_factpro_url_api',
-                'default' => 'https://dev.factpro.la/api/v2/documentos',
+                'id'   => 'wc_settings_factpro_base_url',
+                'default' => 'https://dev.factpro.la',
                 'custom_attributes' => [
                     'readonly' => 'true',
                 ],
