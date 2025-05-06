@@ -1,17 +1,17 @@
 <?php
 
-namespace Factpro;
+namespace Factpro\Woo\Actions;
 
 use Factpro\Domain\Invoice;
 use Factpro\SunatCode\InvoiceType;
 use WC_Order;
 
-final class InvoiceGenerator
+final class CreateInvoice
 {
     /**
      * @param int|WC_Order $id_or_order
      */
-    public static function generate($id_or_order)
+    public static function invoke($id_or_order)
     {
         $order = is_a($id_or_order, WC_Order::class) ? $id_or_order : new WC_Order($id_or_order);
         $testmode = get_option('wc_settings_factpro_testmode', 'no') === 'yes';

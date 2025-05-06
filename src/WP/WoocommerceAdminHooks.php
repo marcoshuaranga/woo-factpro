@@ -2,6 +2,7 @@
 
 namespace Factpro\WP;
 
+use Factpro\CreateInvoice;
 use Factpro\Helper\View;
 use Factpro\InvoiceDownloader;
 use Factpro\InvoiceGenerator;
@@ -53,7 +54,7 @@ final class WoocommerceAdminHooks
         add_filter('woocommerce_order_actions',  function ($actions) {
             $testmode = get_option('wc_settings_factpro_testmode', 'no') === 'yes';
 
-            $actions['factpro_invoice'] = __('Generar comprobante electrónico');
+            $actions['factpro_invoice_create'] = __('Generar comprobante electrónico');
 
             $testmode && $actions['factpro_invoice_preview'] = __('Generar JSON de comprobante electrónico');
 
@@ -63,7 +64,7 @@ final class WoocommerceAdminHooks
             return $actions;
         });
 
-        add_action('woocommerce_order_action_factpro_invoice', [InvoiceGenerator::class, 'generate']);
+        add_action('woocommerce_order_action_factpro_invoice_create', [CreateInvoice::class, 'invoke']);
         add_action('woocommerce_order_action_factpro_invoice_preview', [PreviewInvoice::class, 'invoke']);
         add_action('woocommerce_order_action_factpro_invoice_status', [ViewInvoiceStatus::class, 'invoke']);
         add_action('woocommerce_order_action_factpro_invoice_cancel', [CancelInvoice::class, 'invoke']);
