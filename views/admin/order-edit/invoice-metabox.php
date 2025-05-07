@@ -128,26 +128,28 @@ $status_class = isset($state_classes[$documentResponse->getStateTypeId()]) ?
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="column">
-      <h4 class="mt-0 mb-2"><?= esc_html('Acción', 'woo-factpro') ?></h4>
-      <div class="woocommerce-order-invoice-action-container">
-        <div class="mb-2">
-          <button class="button" id="factpro-invoice-create-btn">
-            Generar comprobante
-          </button>
-        </div>
-        <div class="mb-2">
-          <button class="button" id="factpro-invoice-status-btn">
-            Consultar estado
-          </button>
-        </div>
-        <div>
-          <button class="button button-delete" id="factpro-invoice-cancel-btn">
-            Anular
-          </button>
+  <?php if (! $documentResponse->isCanceled()): ?>
+    <div class="row">
+      <div class="column">
+        <h4 class="mt-0 mb-2"><?= esc_html('Acción', 'woo-factpro') ?></h4>
+        <div class="woocommerce-order-invoice-action-container">
+          <div class="mb-2">
+            <button class="button" id="factpro-invoice-create-btn" <?= $documentResponse->isAcceptedOrRegistered() ? 'disabled' : '' ?>>
+              Generar comprobante
+            </button>
+          </div>
+          <div class="mb-2">
+            <button class="button" id="factpro-invoice-status-btn">
+              Consultar estado
+            </button>
+          </div>
+          <div>
+            <button class="button button-delete" id="factpro-invoice-cancel-btn">
+              Anular
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  <?php endif ?>
 </div>

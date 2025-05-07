@@ -33,8 +33,8 @@ final class ViewInvoiceStatus
         'number' => $number,
       ]));
 
-      $order->add_meta_data('_factpro_invoice_json', $jsonResult, true);
-
+      $order->update_meta_data('_factpro_invoice_json', $jsonResult);
+      $order->save_meta_data();
       $order->add_order_note(
         "El comprobante electrónico {$serie}-{$number} fue consultado correctamente."
       );

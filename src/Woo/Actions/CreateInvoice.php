@@ -30,15 +30,22 @@ final class CreateInvoice
                 $number = $testmode ? '#' : get_option('wc_settings_factpro_nsiglafactura');
                 break;
             default:
+                $order->add_order_note('No se encontró el tipo de comprobante.');
                 return wc_get_logger()->error("Pedido #{$order->get_id()}: 'No se encontró el tipo de comprobante.");
         }
 
         if ($order->get_meta('_factpro_invoice_pdf_url')) {
-            return wc_get_logger()->error("Pedido #{$order->get_id()}: 'El comprobante ya fue generado.");
+            $order->add_order_note('El comprobante electrónico ya fue generado.');
+            wc_get_logger()->error("Pedido #{$order->get_id()}: 'El comprobante ya fue generado.");
+
+            return;
         }
 
         if (count($order->get_items()) === 0) {
-            return wc_get_logger()->error("Pedido #{$order->get_id()}: 'No hay ítems agregados en la canasta.");
+            $order->add_order_note('No se encontraron ítems en la canasta.');
+            wc_get_logger()->error("Pedido #{$order->get_id()}: 'No hay ítems agregados en la canasta.");
+
+            return;
         }
 
         try {

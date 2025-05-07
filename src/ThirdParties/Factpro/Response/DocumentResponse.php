@@ -33,6 +33,11 @@ final class DocumentResponse
     return $this->getStateTypeId() === self::STATE_TYPE_ID_REGISTERED;
   }
 
+  public function isAcceptedOrRegistered()
+  {
+    return $this->isAccepted() || $this->isRegistered();
+  }
+
   public function isRejected()
   {
     return $this->getStateTypeId() === self::STATE_TYPE_ID_REJECTED;

@@ -34,6 +34,21 @@ final class CancelInvoice
         'reason' => 'Anulación de Woo Order #' . $order->get_id(),
       ]));
 
+      $result = json_decode($jsonResult, true);
+
+      $success = isset($result['success']) ? $result['success'] : false;
+      $message = isset($result['message']) ? $result['message'] : 'Error desconocido';
+
+      if (!$success) {
+        $order->add_order_note('Falló al anular el comprobante electrónico: ' . $result['message']);
+        wc_get_logger()->error("Pedido #{$order->get_id()}: 'Falló al anular el comprobante electrónico: {$message}");
+
+        return;
+      }
+
+      $order->update_meta_data('_factpro_invoice_cancelled_json', $jsonResult);
+      $order->save_meta_data();
+
       $order->add_order_note(
         "El compronante electrónico {$serie}-{$number} fue anulado correctamente."
       );
