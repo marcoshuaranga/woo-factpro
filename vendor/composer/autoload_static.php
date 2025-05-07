@@ -59,6 +59,7 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
         'Factpro\\WP\\WoocommerceAdminHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceAdminHooks.php',
         'Factpro\\WP\\WoocommerceEmailHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceEmailHooks.php',
         'Factpro\\WP\\WoocommerceHooks' => __DIR__ . '/../..' . '/src/WP/WoocommerceHooks.php',
+        'Factpro\\WooFactpro' => __DIR__ . '/../..' . '/src/WooFactpro.php',
         'Factpro\\Woo\\Actions\\CancelInvoice' => __DIR__ . '/../..' . '/src/Woo/Actions/CancelInvoice.php',
         'Factpro\\Woo\\Actions\\CreateInvoice' => __DIR__ . '/../..' . '/src/Woo/Actions/CreateInvoice.php',
         'Factpro\\Woo\\Actions\\DownloadInvoice' => __DIR__ . '/../..' . '/src/Woo/Actions/DownloadInvoice.php',

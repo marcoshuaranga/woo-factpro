@@ -44,6 +44,7 @@ return array(
     'Factpro\\WP\\WoocommerceAdminHooks' => $baseDir . '/src/WP/WoocommerceAdminHooks.php',
     'Factpro\\WP\\WoocommerceEmailHooks' => $baseDir . '/src/WP/WoocommerceEmailHooks.php',
     'Factpro\\WP\\WoocommerceHooks' => $baseDir . '/src/WP/WoocommerceHooks.php',
+    'Factpro\\WooFactpro' => $baseDir . '/src/WooFactpro.php',
     'Factpro\\Woo\\Actions\\CancelInvoice' => $baseDir . '/src/Woo/Actions/CancelInvoice.php',
     'Factpro\\Woo\\Actions\\CreateInvoice' => $baseDir . '/src/Woo/Actions/CreateInvoice.php',
     'Factpro\\Woo\\Actions\\DownloadInvoice' => $baseDir . '/src/Woo/Actions/DownloadInvoice.php',
