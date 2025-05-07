@@ -3,9 +3,9 @@
 namespace Factpro\WP;
 
 use Factpro\Helper\View;
-use Factpro\InvoiceGenerator;
 use Factpro\SunatCode\IdentityDocument;
 use Factpro\SunatCode\InvoiceType;
+use Factpro\Woo\Actions\CreateInvoice;
 
 final class WoocommerceHooks
 {
@@ -91,7 +91,7 @@ final class WoocommerceHooks
             $order->save_meta_data();
         });
 
-        add_action('woocommerce_order_status_completed', [InvoiceGenerator::class, 'generate']);
+        add_action('woocommerce_order_status_completed', [CreateInvoice::class, 'invoke']);
     }
 
     public static function initWoocommerceFields()

@@ -10,7 +10,7 @@ final class WoocommerceEditOrder
 {
   public static function init()
   {
-    add_action('add_meta_boxes', [self::class, 'add_order_meta_boxes']);
+    add_action('add_meta_boxes', [self::class, 'add_order_meta_boxes'], 999999);
   }
 
   public static function add_order_meta_boxes()
