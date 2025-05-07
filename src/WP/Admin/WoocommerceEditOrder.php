@@ -32,7 +32,7 @@ final class WoocommerceEditOrder
         echo View::make(WOO_FACTPRO_VIEW_DIR)->render(
           $template,
           [
-            'documentResponse' => DocumentResponse::fromJson($post_or_order->get_meta('_factpro_invoice_json', '{}')),
+            'documentResponse' => $documentResponse,
           ]
         );
       },
