@@ -134,7 +134,7 @@ $status_class = isset($state_classes[$documentResponse->getStateTypeId()]) ?
         <h4 class="mt-0 mb-2"><?= esc_html('Acción', 'woo-factpro') ?></h4>
         <div class="woocommerce-order-invoice-action-container">
           <div class="mb-2">
-            <button class="button" id="factpro-invoice-create-btn" <?= $documentResponse->isAcceptedOrRegistered() ? 'disabled' : '' ?>>
+            <button class="button" id="factpro-invoice-create-btn" disabled>
               Generar comprobante
             </button>
           </div>
