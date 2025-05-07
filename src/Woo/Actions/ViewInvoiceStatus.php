@@ -32,7 +32,7 @@ final class ViewInvoiceStatus
         'serie' => $serie,
         'number' => $number,
       ]));
-      dump($jsonResult);
+
       $order->add_meta_data('_factpro_invoice_json', $jsonResult, true);
 
       $order->add_order_note(

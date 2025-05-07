@@ -38,6 +38,22 @@ final class OrderTable
             ];
         }
 
+        if ($order->get_meta('_ebilling_invoice_pdf_url')) {
+            $actions[] = [
+                'url'  => $order->get_meta('_ebilling_invoice_pdf_url'),
+                'name' => __('PDF', 'woo-factpro'),
+                'action' => 'pdf',
+            ];
+        }
+
+        if ($order->get_meta('_ebilling_invoice_xml_url')) {
+            $actions[] = [
+                'url'  => $order->get_meta('_ebilling_invoice_xml_url'),
+                'name' => __('XML', 'woo-factpro'),
+                'action' => 'xml',
+            ];
+        }
+
         print View::make(WOO_FACTPRO_VIEW_DIR)->render('admin/orders-table/custom_column', ['actions' => $actions]);
     }
 }

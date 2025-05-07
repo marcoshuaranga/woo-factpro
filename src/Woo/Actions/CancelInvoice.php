@@ -34,7 +34,6 @@ final class CancelInvoice
         'reason' => 'Anulación de Woo Order #' . $order->get_id(),
       ]));
 
-      dump($jsonResult);
       $order->add_order_note(
         "El compronante electrónico {$serie}-{$number} fue anulado correctamente."
       );
