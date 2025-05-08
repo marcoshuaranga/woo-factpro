@@ -127,7 +127,7 @@ final class InvoiceItems
 
     public function getSunatDiscountPercentage()
     {
-        return NumberUtil::round($this->getTotalDiscountForSunat() * 100 / $this->getSunatTotalGravadas(), 4);
+        return NumberUtil::round($this->getTotalDiscountForSunat() * 100 / $this->getSunatTotalGravadas(), 4) / 100;
     }
 
     public function getTotalDiscount(): float
