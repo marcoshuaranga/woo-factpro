@@ -3,10 +3,13 @@
 namespace Factpro\WP;
 
 use Factpro\Helper\View;
-use Factpro\InvoiceDownloader;
-use Factpro\InvoiceGenerator;
 use Factpro\SunatCode\IdentityDocument;
 use Factpro\SunatCode\InvoiceType;
+use Factpro\Woo\Actions\CancelInvoice;
+use Factpro\Woo\Actions\CreateInvoice;
+use Factpro\Woo\Actions\DownloadInvoice;
+use Factpro\Woo\Actions\PreviewInvoice;
+use Factpro\Woo\Actions\ViewInvoiceStatus;
 use Factpro\WP\AdminPanel\OrderTable;
 
 final class WoocommerceAdminHooks
@@ -28,20 +31,23 @@ final class WoocommerceAdminHooks
             $order = wc_get_order($order_id);
 
             $order->update_meta_data('_factpro_invoice_type', $invoiceType);
-            $order->update_meta_data('_factpro_customer_document_type', wc_clean($_POST['factpro_customer_document_type']));
-            $order->update_meta_data('_factpro_customer_document_number', wc_clean($_POST['factpro_customer_document_number']));
-            $order->update_meta_data('_factpro_company_address', wc_clean($_POST['factpro_company_address']));
 
             if (InvoiceType::is_factura($invoiceType)) {
-                $isCompany = substr(wc_clean($_POST['factpro_customer_document_number']), 0, 2) === '20';
+                $company_ruc = wc_clean($_POST['factpro_customer_document_number']);
+                $isCompany = substr(wc_clean($company_ruc), 0, 2) === '20';
 
                 $order->update_meta_data('_factpro_company_name', wc_clean($_POST['factpro_company_name']));
-
-                if ($isCompany) {
-                    $order->update_meta_data('_factpro_company_ubigeo', wc_clean($_POST['factpro_company_ubigeo']));
-                } else {
-                    $order->update_meta_data('_factpro_company_ubigeo', '');
-                }
+                $order->update_meta_data('_factpro_company_address', wc_clean($_POST['factpro_company_address']));
+                $order->update_meta_data('_factpro_company_ubigeo', $isCompany ? wc_clean($_POST['factpro_company_ubigeo']) : '');
+                $order->update_meta_data('_factpro_company_ruc', wc_clean($company_ruc));
+                $order->update_meta_data('_factpro_customer_document_type', IdentityDocument::RUC);
+                $order->update_meta_data('_factpro_customer_document_number', wc_clean($company_ruc));
+            } else {
+                $order->update_meta_data('_factpro_company_name', '');
+                $order->update_meta_data('_factpro_company_address', wc_clean($_POST['factpro_company_address']));
+                $order->update_meta_data('_factpro_company_ubigeo', '');
+                $order->update_meta_data('_factpro_customer_document_type', wc_clean($_POST['factpro_customer_document_type']));
+                $order->update_meta_data('_factpro_customer_document_number', wc_clean($_POST['factpro_customer_document_number']));
             }
 
             $order->save_meta_data();
@@ -50,27 +56,33 @@ final class WoocommerceAdminHooks
         add_filter('woocommerce_order_actions',  function ($actions) {
             $testmode = get_option('wc_settings_factpro_testmode', 'no') === 'yes';
 
-            $actions['generate_factpro'] = __('Generar comprobante electrónico');
-            $testmode && $actions['generate_factpro_preview'] = __('Generar JSON de comprobante electrónico');
+            $actions['factpro_invoice_create'] = __('Generar comprobante electrónico');
+
+            $testmode && $actions['factpro_invoice_preview'] = __('Generar JSON de comprobante electrónico');
+
+            $actions['factpro_invoice_status'] = __('Consultar comprobante electrónico');
+            $actions['factpro_invoice_cancel'] = __('Anular comprobante electrónico');
 
             return $actions;
         });
 
-        add_action('woocommerce_order_action_generate_factpro', [InvoiceGenerator::class, 'generate']);
-        add_action('woocommerce_order_action_generate_factpro_preview', [InvoiceGenerator::class, 'preview']);
+        add_action('woocommerce_order_action_factpro_invoice_create', [CreateInvoice::class, 'invoke']);
+        add_action('woocommerce_order_action_factpro_invoice_preview', [PreviewInvoice::class, 'invoke']);
+        add_action('woocommerce_order_action_factpro_invoice_status', [ViewInvoiceStatus::class, 'invoke']);
+        add_action('woocommerce_order_action_factpro_invoice_cancel', [CancelInvoice::class, 'invoke']);
 
         add_action('admin_post_factpro_download_invoice', function () {
             $order_id = wc_sanitize_order_id($_REQUEST['order']);
             $order_key = sanitize_text_field($_REQUEST['key']);
 
-            InvoiceDownloader::download($order_id, $order_key);
+            DownloadInvoice::invoke($order_id, $order_key);
         });
 
         add_action('admin_post_nopriv_factpro_download_invoice', function () {
             $order_id = wc_sanitize_order_id($_REQUEST['order']);
             $order_key = sanitize_text_field($_REQUEST['key']);
 
-            InvoiceDownloader::download($order_id, $order_key);
+            DownloadInvoice::invoke($order_id, $order_key);
         });
 
         /**
