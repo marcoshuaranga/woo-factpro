@@ -42,7 +42,7 @@ final class WoocommerceAdminHooks
                 $order->update_meta_data('_factpro_company_ruc', wc_clean($company_ruc));
                 $order->update_meta_data('_factpro_customer_document_type', IdentityDocument::RUC);
                 $order->update_meta_data('_factpro_customer_document_number', wc_clean($company_ruc));
-            } else if (InvoiceType::is_boleta($_POST['factpro_invoice_type'])) {
+            } else {
                 $order->update_meta_data('_factpro_company_name', '');
                 $order->update_meta_data('_factpro_company_address', wc_clean($_POST['factpro_company_address']));
                 $order->update_meta_data('_factpro_company_ubigeo', '');
