@@ -5,7 +5,8 @@ namespace Factpro\Woo\Actions;
 use Factpro\Domain\Invoice;
 use Factpro\SunatCode\InvoiceType;
 use Factpro\ThirdParties\Factpro\FactproApi;
-use Factpro\ThirdParties\Factpro\Request\CreateDocumentRequest;
+use Factpro\ThirdParties\Factpro\Request\CreateDocumentV2Request;
+use Factpro\ThirdParties\Factpro\Request\CreateDocumentV3Request;
 use WC_Order;
 
 final class CreateInvoice
@@ -19,6 +20,8 @@ final class CreateInvoice
         $testmode = get_option('wc_settings_factpro_testmode', 'no') === 'yes';
         $includeTax = get_option('woocommerce_calc_taxes', 'yes') === 'yes';
         $invoiceType = $order->get_meta('_factpro_invoice_type');
+        $isBoleta = $invoiceType === InvoiceType::BOLETA;
+        $isFactura = $invoiceType === InvoiceType::FACTURA;
 
         switch ($invoiceType) {
             case InvoiceType::BOLETA:
@@ -57,7 +60,10 @@ final class CreateInvoice
                 wc_get_logger()
             );
 
-            $jsonResult = $factproApi->send(new CreateDocumentRequest($invoice));
+            $isV2 = get_option('wc_settings_factpro_api_version', 'v2') === 'v2';
+            $documentRequest = $isV2 ? new CreateDocumentV2Request($invoice) : new CreateDocumentV3Request($invoice);
+
+            $jsonResult = $factproApi->send($documentRequest);
 
             // Save the json result in the order meta
             $order->add_meta_data('_factpro_invoice_json', $jsonResult, true);
@@ -66,8 +72,6 @@ final class CreateInvoice
 
             $success = isset($result['success']) ? $result['success'] : isset($result['links']);
             $message = isset($result['message']) ? $result['message'] : '';
-            $isBoleta = $invoiceType === InvoiceType::BOLETA;
-            $isFactura = $invoiceType === InvoiceType::FACTURA;
 
             if (! $success) {
                 throw new \Exception(is_string($message) ? $message : json_encode($message));
@@ -84,6 +88,11 @@ final class CreateInvoice
                 "El compronante electrónico {$serie}-{$number} fue generado correctamente."
             );
         } catch (\Exception $e) {
+            if ($e->getMessage() === 'El documento ya se encuentra en uso.') {
+                $isBoleta && ! $testmode && update_option('wc_settings_factpro_bnsiglafactura', $number + 1);
+                $isFactura && ! $testmode && update_option('wc_settings_factpro_nsiglafactura', $number + 1);
+            }
+
             $order->add_order_note('Falló al generar el comprobante electrónico: ' . $e->getMessage());
         }
     }

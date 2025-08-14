@@ -6,7 +6,7 @@ use Factpro\Domain\Invoice;
 use Factpro\Domain\InvoiceItem;
 use Factpro\ThirdParties\Factpro\FactproRequest;
 
-final class CreateDocumentRequest extends FactproRequest
+final class CreateDocumentV2Request extends FactproRequest
 {
   private Invoice $invoice;
 

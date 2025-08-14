@@ -21,11 +21,11 @@ final class Invoice
 
     private InvoiceOptions $options;
 
-    private $paymentMethod;
+    private PaymentMethod $paymentMethod;
 
-    private $customer;
+    private Customer $customer;
 
-    private $invoiceItems;
+    private InvoiceItems $invoiceItems;
 
     public function __construct(
         $documentType,
