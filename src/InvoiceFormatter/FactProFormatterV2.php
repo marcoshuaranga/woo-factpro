@@ -5,7 +5,7 @@ namespace Factpro\InvoiceFormatter;
 use Factpro\Domain\Invoice;
 use Factpro\Domain\InvoiceItem;
 
-final class FactProFormatter
+final class FactProFormatterV2
 {
     private Invoice $invoice;
 

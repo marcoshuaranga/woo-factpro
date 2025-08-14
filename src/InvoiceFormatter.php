@@ -3,7 +3,7 @@
 namespace Factpro;
 
 use Factpro\Domain\Invoice;
-use Factpro\InvoiceFormatter\FactProFormatter;
+use Factpro\InvoiceFormatter\FactProFormatterV2;
 
 final class InvoiceFormatter
 {
@@ -11,7 +11,7 @@ final class InvoiceFormatter
 
   public function __construct(Invoice $invoice)
   {
-    $this->formatter = new FactProFormatter($invoice);
+    $this->formatter = new FactProFormatterV2($invoice);
   }
 
   public function is($className)
