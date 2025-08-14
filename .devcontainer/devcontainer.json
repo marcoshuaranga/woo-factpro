@@ -9,6 +9,9 @@
     },
     "ghcr.io/devcontainers/features/git-lfs": {
       "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/sshd": {
+      "version": "latest"
     }
   },
   "service": "web",
