@@ -1,0 +1,16 @@
+{
+  "name": "WooCommerce FactPro",
+  "dockerComposeFile": [
+    "docker-compose.yml"
+  ],
+  "service": "web",
+  "workspaceFolder": "/var/www/html",
+  "customizations": {
+    "vscode": {
+      "extensions": [],
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      }
+    }
+  }
+}

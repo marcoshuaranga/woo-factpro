@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  web:
+    image: wordpress:6-php8.1-apache
+    ports:
+      - "8000:80"
+    volumes:
+      - ..:/var/www/html/wp-content/plugins/woo-factpro
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: factprouser
+      WORDPRESS_DB_PASSWORD: N7MEbMI40m7Z7hIX
+      WORDPRESS_DB_NAME: wp-factprodb
+    working_dir: /var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mysql:lts
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      - MYSQL_INITDB_SKIP_TZINFO=1
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+      - MYSQL_USER=factprouser
+      - MYSQL_PASSWORD=N7MEbMI40m7Z7hIX
+      - MYSQL_DATABASE=wp-factprodb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+volumes:
+  db_data:
