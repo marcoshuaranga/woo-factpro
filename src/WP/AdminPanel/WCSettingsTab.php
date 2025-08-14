@@ -28,12 +28,6 @@ final class WCSettingsTab
                 ],
             ],
 
-            'token' => [
-                'name' => __('Factpro Token', 'woo-factpro'),
-                'type' => 'text',
-                'id'   => 'wc_settings_factpro_token'
-            ],
-
             'version' => [
                 'name' => __('Factpro API Version', 'woo-factpro'),
                 'type' => 'select',
@@ -43,6 +37,12 @@ final class WCSettingsTab
                 ],
                 'id'   => 'wc_settings_factpro_api_version',
                 'default' => 'v3'
+            ],
+
+            'token' => [
+                'name' => __('Factpro Token', 'woo-factpro'),
+                'type' => 'text',
+                'id'   => 'wc_settings_factpro_token'
             ],
 
             'siglafactura' => [

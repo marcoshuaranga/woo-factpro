@@ -28,7 +28,7 @@ final class FactproApi
   private function httpPost(FactproRequest $request)
   {
     $data = $request->toArray();
-    $url = $this->baseUrl . $request->getPath();
+    $url = $request->getEndpoint() ?? "{$this->baseUrl}{$request->getPath()}";
 
     $response = wp_remote_post($url, [
       'headers' => [

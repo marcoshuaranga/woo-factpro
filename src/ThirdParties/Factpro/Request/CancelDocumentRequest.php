@@ -19,6 +19,11 @@ final class CancelDocumentRequest extends FactproRequest
     $this->reason = $attributes['reason'];
   }
 
+  public function getEndpoint()
+  {
+    return null;
+  }
+
   public function getPath()
   {
     return '/api/v2/anular';

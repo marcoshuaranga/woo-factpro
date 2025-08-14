@@ -15,6 +15,11 @@ final class CreateDocumentV2Request extends FactproRequest
     $this->invoice = $invoice;
   }
 
+  public function getEndpoint()
+  {
+    return null;
+  }
+
   public function getPath()
   {
     return '/api/v2/documentos';

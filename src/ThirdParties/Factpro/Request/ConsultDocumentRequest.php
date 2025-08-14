@@ -17,6 +17,11 @@ final class ConsultDocumentRequest extends FactproRequest
     $this->number = $attributes['number'];
   }
 
+  public function getEndpoint()
+  {
+    return null;
+  }
+
   public function getPath()
   {
     return '/api/v2/consulta';
