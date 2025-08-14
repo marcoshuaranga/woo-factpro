@@ -34,7 +34,6 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
         'Factpro\\Helper\\View' => __DIR__ . '/../..' . '/src/Helper/View.php',
         'Factpro\\InvoiceFormatter' => __DIR__ . '/../..' . '/src/InvoiceFormatter.php',
         'Factpro\\InvoiceFormatter\\FactProFormatter' => __DIR__ . '/../..' . '/src/InvoiceFormatter/FactProFormatter.php',
-        'Factpro\\InvoiceFormatter\\OldPseFormatter' => __DIR__ . '/../..' . '/src/InvoiceFormatter/OldPseFormatter.php',
         'Factpro\\InvoiceSender' => __DIR__ . '/../..' . '/src/InvoiceSender.php',
         'Factpro\\SunatCode\\IdentityDocument' => __DIR__ . '/../..' . '/src/SunatCode/IdentityDocument.php',
         'Factpro\\SunatCode\\InvoiceType' => __DIR__ . '/../..' . '/src/SunatCode/InvoiceType.php',

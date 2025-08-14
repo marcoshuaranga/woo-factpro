@@ -2,6 +2,7 @@ version: '3.8'
 services:
   web:
     image: wordpress:6-php8.1-apache
+    restart: unless-stopped
     ports:
       - "8000:80"
     volumes:
@@ -17,6 +18,7 @@ services:
         condition: service_healthy
   db:
     image: mysql:lts
+    restart: unless-stopped
     ports:
       - "3306:3306"
     volumes:
@@ -28,9 +30,10 @@ services:
       - MYSQL_PASSWORD=N7MEbMI40m7Z7hIX
       - MYSQL_DATABASE=wp-factprodb
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
       interval: 10s
       timeout: 5s
       retries: 3
+      start_period: 0s
 volumes:
   db_data:

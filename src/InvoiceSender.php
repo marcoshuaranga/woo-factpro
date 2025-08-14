@@ -3,7 +3,6 @@
 namespace Factpro;
 
 use Factpro\Domain\Invoice;
-use Factpro\InvoiceFormatter\OldPseFormatter;
 
 final class InvoiceSender
 {
@@ -47,10 +46,6 @@ final class InvoiceSender
     public function send(Invoice $invoice)
     {
         $formatter = new InvoiceFormatter($invoice, $this->url);
-
-        if ($formatter->is(OldPseFormatter::class)) {
-            array_push($headers, 'x-access-token: ' . $this->token);
-        }
 
         $response = wp_remote_post($this->url, [
             'headers' => [

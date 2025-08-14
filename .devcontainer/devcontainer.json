@@ -3,6 +3,11 @@
   "dockerComposeFile": [
     "docker-compose.yml"
   ],
+  "features": {
+    "ghcr.io/devcontainers/features/git": {
+      "version": "latest"
+    }
+  },
   "service": "web",
   "workspaceFolder": "/var/www/html",
   "customizations": {

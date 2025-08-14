@@ -19,7 +19,6 @@ return array(
     'Factpro\\Helper\\View' => $baseDir . '/src/Helper/View.php',
     'Factpro\\InvoiceFormatter' => $baseDir . '/src/InvoiceFormatter.php',
     'Factpro\\InvoiceFormatter\\FactProFormatter' => $baseDir . '/src/InvoiceFormatter/FactProFormatter.php',
-    'Factpro\\InvoiceFormatter\\OldPseFormatter' => $baseDir . '/src/InvoiceFormatter/OldPseFormatter.php',
     'Factpro\\InvoiceSender' => $baseDir . '/src/InvoiceSender.php',
     'Factpro\\SunatCode\\IdentityDocument' => $baseDir . '/src/SunatCode/IdentityDocument.php',
     'Factpro\\SunatCode\\InvoiceType' => $baseDir . '/src/SunatCode/InvoiceType.php',
