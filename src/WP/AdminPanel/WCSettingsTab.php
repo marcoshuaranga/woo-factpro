@@ -18,15 +18,15 @@ final class WCSettingsTab
                 'id'       => 'wc_settings_factpro_section_title'
             ],
 
-            'base_url' => [
-                'name' => __('Factpro Base Url', 'woo-factpro'),
-                'type' => 'url',
-                'id'   => 'wc_settings_factpro_base_url',
-                'default' => 'https://dev.factpro.la',
-                'custom_attributes' => [
-                    'readonly' => 'true',
-                ],
-            ],
+            // 'base_url' => [
+            //     'name' => __('Factpro Base Url', 'woo-factpro'),
+            //     'type' => 'url',
+            //     'id'   => 'wc_settings_factpro_base_url',
+            //     'default' => 'https://dev.factpro.la',
+            //     'custom_attributes' => [
+            //         'readonly' => 'true',
+            //     ],
+            // ],
 
             'version' => [
                 'name' => __('Factpro API Version', 'woo-factpro'),
