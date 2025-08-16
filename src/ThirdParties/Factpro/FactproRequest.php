@@ -5,11 +5,9 @@ namespace Factpro\ThirdParties\Factpro;
 abstract class FactproRequest
 {
   /**
-   * @return string|null
+   * @return string
    */
   abstract function getEndpoint();
-
-  abstract function getPath();
 
   /**
    * @return array

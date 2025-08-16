@@ -15,12 +15,22 @@ final class DocumentV3Response
 
   public function __construct(string $jsonResponse)
   {
-    $this->data = json_decode($jsonResponse, true);
+    $this->data = json_decode($jsonResponse === '' ? '{}' : $jsonResponse, true);
   }
 
-  public static function fromJsonV2(string $jsonResponse): self
+  public static function fromJson(string $jsonResponse): self
   {
-    return new self($jsonResponse === '' ? '{}' : $jsonResponse);
+    return new self($jsonResponse);
+  }
+
+  public function isSuccessful()
+  {
+    return $this->get('exito', $this->get('success')) === true;
+  }
+
+  public function getErrorMessage()
+  {
+    return $this->get('mensaje') ?? json_encode($this->get('errors', '[]'));
   }
 
   public function isAccepted()
@@ -65,32 +75,32 @@ final class DocumentV3Response
 
   public function getDownloadPdfUrl()
   {
-    return $this->get('links.download_pdf');
+    return $this->get('archivos.pdf');
   }
 
   public function getPdfUrl()
   {
-    return $this->get('links.pdf');
+    return $this->get('archivos.pdf');
   }
 
   public function getXmlUrl()
   {
-    return $this->get('links.xml');
+    return $this->get('archivos.xml');
   }
 
   public function getSerialNumber()
   {
-    return $this->get('data.number');
+    return $this->get('data.numero');
   }
 
   public function getStateTypeId()
   {
-    return $this->get('data.state_type_id');
+    return $this->get('data.tipo_estado');
   }
 
   public function getStateDescription()
   {
-    return $this->get('data.state_description');
+    return $this->get('data.descripcion_estado');
   }
 
   private function get(string $path, $default = null)

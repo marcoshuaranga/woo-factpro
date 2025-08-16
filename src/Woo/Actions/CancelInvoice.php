@@ -15,8 +15,9 @@ final class CancelInvoice
   public static function invoke($id_or_order)
   {
     try {
+      $version = get_option('wc_settings_factpro_api_version', 'v2');
       $order = is_a($id_or_order, WC_Order::class) ? $id_or_order : new WC_Order($id_or_order);
-      $document = DocumentResponse::fromJson($order->get_meta('_factpro_invoice_json', '{}'));
+      $document = DocumentResponse::fromJson($version, $order->get_meta('_factpro_invoice_json', '{}'));
       $documentType = $order->get_meta('_factpro_invoice_type');
 
       $factproApi = new FactproApi(
@@ -27,30 +28,27 @@ final class CancelInvoice
 
       [$serie, $number] = explode('-', $document->getSerialNumber());
 
-      $jsonResult = $factproApi->send(new CancelDocumentRequest([
+      $jsonResponse = $factproApi->send(new CancelDocumentRequest($version, [
         'documentType' => $documentType,
         'serie' => $serie,
         'number' => $number,
         'reason' => 'Anulación de Woo Order #' . $order->get_id(),
       ]));
 
-      $result = json_decode($jsonResult, true);
+      $documentResponse = DocumentResponse::fromJson($version, $jsonResponse);
 
-      $success = isset($result['success']) ? $result['success'] : false;
-      $message = isset($result['message']) ? $result['message'] : 'Error desconocido';
-
-      if (!$success) {
-        $order->add_order_note('Falló al anular el comprobante electrónico: ' . $result['message']);
-        wc_get_logger()->error("Pedido #{$order->get_id()}: 'Falló al anular el comprobante electrónico: {$message}");
+      if (! $documentResponse->isSuccessful()) {
+        $order->add_order_note('Falló al anular el comprobante electrónico: ' . $documentResponse->getErrorMessage());
+        wc_get_logger()->error("Pedido #{$order->get_id()}: 'Falló al anular el comprobante electrónico: {$documentResponse->getErrorMessage()}");
 
         return;
       }
 
-      $order->update_meta_data('_factpro_invoice_cancelled_json', $jsonResult);
+      $order->update_meta_data('_factpro_invoice_cancelled_json', $jsonResponse);
       $order->save_meta_data();
 
-      $order->add_order_note(
-        "El compronante electrónico {$serie}-{$number} fue anulado correctamente."
+      $documentResponse->isCanceled() && $order->add_order_note(
+        "El comprobante electrónico {$serie}-{$number} fue anulado correctamente."
       );
     } catch (\Exception $e) {
       $order->add_order_note('Falló al anular el comprobante electrónico: ' . $e->getMessage());

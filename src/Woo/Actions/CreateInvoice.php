@@ -7,6 +7,7 @@ use Factpro\SunatCode\InvoiceType;
 use Factpro\ThirdParties\Factpro\FactproApi;
 use Factpro\ThirdParties\Factpro\Request\CreateDocumentV2Request;
 use Factpro\ThirdParties\Factpro\Request\CreateDocumentV3Request;
+use Factpro\ThirdParties\Factpro\Response\DocumentResponse;
 use WC_Order;
 
 final class CreateInvoice
@@ -25,11 +26,11 @@ final class CreateInvoice
 
         switch ($invoiceType) {
             case InvoiceType::BOLETA:
-                $serie  = $testmode ? 'B001' : get_option('wc_settings_factpro_bsiglafactura');
+                $serie  = get_option('wc_settings_factpro_bsiglafactura');
                 $number = $testmode ? '#' : get_option('wc_settings_factpro_bnsiglafactura');
                 break;
             case InvoiceType::FACTURA:
-                $serie   = $testmode ? 'F001' : get_option('wc_settings_factpro_siglafactura');
+                $serie   = get_option('wc_settings_factpro_siglafactura');
                 $number = $testmode ? '#' : get_option('wc_settings_factpro_nsiglafactura');
                 break;
             default:
@@ -52,6 +53,7 @@ final class CreateInvoice
         }
 
         try {
+            $version = get_option('wc_settings_factpro_api_version', 'v2');
             $invoice = Invoice::createFromWooOrder($serie, $number, $order, $includeTax);
 
             $factproApi = new FactproApi(
@@ -60,25 +62,17 @@ final class CreateInvoice
                 wc_get_logger()
             );
 
-            $isV2 = get_option('wc_settings_factpro_api_version', 'v2') === 'v2';
-            $documentRequest = $isV2 ? new CreateDocumentV2Request($invoice) : new CreateDocumentV3Request($invoice);
+            $createDocumentRequest = $version === 'v2' ? new CreateDocumentV2Request($invoice) : new CreateDocumentV3Request($invoice);
+            $jsonResponse = $factproApi->send($createDocumentRequest);
+            $createDocumentResponse = DocumentResponse::fromJson($version, $jsonResponse);
 
-            $jsonResult = $factproApi->send($documentRequest);
-
-            // Save the json result in the order meta
-            $order->add_meta_data('_factpro_invoice_json', $jsonResult, true);
-
-            $result = json_decode($jsonResult, true);
-
-            $success = isset($result['success']) ? $result['success'] : isset($result['links']);
-            $message = isset($result['message']) ? $result['message'] : '';
-
-            if (! $success) {
-                throw new \Exception(is_string($message) ? $message : json_encode($message));
+            if (! $createDocumentResponse->isSuccessful()) {
+                throw new \Exception($createDocumentResponse->getErrorMessage());
             }
 
-            $order->add_meta_data('_factpro_invoice_xml_url', $result['links']['xml'], true);
-            $order->add_meta_data('_factpro_invoice_pdf_url', $result['links']['pdf'], true);
+            $order->add_meta_data('_factpro_invoice_json', $jsonResponse, true);
+            $order->add_meta_data('_factpro_invoice_xml_url', $createDocumentResponse->getXmlUrl(), true);
+            $order->add_meta_data('_factpro_invoice_pdf_url', $createDocumentResponse->getPdfUrl(), true);
             $order->save_meta_data();
 
             $isBoleta && ! $testmode && update_option('wc_settings_factpro_bnsiglafactura', $number + 1);

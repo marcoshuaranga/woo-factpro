@@ -21,11 +21,6 @@ final class CreateDocumentV3Request extends FactproRequest
         return 'https://api.factpro.la/api/v3/documentos';
     }
 
-    public function getPath()
-    {
-        return '/api/v3/documentos';
-    }
-
     public function toArray()
     {
         $invoiceItems = $this->invoice->getInvoiceItems();

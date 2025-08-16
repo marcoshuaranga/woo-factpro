@@ -25,8 +25,9 @@ final class WoocommerceEditOrder
       'woo-factpro-invoice',
       __('Comprobante', 'woo-factpro'),
       function ($post_or_order) {
+        $version = get_option('wc_settings_factpro_api_version', 'v2');
         $order = is_a($post_or_order, \WC_Order::class) ? $post_or_order : new \WC_Order($post_or_order->ID);
-        $documentResponse = DocumentResponse::fromJson($order->get_meta('_factpro_invoice_json'));
+        $documentResponse = DocumentResponse::fromJson($version, $order->get_meta('_factpro_invoice_json'));
         $template = $documentResponse->isEmpty() ? 'admin/order-edit/invoice-metabox-empty' : 'admin/order-edit/invoice-metabox';
 
         echo View::make(WOO_FACTPRO_VIEW_DIR)->render(

@@ -4,7 +4,7 @@ namespace Factpro\ThirdParties\Factpro\Request;
 
 use Factpro\ThirdParties\Factpro\FactproRequest;
 
-final class ConsultDocumentRequest extends FactproRequest
+final class ConsultDocumentV2Request extends FactproRequest
 {
   private $documentType;
   private $serie;
@@ -19,12 +19,7 @@ final class ConsultDocumentRequest extends FactproRequest
 
   public function getEndpoint()
   {
-    return null;
-  }
-
-  public function getPath()
-  {
-    return '/api/v2/consulta';
+    return 'https://dev.factpro.la/api/v2/consulta';
   }
 
   public function toArray()

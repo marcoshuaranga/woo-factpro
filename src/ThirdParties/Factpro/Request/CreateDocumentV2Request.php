@@ -17,12 +17,7 @@ final class CreateDocumentV2Request extends FactproRequest
 
   public function getEndpoint()
   {
-    return null;
-  }
-
-  public function getPath()
-  {
-    return '/api/v2/documentos';
+    return 'https://dev.factpro.la/api/v2/documentos';
   }
 
   public function toArray()

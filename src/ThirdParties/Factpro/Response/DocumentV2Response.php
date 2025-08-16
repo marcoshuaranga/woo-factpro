@@ -15,12 +15,22 @@ final class DocumentV2Response
 
   public function __construct(string $jsonResponse)
   {
-    $this->data = json_decode($jsonResponse, true);
+    $this->data = json_decode($jsonResponse === '' ? '{}' : $jsonResponse, true);
   }
 
   public static function fromJson(string $jsonResponse): self
   {
-    return new self($jsonResponse === '' ? '{}' : $jsonResponse);
+    return new self($jsonResponse);
+  }
+
+  public function isSuccessful()
+  {
+    return $this->get('success', false) === true;
+  }
+
+  public function getErrorMessage()
+  {
+    return $this->get('message', 'Unknown error');
   }
 
   public function isAccepted()
