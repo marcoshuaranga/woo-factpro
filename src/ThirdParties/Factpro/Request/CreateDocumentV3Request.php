@@ -76,7 +76,7 @@ final class CreateDocumentV3Request extends FactproRequest
         return array_map(function (InvoiceItem $item) {
             return [
                 'unidad' => $item->getUnitOfMeasure(),
-                'codigo' => $item->getId(),
+                'codigo' => 'Order #' . $item->getId(),
                 'descripcion' => $item->getDescription(),
                 'cantidad' => $item->getQuantity(),
                 'precio' => $item->getUnitPrice(),

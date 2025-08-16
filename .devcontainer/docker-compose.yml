@@ -6,7 +6,6 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - ~/.ssh:/root/.ssh:cached
       - ..:/var/www/html/wp-content/plugins/woo-factpro
     environment:
       WORDPRESS_DB_HOST: db
