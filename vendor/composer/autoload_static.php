@@ -41,6 +41,7 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
         'Factpro\\Sunat\\Response\\RucResponse' => __DIR__ . '/../..' . '/src/Sunat/Response/RucResponse.php',
         'Factpro\\Sunat\\SunatClient' => __DIR__ . '/../..' . '/src/Sunat/SunatClient.php',
         'Factpro\\Sunat\\SunatClientFactory' => __DIR__ . '/../..' . '/src/Sunat/SunatClientFactory.php',
+        'Factpro\\ThirdParties\\Factpro\\Constants\\TaxType' => __DIR__ . '/../..' . '/src/ThirdParties/Factpro/Constants/TaxType.php',
         'Factpro\\ThirdParties\\Factpro\\FactproApi' => __DIR__ . '/../..' . '/src/ThirdParties/Factpro/FactproApi.php',
         'Factpro\\ThirdParties\\Factpro\\FactproRequest' => __DIR__ . '/../..' . '/src/ThirdParties/Factpro/FactproRequest.php',
         'Factpro\\ThirdParties\\Factpro\\Request\\CancelDocumentRequest' => __DIR__ . '/../..' . '/src/ThirdParties/Factpro/Request/CancelDocumentRequest.php',

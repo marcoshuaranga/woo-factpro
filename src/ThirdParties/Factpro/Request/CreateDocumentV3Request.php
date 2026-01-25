@@ -6,6 +6,7 @@ use Factpro\Domain\Invoice;
 use Factpro\Domain\InvoiceItem;
 use Factpro\SunatCode\IdentityDocument;
 use Factpro\ThirdParties\Factpro\FactproRequest;
+use Factpro\ThirdParties\Factpro\Constants\TaxType;
 
 final class CreateDocumentV3Request extends FactproRequest
 {
@@ -75,7 +76,7 @@ final class CreateDocumentV3Request extends FactproRequest
                 'descripcion' => $item->getDescription(),
                 'cantidad' => $item->getQuantity(),
                 'precio' => $item->getUnitPrice(),
-                'tipo_tax' => $item->isGravado() ? '1' : '2',
+                'tipo_tax' => $item->isGravado() ? TaxType::IGV : TaxType::EXONERATED,
                 'descuento' => 0.00
             ];
         }, $items);
