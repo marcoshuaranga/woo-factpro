@@ -49,6 +49,7 @@ final class CreateDocumentV3Request extends FactproRequest
             'numero_orden' => "{$this->invoice->getOrderId()}",
             'observaciones' => $this->invoice->getCustomer()->getCustomerNote(),
             'formato_pdf' => 'a4',
+            'canal'=> 'woocommerce',
         ], $hasDiscount ? [
             'totales' => [
                 'monto_descuento_global' => $invoiceItems->getTotalDiscount()

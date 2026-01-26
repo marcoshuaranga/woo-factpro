@@ -5,6 +5,7 @@ namespace Factpro\ThirdParties\Factpro\Request;
 use Factpro\Domain\Invoice;
 use Factpro\Domain\InvoiceItem;
 use Factpro\ThirdParties\Factpro\FactproRequest;
+use Factpro\ThirdParties\Factpro\Constants\TaxType;
 
 final class CreateDocumentV2Request extends FactproRequest
 {
@@ -106,7 +107,7 @@ final class CreateDocumentV2Request extends FactproRequest
         'cantidad' => $item->getQuantity(),
         'valor_unitario' => $item->getUnitValue(),
         'precio_unitario' => $item->getUnitPrice(),
-        'tipo_tax' => $item->isGravado() ? '10' : '20',
+        'tipo_tax' => $item->isGravado() ? TaxType::IGV : TaxType::EXONERATED,
         'total_base_tax' => round($item->getSubtotal(), 2),
         'total_tax' => round($item->getTotalTax(), 2),
         'total' => round($item->getTotal(), 2),
