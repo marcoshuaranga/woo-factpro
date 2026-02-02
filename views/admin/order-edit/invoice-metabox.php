@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use Factpro\ThirdParties\Factpro\Response\DocumentResponse;
+use Factpro\ThirdParties\Factpro\Response\DocumentV3Response;
 
 defined('ABSPATH') || exit;
 
 /**
- * @var DocumentResponse $documentResponse
+ * @var DocumentV3Response $documentResponse
  */
 
-$state_classes = [
+$factpro_state_classes = [
   '01' => 'success', // Aceptado
   '05' => 'success', // Registrado
   '09' => 'danger', // Rechazado
@@ -19,8 +19,8 @@ $state_classes = [
   '19' => '', // sin respuesta
 ];
 
-$status_class = isset($state_classes[$documentResponse->getStateTypeId()]) ?
-  $state_classes[$documentResponse->getStateTypeId()] :
+$factpro_status_class = isset($factpro_state_classes[$documentResponse->getStateTypeId()]) ?
+  $factpro_state_classes[$documentResponse->getStateTypeId()] :
   'warning';
 ?>
 <style>
@@ -110,7 +110,7 @@ $status_class = isset($state_classes[$documentResponse->getStateTypeId()]) ?
       <h4 class="mt-0 mb-0"><?php echo esc_html__('Estado', 'woo-factpro'); ?> </h4>
     </div>
     <div class="column">
-      <span class="pill-tag <?php echo esc_attr($status_class); ?>">
+      <span class="pill-tag <?php echo esc_attr($factpro_status_class); ?>">
         <?php echo esc_html($documentResponse->getStateDescription()); ?>
       </span>
     </div>

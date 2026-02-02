@@ -2,6 +2,8 @@
 
 namespace Factpro;
 
+defined('ABSPATH') || exit;
+
 use Automattic\WooCommerce\Internal\DataStores\Orders\OrdersTableDataStore;
 use Factpro\WP\Admin\WoocommerceEditOrder;
 use Factpro\WP\AdminHooks;
@@ -9,6 +11,7 @@ use Factpro\WP\RestApiHooks;
 use Factpro\WP\WoocommerceAdminHooks;
 use Factpro\WP\WoocommerceEmailHooks;
 use Factpro\WP\WoocommerceHooks;
+use Fragen\Git_Updater\Lite;
 
 final class WooFactpro
 {
@@ -16,6 +19,8 @@ final class WooFactpro
 
   public static function init()
   {
+    (new Lite(__FILE__))->run();
+
     AdminHooks::init();
     RestApiHooks::init();
     WoocommerceAdminHooks::init();
@@ -74,12 +79,12 @@ final class WooFactpro
     ];
 
     foreach ($metafield_keys_changed as $old_key => $new_key) {
-      $wpdb->query(
-        $wpdb->prepare(
-          "UPDATE {$metafieldsTable} SET meta_key = %s WHERE meta_key = %s",
-          $new_key,
-          $old_key
-        )
+      $wpdb->update(
+        $metafieldsTable,
+        ['meta_key' => $new_key],
+        ['meta_key' => $old_key],
+        ['%s'],
+        ['%s']
       );
     }
   }

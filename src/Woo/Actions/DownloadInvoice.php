@@ -2,13 +2,19 @@
 
 namespace Factpro\Woo\Actions;
 
+defined('ABSPATH') || exit;
+
 final class DownloadInvoice
 {
     public static function invoke($order_id, $order_key)
     {
-        $order_id = wc_sanitize_order_id($_REQUEST['order']);
-        $order_key = sanitize_text_field($_REQUEST['key']);
-        $order = wc_get_order($order_id);
+        if (!isset($_REQUEST['order']) || !isset($_REQUEST['key'])) {
+            wp_die('Parámetros inválidos.');
+        }
+
+        $order_id = sanitize_text_field(wp_unslash($_REQUEST['order']));
+        $order_key = sanitize_text_field(wp_unslash($_REQUEST['key']));
+        $order = wc_get_order(wc_sanitize_order_id($order_id));
 
         if (! $order) {
             wp_die('El pedido no existe.');

@@ -2,6 +2,8 @@
 
 namespace Factpro\WP\AdminPanel;
 
+defined('ABSPATH') || exit;
+
 final class WCSettingsTab
 {
     public static function getTitle()

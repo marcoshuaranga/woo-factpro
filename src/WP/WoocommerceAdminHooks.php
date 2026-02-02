@@ -2,6 +2,8 @@
 
 namespace Factpro\WP;
 
+defined('ABSPATH') || exit;
+
 use Factpro\Helper\View;
 use Factpro\SunatCode\IdentityDocument;
 use Factpro\SunatCode\InvoiceType;
@@ -11,8 +13,6 @@ use Factpro\Woo\Actions\DownloadInvoice;
 use Factpro\Woo\Actions\PreviewInvoice;
 use Factpro\Woo\Actions\ViewInvoiceStatus;
 use Factpro\WP\AdminPanel\OrderTable;
-
-defined('ABSPATH') || exit;
 
 final class WoocommerceAdminHooks
 {
@@ -74,17 +74,25 @@ final class WoocommerceAdminHooks
         add_action('woocommerce_order_action_factpro_invoice_cancel', [CancelInvoice::class, 'invoke']);
 
         add_action('admin_post_factpro_download_invoice', function () {
-            $order_id = wc_sanitize_order_id($_REQUEST['order']);
-            $order_key = sanitize_text_field($_REQUEST['key']);
+            if (!isset($_REQUEST['order']) || !isset($_REQUEST['key'])) {
+                wp_die('Parámetros inválidos.');
+            }
 
-            DownloadInvoice::invoke($order_id, $order_key);
+            $order_id = sanitize_text_field(wp_unslash($_REQUEST['order']));
+            $order_key = sanitize_text_field(wp_unslash($_REQUEST['key']));
+
+            DownloadInvoice::invoke(wc_sanitize_order_id($order_id), $order_key);
         });
 
         add_action('admin_post_nopriv_factpro_download_invoice', function () {
-            $order_id = wc_sanitize_order_id($_REQUEST['order']);
-            $order_key = sanitize_text_field($_REQUEST['key']);
+            if (!isset($_REQUEST['order']) || !isset($_REQUEST['key'])) {
+                wp_die('Parámetros inválidos.');
+            }
 
-            DownloadInvoice::invoke($order_id, $order_key);
+            $order_id = sanitize_text_field(wp_unslash($_REQUEST['order']));
+            $order_key = sanitize_text_field(wp_unslash($_REQUEST['key']));
+
+            DownloadInvoice::invoke(wc_sanitize_order_id($order_id), $order_key);
         });
 
         /**

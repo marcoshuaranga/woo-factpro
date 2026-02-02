@@ -2,9 +2,9 @@
 
 namespace Factpro\WP\AdminPanel;
 
-use Factpro\Helper\View;
-
 defined('ABSPATH') || exit;
+
+use Factpro\Helper\View;
 
 final class OrderTable
 {
