@@ -50,7 +50,7 @@ defined('ABSPATH') || exit;
             <?php
             woocommerce_form_field('factpro_customer_document_type', [
                'class' => [],
-               'label' => __('Tipo de Documento', 'woo-factpro'),
+               'label' => __('Tipo de Documento', 'factpro-for-woocommerce'),
                'type' => 'select',
                'required' => true,
                'options' => $identity_documents,
@@ -58,7 +58,7 @@ defined('ABSPATH') || exit;
 
             woocommerce_form_field('factpro_customer_document_number', [
                'class' => [],
-               'label' => __('Número de Documento', 'woo-factpro'),
+               'label' => __('Número de Documento', 'factpro-for-woocommerce'),
                'type' => 'text',
                'required' => true,
                'minlength' => 8,
@@ -70,8 +70,8 @@ defined('ABSPATH') || exit;
          <div id="factura-fields" style="display: none;">
             <?php
             woocommerce_form_field('factpro_company_ruc', [
-               'label' => __('RUC de la empresa', 'woo-factpro'),
-               'placeholder' => __('RUC de la empresa', 'woo-factpro'),
+               'label' => __('RUC de la empresa', 'factpro-for-woocommerce'),
+               'placeholder' => __('RUC de la empresa', 'factpro-for-woocommerce'),
                'type' => 'text',
                'required' => true,
                'minlength' => 11,
@@ -79,13 +79,13 @@ defined('ABSPATH') || exit;
             ], $checkout->get_value('factpro_company_ruc'));
 
             woocommerce_form_field('factpro_company_name', [
-               'label' => __('Nombre de razón social', 'woo-factpro'),
+               'label' => __('Nombre de razón social', 'factpro-for-woocommerce'),
                'type' => 'text',
                'required' => true,
             ], $checkout->get_value('factpro_company_name'));
 
             woocommerce_form_field('factpro_company_address', [
-               'label' => __('Domicilio Fiscal', 'woo-factpro'),
+               'label' => __('Domicilio Fiscal', 'factpro-for-woocommerce'),
                'type' => 'text',
                'required' => true,
             ], $checkout->get_value('factpro_company_address'));

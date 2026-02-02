@@ -53,7 +53,7 @@ final class FactproApi
       'Status Code: ' . $statusCode,
       'Response: ' . $jsonResponse,
     ]), [
-      'source' => 'woo-factpro',
+      'source' => 'factpro-for-woocommerce',
     ]);
 
     return $jsonResponse;

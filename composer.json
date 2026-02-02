@@ -1,5 +1,5 @@
 {
-    "name": "dimacros/woo-factpro",
+    "name": "factpro/factpro-for-woocommerce",
     "description": "Plugin para facturacion electronica en el Peru",
     "type": "wp-plugin",
     "license": "MIT",

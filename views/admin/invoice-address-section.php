@@ -20,35 +20,35 @@ defined('ABSPATH') || exit;
   <?php
   woocommerce_wp_select([
     'id' => 'factpro_customer_document_type',
-    'label' => __('Tipo Documento', 'woo-factpro'),
+    'label' => __('Tipo Documento', 'factpro-for-woocommerce'),
     'value' => $order->get_meta('_factpro_customer_document_type'),
     'options' => $identity_documents,
   ]);
 
   woocommerce_wp_text_input([
     'id' => 'factpro_customer_document_number',
-    'label' => __('Número de Documento', 'woo-factpro'),
+    'label' => __('Número de Documento', 'factpro-for-woocommerce'),
     'value' => $order->get_meta('_factpro_customer_document_number'),
     'wrapper_class' => 'last'
   ]);
 
   woocommerce_wp_text_input([
     'id' => 'factpro_company_name',
-    'label' => __('Razón Social', 'woo-factpro'),
+    'label' => __('Razón Social', 'factpro-for-woocommerce'),
     'value' => $order->get_meta('_factpro_company_name'),
     'wrapper_class' => 'form-field-wide',
   ]);
 
   woocommerce_wp_text_input([
     'id' => 'factpro_company_address',
-    'label' => __('Dirección', 'woo-factpro'),
+    'label' => __('Dirección', 'factpro-for-woocommerce'),
     'value' => $order->get_meta('_factpro_company_address'),
     'wrapper_class' => 'form-field-wide',
   ]);
 
   woocommerce_wp_text_input([
     'id' => 'factpro_company_ubigeo',
-    'label' => __('Ubigeo', 'woo-factpro'),
+    'label' => __('Ubigeo', 'factpro-for-woocommerce'),
     'value' => $order->get_meta('_factpro_company_ubigeo'),
     'wrapper_class' => 'form-field-wide',
   ]);

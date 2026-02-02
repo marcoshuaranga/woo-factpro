@@ -24,8 +24,8 @@ final class WoocommerceEditOrder
     }
 
     add_meta_box(
-      'woo-factpro-invoice',
-      __('Comprobante', 'woo-factpro'),
+      'factpro-for-woocommerce-invoice',
+      __('Comprobante', 'factpro-for-woocommerce'),
       function ($post_or_order) {
         $version = get_option('wc_settings_factpro_api_version', 'v2');
         $order = is_a($post_or_order, \WC_Order::class) ? $post_or_order : new \WC_Order($post_or_order->ID);

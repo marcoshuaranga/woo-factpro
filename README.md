@@ -2,4 +2,4 @@
 
 `docker run --rm -it -v "$(pwd):/app" composer:lts dump-autoload -o`
 
-`git archive -o woo-factpro.zip main`
+`git archive -o factpro-for-woocommerce.zip main`

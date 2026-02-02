@@ -10,7 +10,7 @@ final class OrderTable
 {
     public static function addColumn($columns)
     {
-        $columns['download_pdf_or_xml'] = __('Comprobante', 'woo-factpro');
+        $columns['download_pdf_or_xml'] = __('Comprobante', 'factpro-for-woocommerce');
 
         return $columns;
     }
@@ -27,7 +27,7 @@ final class OrderTable
         if ($order->get_meta('_factpro_invoice_pdf_url')) {
             $actions[] = [
                 'url'  => $order->get_meta('_factpro_invoice_pdf_url'),
-                'name' => __('PDF', 'woo-factpro'),
+                'name' => __('PDF', 'factpro-for-woocommerce'),
                 'action' => 'pdf',
             ];
         }
@@ -35,7 +35,7 @@ final class OrderTable
         if ($order->get_meta('_factpro_invoice_xml_url')) {
             $actions[] = [
                 'url'  => $order->get_meta('_factpro_invoice_xml_url'),
-                'name' => __('XML', 'woo-factpro'),
+                'name' => __('XML', 'factpro-for-woocommerce'),
                 'action' => 'xml',
             ];
         }
@@ -43,7 +43,7 @@ final class OrderTable
         if ($order->get_meta('_ebilling_invoice_pdf_url')) {
             $actions[] = [
                 'url'  => $order->get_meta('_ebilling_invoice_pdf_url'),
-                'name' => __('PDF', 'woo-factpro'),
+                'name' => __('PDF', 'factpro-for-woocommerce'),
                 'action' => 'pdf',
             ];
         }
@@ -51,7 +51,7 @@ final class OrderTable
         if ($order->get_meta('_ebilling_invoice_xml_url')) {
             $actions[] = [
                 'url'  => $order->get_meta('_ebilling_invoice_xml_url'),
-                'name' => __('XML', 'woo-factpro'),
+                'name' => __('XML', 'factpro-for-woocommerce'),
                 'action' => 'xml',
             ];
         }

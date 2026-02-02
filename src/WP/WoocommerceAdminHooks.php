@@ -58,12 +58,12 @@ final class WoocommerceAdminHooks
         add_filter('woocommerce_order_actions',  function ($actions) {
             $testmode = get_option('wc_settings_factpro_testmode', 'no') === 'yes';
 
-            $actions['factpro_invoice_create'] = __('Generar comprobante electrónico', 'woo-factpro');
+            $actions['factpro_invoice_create'] = __('Generar comprobante electrónico', 'factpro-for-woocommerce');
 
-            $testmode && $actions['factpro_invoice_preview'] = __('Generar JSON de comprobante electrónico', 'woo-factpro');
+            $testmode && $actions['factpro_invoice_preview'] = __('Generar JSON de comprobante electrónico', 'factpro-for-woocommerce');
 
-            $actions['factpro_invoice_status'] = __('Consultar comprobante electrónico', 'woo-factpro');
-            $actions['factpro_invoice_cancel'] = __('Anular comprobante electrónico', 'woo-factpro');
+            $actions['factpro_invoice_status'] = __('Consultar comprobante electrónico', 'factpro-for-woocommerce');
+            $actions['factpro_invoice_cancel'] = __('Anular comprobante electrónico', 'factpro-for-woocommerce');
 
             return $actions;
         });
@@ -154,7 +154,7 @@ final class WoocommerceAdminHooks
             wp_register_script('woo_order', $publicUrl . '/admin/woo_order.js', ['jquery'], '1.1', true);
             wp_enqueue_script('woo_order');
             wp_localize_script('woo_order', 'factproSettings', [
-                'root' => esc_url_raw(rest_url('woo-factpro/v1')),
+                'root' => esc_url_raw(rest_url('factpro-for-woocommerce/v1')),
                 'nonce' => wp_create_nonce('wp_rest'),
             ]);
         });

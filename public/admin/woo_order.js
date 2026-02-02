@@ -7,7 +7,7 @@ jQuery(document).ready(function ($) {
 
     factproInvoiceCreateBtn.on('click', function (e) {
         $(actionSelect).val('factpro_invoice_create');
-        $('#woo-factpro-invoice').block({
+        $('#factpro-for-woocommerce-invoice').block({
             message: null,
             overlayCSS: {
                 background: '#fff',
@@ -18,7 +18,7 @@ jQuery(document).ready(function ($) {
 
     factproInvoiceStatusBtn.on('click', function (e) {
         $(actionSelect).val('factpro_invoice_status');
-        $('#woo-factpro-invoice').block({
+        $('#factpro-for-woocommerce-invoice').block({
             message: null,
             overlayCSS: {
                 background: '#fff',
@@ -29,7 +29,7 @@ jQuery(document).ready(function ($) {
 
     factproInvoiceCancelBtn.on('click', function (e) {
         $(actionSelect).val('factpro_invoice_cancel');
-        $('#woo-factpro-invoice').block({
+        $('#factpro-for-woocommerce-invoice').block({
             message: null,
             overlayCSS: {
                 background: '#fff',

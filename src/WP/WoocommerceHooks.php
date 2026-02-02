@@ -18,7 +18,7 @@ final class WoocommerceHooks
             if ($order->get_meta('_factpro_invoice_pdf_url')) {
                 $actions['invoice'] = array(
                     'url'  => $order->get_meta('_factpro_invoice_pdf_url'),
-                    'name' => __('Ver Comprobante', 'woo-factpro')
+                    'name' => __('Ver Comprobante', 'factpro-for-woocommerce')
                 );
             }
 
@@ -39,23 +39,23 @@ final class WoocommerceHooks
             switch ($invoiceType) {
                 case InvoiceType::BOLETA:
                     if (! in_array($_POST['factpro_customer_document_type'], [IdentityDocument::DNI, IdentityDocument::CARNET_EXTRANJERIA, IdentityDocument::PASAPORTE])) {
-                        wc_add_notice(__('El tipo de documento no es válido.', 'woo-factpro'), 'error');
+                        wc_add_notice(__('El tipo de documento no es válido.', 'factpro-for-woocommerce'), 'error');
                     }
 
-                    ! $_POST['factpro_customer_document_number'] && wc_add_notice(__('El número de documento no es válido.', 'woo-factpro'), 'error');
+                    ! $_POST['factpro_customer_document_number'] && wc_add_notice(__('El número de documento no es válido.', 'factpro-for-woocommerce'), 'error');
                     break;
                 case InvoiceType::FACTURA:
-                    ! $_POST['factpro_company_ruc'] && wc_add_notice(__('El número de RUC no es válido.', 'woo-factpro'), 'error');
-                    ! $_POST['factpro_company_name'] && wc_add_notice(__('El nombre de razón social no es válido.', 'woo-factpro'), 'error');
-                    ! $_POST['factpro_company_address'] && wc_add_notice(__('El domicilio fiscal no es es válido.', 'woo-factpro'), 'error');
+                    ! $_POST['factpro_company_ruc'] && wc_add_notice(__('El número de RUC no es válido.', 'factpro-for-woocommerce'), 'error');
+                    ! $_POST['factpro_company_name'] && wc_add_notice(__('El nombre de razón social no es válido.', 'factpro-for-woocommerce'), 'error');
+                    ! $_POST['factpro_company_address'] && wc_add_notice(__('El domicilio fiscal no es es válido.', 'factpro-for-woocommerce'), 'error');
 
                     if (\strlen($_POST['factpro_company_ruc']) !== 11) {
-                        wc_add_notice(__('El RUC debe tener 11 dígitos.', 'woo-factpro'), 'error');
+                        wc_add_notice(__('El RUC debe tener 11 dígitos.', 'factpro-for-woocommerce'), 'error');
                     }
 
                     break;
                 default:
-                    wc_add_notice(__('Debe seleccionar el tipo de comprobante.', 'woo-factpro'), 'error');
+                    wc_add_notice(__('Debe seleccionar el tipo de comprobante.', 'factpro-for-woocommerce'), 'error');
             }
         });
 
@@ -105,9 +105,9 @@ final class WoocommerceHooks
             $html = View::make(WOO_FACTPRO_VIEW_DIR)->render('invoice-address-section', [
                 'checkout' => $checkout,
                 'identity_documents' => [
-                    IdentityDocument::DNI => __('DNI', 'woo-factpro'),
-                    IdentityDocument::CARNET_EXTRANJERIA => __('C.E', 'woo-factpro'),
-                    IdentityDocument::PASAPORTE => __('Pasaporte', 'woo-factpro')
+                    IdentityDocument::DNI => __('DNI', 'factpro-for-woocommerce'),
+                    IdentityDocument::CARNET_EXTRANJERIA => __('C.E', 'factpro-for-woocommerce'),
+                    IdentityDocument::PASAPORTE => __('Pasaporte', 'factpro-for-woocommerce')
                 ],
                 'invoice_is_mandatory' => get_option('wc_settings_factpro_invoice_is_mandatory', 'no') === 'yes',
                 'invoices_types' => InvoiceType::getOptions(),
@@ -150,7 +150,7 @@ final class WoocommerceHooks
             if (is_checkout()) {
                 wp_enqueue_script('woo_checkout');
                 wp_localize_script('woo_checkout', 'factproSettings', [
-                    'root' => esc_url_raw(rest_url('woo-factpro/v1')),
+                    'root' => esc_url_raw(rest_url('factpro-for-woocommerce/v1')),
                     'nonce' => wp_create_nonce('wp_rest'),
                 ]);
             }
@@ -161,8 +161,8 @@ final class WoocommerceHooks
     {
         woocommerce_register_additional_checkout_field([
             'id' => 'factpro/invoice_is_mandatory',
-            'label' => __('¿Necesitas un comprobante electrónico?', 'woo-factpro'),
-            // 'optionalLabel' => __('¿Necesitas un comprobante electrónico?', 'woo-factpro'),
+            'label' => __('¿Necesitas un comprobante electrónico?', 'factpro-for-woocommerce'),
+            // 'optionalLabel' => __('¿Necesitas un comprobante electrónico?', 'factpro-for-woocommerce'),
             'location' => 'contact',
             'type' => 'checkbox',
             'attributes' => [],
@@ -175,25 +175,25 @@ final class WoocommerceHooks
 
         woocommerce_register_additional_checkout_field([
             'id' => 'factpro/invoice_type',
-            'label' => __('Tipo de Comprobante', 'woo-factpro'),
-            // 'optionalLabel' => __('¿Cómo nos conociste?', 'woo-factpro'),
+            'label' => __('Tipo de Comprobante', 'factpro-for-woocommerce'),
+            // 'optionalLabel' => __('¿Cómo nos conociste?', 'factpro-for-woocommerce'),
             'location' => 'contact',
             'type' => 'select',
             'attributes' => [],
             'required' => false,
             'hidden' => false,
             'validation' => [],
-            'placeholder' => __('Seleccione un tipo de comprobante', 'woo-factpro'),
+            'placeholder' => __('Seleccione un tipo de comprobante', 'factpro-for-woocommerce'),
             'options' => [
-                ['value' => InvoiceType::FACTURA, 'label' => __('Factura', 'woo-factpro')],
-                ['value' => InvoiceType::BOLETA, 'label' => __('Boleta', 'woo-factpro')],
+                ['value' => InvoiceType::FACTURA, 'label' => __('Factura', 'factpro-for-woocommerce')],
+                ['value' => InvoiceType::BOLETA, 'label' => __('Boleta', 'factpro-for-woocommerce')],
             ]
         ]);
 
         woocommerce_register_additional_checkout_field([
             'id' => 'factpro/customer_document_type',
-            'label' => __('Tipo de Documento', 'woo-factpro'),
-            // 'optionalLabel' => __('¿Necesitas un comprobante electrónico?', 'woo-factpro'),
+            'label' => __('Tipo de Documento', 'factpro-for-woocommerce'),
+            // 'optionalLabel' => __('¿Necesitas un comprobante electrónico?', 'factpro-for-woocommerce'),
             'location' => 'contact',
             'type' => 'select',
             'required' => false,
@@ -202,18 +202,18 @@ final class WoocommerceHooks
                 'properties' => [],
             ],
             'validation' => [],
-            'placeholder' => __('Seleccione un tipo de documento', 'woo-factpro'),
+            'placeholder' => __('Seleccione un tipo de documento', 'factpro-for-woocommerce'),
             'options' => [
-                ['value' => IdentityDocument::DNI, 'label' => __('DNI', 'woo-factpro')],
-                ['value' => IdentityDocument::CARNET_EXTRANJERIA, 'label' => __('C.E', 'woo-factpro')],
-                ['value' => IdentityDocument::PASAPORTE, 'label' => __('Pasaporte', 'woo-factpro')],
+                ['value' => IdentityDocument::DNI, 'label' => __('DNI', 'factpro-for-woocommerce')],
+                ['value' => IdentityDocument::CARNET_EXTRANJERIA, 'label' => __('C.E', 'factpro-for-woocommerce')],
+                ['value' => IdentityDocument::PASAPORTE, 'label' => __('Pasaporte', 'factpro-for-woocommerce')],
             ]
         ]);
 
         woocommerce_register_additional_checkout_field([
             'id' => 'factpro/customer_document_number',
-            'label' => __('Número de Documento', 'woo-factpro'),
-            // 'optionalLabel' => __('¿Necesitas un comprobante electrónico?', 'woo-factpro'),
+            'label' => __('Número de Documento', 'factpro-for-woocommerce'),
+            // 'optionalLabel' => __('¿Necesitas un comprobante electrónico?', 'factpro-for-woocommerce'),
             'location' => 'contact',
             'type' => 'text',
             'attributes' => [
@@ -226,13 +226,13 @@ final class WoocommerceHooks
 
         woocommerce_register_additional_checkout_field([
             'id' => 'factpro/company_vat_number',
-            'label' => __('RUC', 'woo-factpro'),
-            //  'optionalLabel' => __('¿Necaaaarónico?', 'woo-factpro'),
+            'label' => __('RUC', 'factpro-for-woocommerce'),
+            //  'optionalLabel' => __('¿Necaaaarónico?', 'factpro-for-woocommerce'),
             'location' => 'contact',
             'type' => 'text',
             'attributes' => [
                 'pattern' => '[0-9]{11}',
-                'title' => __('El RUC debe tener 11 dígitos', 'woo-factpro'),
+                'title' => __('El RUC debe tener 11 dígitos', 'factpro-for-woocommerce'),
             ],
             'required' => false,
             'hidden' => false,
@@ -241,8 +241,8 @@ final class WoocommerceHooks
 
         woocommerce_register_additional_checkout_field([
             'id' => 'factpro/company_name',
-            'label' => __('Nombre de razón social', 'woo-factpro'),
-            // 'optionalLabel' => __('¿Necesitas un comprobante electrónico?', 'woo-factpro'),
+            'label' => __('Nombre de razón social', 'factpro-for-woocommerce'),
+            // 'optionalLabel' => __('¿Necesitas un comprobante electrónico?', 'factpro-for-woocommerce'),
             'location' => 'contact',
             'type' => 'text',
             'attributes' => [
@@ -255,8 +255,8 @@ final class WoocommerceHooks
 
         woocommerce_register_additional_checkout_field([
             'id' => 'factpro/company_address',
-            'label' => __('Direccción', 'woo-factpro'),
-            // 'optionalLabel' => __('¿Necesitas un comprobante electrónico?', 'woo-factpro'),
+            'label' => __('Direccción', 'factpro-for-woocommerce'),
+            // 'optionalLabel' => __('¿Necesitas un comprobante electrónico?', 'factpro-for-woocommerce'),
             'location' => 'contact',
             'type' => 'text',
             'attributes' => [],
@@ -267,8 +267,8 @@ final class WoocommerceHooks
 
         woocommerce_register_additional_checkout_field([
             'id' => 'factpro/company_ubigeo',
-            'label' => __('Ubigeo', 'woo-factpro'),
-            // 'optionalLabel' => __('¿Necesitas un comprobante electrónico?', 'woo-factpro'),
+            'label' => __('Ubigeo', 'factpro-for-woocommerce'),
+            // 'optionalLabel' => __('¿Necesitas un comprobante electrónico?', 'factpro-for-woocommerce'),
             'location' => 'contact',
             'type' => 'text',
             'attributes' => [],
