@@ -15,7 +15,7 @@ use Fragen\Git_Updater\Lite;
 
 final class WooFactpro
 {
-  const VERSION = '3.2.0';
+  const VERSION = '3.3.1';
 
   public static function init()
   {
