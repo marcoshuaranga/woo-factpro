@@ -1,4 +1,4 @@
-=== Woo Factpro ===
+=== Factpro for WooCommerce ===
 Contributors: factpro
 Tags: Woocommerce
 Requires at least: 6.0

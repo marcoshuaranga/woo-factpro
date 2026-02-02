@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Woo Factpro
+ * Plugin Name: Factpro for WooCommerce
  * Description: Factpro.pe para facturación electrónica en el Perú
  * Version: 3.3.1
  * Author: Factpro.pe
