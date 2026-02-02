@@ -3,12 +3,12 @@
 /**
  * Plugin Name: Factpro for WooCommerce
  * Description: Factpro.pe para facturación electrónica en el Perú
- * Version: 3.3.1
+ * Version: 3.3.2
  * Author: Factpro.pe
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Text Domain: factpro-for-woocommerce
- * Domain Path: languages
+ * Domain Path: /languages
  * License: MIT
  * License URI: https://opensource.org/licenses/MIT
  */

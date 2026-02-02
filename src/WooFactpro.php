@@ -14,7 +14,7 @@ use Factpro\WP\WoocommerceHooks;
 
 final class WooFactpro
 {
-  const VERSION = '3.3.1';
+  const VERSION = '3.3.2';
 
   public static function init()
   {

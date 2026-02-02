@@ -28,7 +28,7 @@ final class DownloadInvoice
             wp_die('No hay ningún comprobante asociado al pedido.');
         }
 
-        wp_redirect($order->get_meta('_factpro_invoice_pdf_url'));
+        wp_safe_redirect($order->get_meta('_factpro_invoice_pdf_url'));
 
         exit();
     }
