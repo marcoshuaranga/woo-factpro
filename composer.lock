@@ -4,66 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "749bc55642a706613d2f9b4c9f696ed2",
-    "packages": [
-        {
-            "name": "afragen/git-updater-lite",
-            "version": "2.7.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/afragen/git-updater-lite.git",
-                "reference": "9c52909c54b409bb6e7ff7dda7d69e9d7ec27da1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/9c52909c54b409bb6e7ff7dda7d69e9d7ec27da1",
-                "reference": "9c52909c54b409bb6e7ff7dda7d69e9d7ec27da1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.4"
-            },
-            "require-dev": {
-                "wp-coding-standards/wpcs": "^3",
-                "yoast/phpunit-polyfills": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "Lite.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andy Fragen",
-                    "email": "andy@thefragens.com",
-                    "homepage": "https://github.com/afragen/git-updater-lite",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A simple class to integrate with Git Updater for standalone plugin/theme updates.",
-            "keywords": [
-                "package",
-                "updater",
-                "wordpress"
-            ],
-            "support": {
-                "issues": "https://github.com/afragen/git-updater-lite/issues",
-                "source": "https://github.com/afragen/git-updater-lite/tree/2.7.1"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/afragen",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-01-01T01:53:22+00:00"
-        }
-    ],
+    "content-hash": "a58ca1795f5f6444ad30b08dc5316e45",
+    "packages": [],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",

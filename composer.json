@@ -13,8 +13,5 @@
         "psr-4": {
             "Factpro\\": "src/"
         }
-    },
-    "require": {
-        "afragen/git-updater-lite": "^2.7.1"
     }
 }

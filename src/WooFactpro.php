@@ -11,7 +11,6 @@ use Factpro\WP\RestApiHooks;
 use Factpro\WP\WoocommerceAdminHooks;
 use Factpro\WP\WoocommerceEmailHooks;
 use Factpro\WP\WoocommerceHooks;
-use Fragen\Git_Updater\Lite;
 
 final class WooFactpro
 {
@@ -19,8 +18,6 @@ final class WooFactpro
 
   public static function init()
   {
-    (new Lite(__FILE__))->run();
-
     AdminHooks::init();
     RestApiHooks::init();
     WoocommerceAdminHooks::init();

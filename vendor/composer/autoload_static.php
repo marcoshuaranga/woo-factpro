@@ -22,7 +22,6 @@ class ComposerStaticInit94c9d1ab62db50d17bf8e997c327f13f
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Fragen\\Git_Updater\\Lite' => __DIR__ . '/..' . '/afragen/git-updater-lite/Lite.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

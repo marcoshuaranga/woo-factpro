@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Plugin Name: Factpro.pe
+ * Plugin Name: Woo Factpro
  * Description: Factpro.pe para facturación electrónica en el Perú
  * Version: 3.3.1
  * Author: Factpro.pe
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Text Domain: woo-factpro
- * Domain Path: /languages/
+ * Domain Path: languages
  * License: MIT
- * Update URI: https://github.com/marcoshuaranga/woo-factpro
+ * License URI: https://opensource.org/licenses/MIT
  */
 
 use Factpro\WooFactpro;
