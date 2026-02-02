@@ -2,6 +2,8 @@
 
 namespace Factpro\WP\Admin;
 
+defined('ABSPATH') || exit;
+
 use Automattic\WooCommerce\Utilities\OrderUtil;
 use Factpro\Helper\View;
 use Factpro\ThirdParties\Factpro\Response\DocumentResponse;
@@ -30,12 +32,23 @@ final class WoocommerceEditOrder
         $documentResponse = DocumentResponse::fromJson($version, $order->get_meta('_factpro_invoice_json'));
         $template = $documentResponse->isEmpty() ? 'admin/order-edit/invoice-metabox-empty' : 'admin/order-edit/invoice-metabox';
 
-        echo View::make(WOO_FACTPRO_VIEW_DIR)->render(
+        $html = View::make(WOO_FACTPRO_VIEW_DIR)->render(
           $template,
           [
             'documentResponse' => $documentResponse,
           ]
         );
+
+        $allowed_html = [
+          'style' => [],
+          'div' => ['class' => true, 'style' => true],
+          'h4' => ['class' => true],
+          'span' => ['class' => true, 'style' => true],
+          'button' => ['class' => true, 'id' => true, 'disabled' => true],
+          'a' => ['href' => true, 'target' => true, 'class' => true, 'aria-label' => true, 'title' => true],
+        ];
+
+        echo wp_kses($html, $allowed_html);
       },
       $current_screen->id,
       'side',

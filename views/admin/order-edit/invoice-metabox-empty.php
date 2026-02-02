@@ -94,7 +94,7 @@ defined('ABSPATH') || exit;
   </div>
   <div class="row">
     <div class="column">
-      <h4 class="mt-0 mb-0"><?= esc_html('Estado', 'woo-factpro') ?> </h4>
+      <h4 class="mt-0 mb-0"><?php echo esc_html__('Estado', 'woo-factpro'); ?> </h4>
     </div>
     <div class="column">
       <span class="pill-tag">
@@ -104,7 +104,7 @@ defined('ABSPATH') || exit;
   </div>
   <div class="row">
     <div class="column">
-      <h4 class="mt-0 mb-2"><?= esc_html('Acción', 'woo-factpro') ?></h4>
+      <h4 class="mt-0 mb-2"><?php echo esc_html__('Acción', 'woo-factpro'); ?></h4>
       <div class="woocommerce-order-invoice-action-container">
         <div class="mb-2">
           <button class="button" id="factpro-invoice-create-btn">

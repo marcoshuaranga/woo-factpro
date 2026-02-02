@@ -12,6 +12,8 @@ use Factpro\Woo\Actions\PreviewInvoice;
 use Factpro\Woo\Actions\ViewInvoiceStatus;
 use Factpro\WP\AdminPanel\OrderTable;
 
+defined('ABSPATH') || exit;
+
 final class WoocommerceAdminHooks
 {
     public static function init()
@@ -56,12 +58,12 @@ final class WoocommerceAdminHooks
         add_filter('woocommerce_order_actions',  function ($actions) {
             $testmode = get_option('wc_settings_factpro_testmode', 'no') === 'yes';
 
-            $actions['factpro_invoice_create'] = __('Generar comprobante electrónico');
+            $actions['factpro_invoice_create'] = __('Generar comprobante electrónico', 'woo-factpro');
 
-            $testmode && $actions['factpro_invoice_preview'] = __('Generar JSON de comprobante electrónico');
+            $testmode && $actions['factpro_invoice_preview'] = __('Generar JSON de comprobante electrónico', 'woo-factpro');
 
-            $actions['factpro_invoice_status'] = __('Consultar comprobante electrónico');
-            $actions['factpro_invoice_cancel'] = __('Anular comprobante electrónico');
+            $actions['factpro_invoice_status'] = __('Consultar comprobante electrónico', 'woo-factpro');
+            $actions['factpro_invoice_cancel'] = __('Anular comprobante electrónico', 'woo-factpro');
 
             return $actions;
         });
@@ -111,19 +113,37 @@ final class WoocommerceAdminHooks
                 $pdf_url = $order->get_meta('_factpro_invoice_pdf_url');
             }
 
-            print View::make(WOO_FACTPRO_VIEW_DIR)->render('admin/invoice-address-section', [
+            $html = View::make(WOO_FACTPRO_VIEW_DIR)->render('admin/invoice-address-section', [
                 'factpro_invoice_was_generated' => !!$pdf_url,
                 'factpro_invoice_pdf_url' =>  $pdf_url,
                 'identity_documents' => IdentityDocument::getOptions(),
                 'order' => $order,
             ]);
+
+            $allowed_html = [
+                'div' => ['class' => true, 'style' => true, 'id' => true],
+                'p' => ['class' => true, 'style' => true],
+                'strong' => [],
+                'a' => ['href' => true, 'target' => true, 'rel' => true, 'class' => true],
+                'select' => ['id' => true, 'name' => true, 'class' => true],
+                'option' => ['value' => true, 'selected' => true],
+                'input' => [
+                    'type' => true,
+                    'id' => true,
+                    'name' => true,
+                    'value' => true,
+                    'class' => true,
+                ],
+            ];
+
+            echo wp_kses($html, $allowed_html);
         });
 
         add_action('admin_enqueue_scripts', function () {
 
             $publicUrl = plugins_url('public', WOO_FACTPRO_PLUGIN_FILE);
 
-            wp_register_script('woo_order', $publicUrl . '/admin/woo_order.js', ['jquery'], 1.1, true);
+            wp_register_script('woo_order', $publicUrl . '/admin/woo_order.js', ['jquery'], '1.1', true);
             wp_enqueue_script('woo_order');
             wp_localize_script('woo_order', 'factproSettings', [
                 'root' => esc_url_raw(rest_url('woo-factpro/v1')),

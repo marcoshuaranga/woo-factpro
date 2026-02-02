@@ -2,6 +2,8 @@
 
 namespace Factpro\WP;
 
+defined('ABSPATH') || exit;
+
 use Factpro\Helper\View;
 use Factpro\SunatCode\IdentityDocument;
 use Factpro\SunatCode\InvoiceType;
@@ -16,7 +18,7 @@ final class WoocommerceHooks
             if ($order->get_meta('_factpro_invoice_pdf_url')) {
                 $actions['invoice'] = array(
                     'url'  => $order->get_meta('_factpro_invoice_pdf_url'),
-                    'name' => __('Ver Comprobante', 'woocommerce')
+                    'name' => __('Ver Comprobante', 'woo-factpro')
                 );
             }
 
@@ -100,7 +102,7 @@ final class WoocommerceHooks
          * Display in Website
          */
         add_action('woocommerce_after_checkout_billing_form', function (\WC_Checkout $checkout) {
-            print View::make(WOO_FACTPRO_VIEW_DIR)->render('invoice-address-section', [
+            $html = View::make(WOO_FACTPRO_VIEW_DIR)->render('invoice-address-section', [
                 'checkout' => $checkout,
                 'identity_documents' => [
                     IdentityDocument::DNI => __('DNI', 'woo-factpro'),
@@ -110,6 +112,33 @@ final class WoocommerceHooks
                 'invoice_is_mandatory' => get_option('wc_settings_factpro_invoice_is_mandatory', 'no') === 'yes',
                 'invoices_types' => InvoiceType::getOptions(),
             ]);
+
+            $allowed_html = [
+                'style' => [],
+                'div' => ['class' => true, 'style' => true, 'id' => true],
+                'h3' => ['id' => true, 'class' => true],
+                'label' => ['class' => true, 'for' => true],
+                'input' => [
+                    'type' => true,
+                    'id' => true,
+                    'name' => true,
+                    'value' => true,
+                    'class' => true,
+                    'checked' => true,
+                    'placeholder' => true,
+                ],
+                'span' => ['class' => true],
+                'select' => [
+                    'id' => true,
+                    'name' => true,
+                    'class' => true,
+                    'data-placeholder' => true,
+                ],
+                'option' => ['value' => true, 'selected' => true],
+                'p' => ['class' => true, 'id' => true],
+            ];
+
+            echo wp_kses($html, $allowed_html);
         });
 
         add_action('wp_enqueue_scripts', function () {

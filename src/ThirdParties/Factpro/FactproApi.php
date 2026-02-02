@@ -2,6 +2,8 @@
 
 namespace Factpro\ThirdParties\Factpro;
 
+defined('ABSPATH') || exit;
+
 use WC_Logger;
 
 final class FactproApi
@@ -40,7 +42,7 @@ final class FactproApi
     ]);
 
     if (is_wp_error($response)) {
-      throw new \Exception($response->get_error_message());
+      throw new \Exception(esc_html($response->get_error_message()));
     }
 
     $statusCode = wp_remote_retrieve_response_code($response);

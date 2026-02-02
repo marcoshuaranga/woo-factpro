@@ -9,6 +9,7 @@ use Factpro\SunatCode\InvoiceType;
 
 defined('ABSPATH') || exit;
 ?>
+
 <style>
    #factpro_invoice_type_field label.radio {
       display: inline !important;
@@ -32,7 +33,7 @@ defined('ABSPATH') || exit;
       <h3>Detalles de Comprobante</h3>
    <?php endif; ?>
 
-   <div class="invoice_address" style="display: <?= $invoice_is_mandatory ? 'block' : 'none' ?>;">
+   <div class="invoice_address" style="display: <?php echo esc_attr($invoice_is_mandatory ? 'block' : 'none'); ?>;">
 
       <div class="woocommerce-invoice-address-fields__field-wrapper">
          <?php
@@ -45,7 +46,7 @@ defined('ABSPATH') || exit;
          ], $checkout->get_value('factpro_invoice_type'));
          ?>
 
-         <div id="factpro_customer_document_type_wrapper" style="display: <?= $invoice_is_mandatory ? 'block' : 'none' ?>;">
+         <div id="factpro_customer_document_type_wrapper" style="display: <?php echo esc_attr($invoice_is_mandatory ? 'block' : 'none'); ?>;">
             <?php
             woocommerce_form_field('factpro_customer_document_type', [
                'class' => [],

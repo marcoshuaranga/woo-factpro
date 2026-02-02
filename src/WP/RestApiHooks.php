@@ -2,6 +2,8 @@
 
 namespace Factpro\WP;
 
+defined('ABSPATH') || exit;
+
 use Factpro\Action\GetDniAction;
 use Factpro\Action\GetRucAction;
 

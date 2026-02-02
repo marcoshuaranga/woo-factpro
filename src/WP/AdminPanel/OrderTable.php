@@ -4,11 +4,13 @@ namespace Factpro\WP\AdminPanel;
 
 use Factpro\Helper\View;
 
+defined('ABSPATH') || exit;
+
 final class OrderTable
 {
     public static function addColumn($columns)
     {
-        $columns['download_pdf_or_xml'] = __('Comprobante', 'woocommerce');
+        $columns['download_pdf_or_xml'] = __('Comprobante', 'woo-factpro');
 
         return $columns;
     }
@@ -54,6 +56,20 @@ final class OrderTable
             ];
         }
 
-        print View::make(WOO_FACTPRO_VIEW_DIR)->render('admin/orders-table/custom_column', ['actions' => $actions]);
+        $html = View::make(WOO_FACTPRO_VIEW_DIR)->render('admin/orders-table/custom_column', ['actions' => $actions]);
+        $allowed_html = [
+            'div' => ['class' => true],
+            'a' => [
+                'class' => true,
+                'href' => true,
+                'aria-label' => true,
+                'title' => true,
+            ],
+            'span' => [
+                'class' => true,
+                'style' => true,
+            ],
+        ];
+        echo wp_kses($html, $allowed_html);
     }
 }

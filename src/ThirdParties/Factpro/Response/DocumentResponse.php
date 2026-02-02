@@ -2,6 +2,8 @@
 
 namespace Factpro\ThirdParties\Factpro\Response;
 
+defined('ABSPATH') || exit;
+
 final class DocumentResponse
 {
   public static function fromJson(string $version, string $jsonResponse)
@@ -12,7 +14,7 @@ final class DocumentResponse
       case 'v3':
         return new DocumentV3Response($jsonResponse);
       default:
-        throw new \InvalidArgumentException("Unsupported version: $version");
+        throw new \InvalidArgumentException(esc_html("Unsupported version: $version"));
     }
   }
 

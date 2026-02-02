@@ -1,8 +1,14 @@
+<?php
+
+defined('ABSPATH') || exit;
+
+?>
+
 <div class="address">
   <?php if ($factpro_invoice_was_generated): ?>
     <p>
       <strong>Comprobante electrónico:</strong>
-      <a href="<?= $factpro_invoice_pdf_url ?>" target="_blank">Descargar comprobante</a>
+      <a href="<?php echo esc_url($factpro_invoice_pdf_url); ?>" target="_blank">Descargar comprobante</a>
     </p>
   <?php else: ?>
     <p class="none_set">

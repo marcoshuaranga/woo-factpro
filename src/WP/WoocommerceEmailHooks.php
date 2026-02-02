@@ -2,6 +2,8 @@
 
 namespace Factpro\WP;
 
+defined('ABSPATH') || exit;
+
 use Factpro\Helper\View;
 
 final class WoocommerceEmailHooks
@@ -30,8 +32,16 @@ final class WoocommerceEmailHooks
                 'key' => $order->get_order_key(),
             ], admin_url('admin-post.php'));
 
-            print View::make(WOO_FACTPRO_VIEW_DIR)->render('emails/email-factpro-pdf-url', [
+            $html = View::make(WOO_FACTPRO_VIEW_DIR)->render('emails/email-factpro-pdf-url', [
                 'factpro_invoice_pdf_url' =>  $factpro_invoice_pdf_url,
+            ]);
+
+            echo wp_kses($html, [
+                'div' => ['style' => true],
+                'h2' => [],
+                'p' => [],
+                'strong' => [],
+                'a' => ['href' => true, 'target' => true],
             ]);
         }, 10, 4);
     }

@@ -101,28 +101,28 @@ $status_class = isset($state_classes[$documentResponse->getStateTypeId()]) ?
   <div class="row">
     <div class="column">
       <h4 class="mt-0 mb-0">
-        <?php esc_html_e($documentResponse->getSerialNumber(), 'woo-factpro'); ?>
+        <?php echo esc_html($documentResponse->getSerialNumber()); ?>
       </h4>
     </div>
   </div>
   <div class="row">
     <div class="column">
-      <h4 class="mt-0 mb-0"><?= esc_html('Estado', 'woo-factpro') ?> </h4>
+      <h4 class="mt-0 mb-0"><?php echo esc_html__('Estado', 'woo-factpro'); ?> </h4>
     </div>
     <div class="column">
-      <span class="pill-tag <?= $status_class ?>">
-        <?= esc_html($documentResponse->getStateDescription(), 'woo-factpro') ?>
+      <span class="pill-tag <?php echo esc_attr($status_class); ?>">
+        <?php echo esc_html($documentResponse->getStateDescription()); ?>
       </span>
     </div>
   </div>
   <div class="row">
     <div class="column">
-      <h4 class="mt-0 mb-2"><?= esc_html('Descarga', 'woo-factpro') ?></h4>
+      <h4 class="mt-0 mb-2"><?php echo esc_html__('Descarga', 'woo-factpro'); ?></h4>
       <div class="woocommerce-order-invoice-download-container">
         <div class="button-group">
-          <a class="button" href="<?= $documentResponse->getPdfUrl() ?>" target="_blank" aria-label="PDF" title="PDF">
+          <a class="button" href="<?php echo esc_url($documentResponse->getPdfUrl()); ?>" target="_blank" aria-label="PDF" title="PDF">
             <span class="dashicons dashicons-download" style="vertical-align: middle;"></span> PDF </a>
-          <a class="button" href="<?= $documentResponse->getXmlUrl() ?>" target="_blank" aria-label="XML" title="XML">
+          <a class="button" href="<?php echo esc_url($documentResponse->getXmlUrl()); ?>" target="_blank" aria-label="XML" title="XML">
             <span class="dashicons dashicons-download" style="vertical-align: middle;"></span> XML </a>
         </div>
       </div>
@@ -131,7 +131,7 @@ $status_class = isset($state_classes[$documentResponse->getStateTypeId()]) ?
   <?php if (! $documentResponse->isCanceled()): ?>
     <div class="row">
       <div class="column">
-        <h4 class="mt-0 mb-2"><?= esc_html('Acción', 'woo-factpro') ?></h4>
+        <h4 class="mt-0 mb-2"><?php echo esc_html__('Acción', 'woo-factpro'); ?></h4>
         <div class="woocommerce-order-invoice-action-container">
           <div class="mb-2">
             <button class="button" id="factpro-invoice-create-btn" disabled>
