@@ -1,0 +1,14 @@
+name: Publish to WordPress.org
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: wordpress-plugins/wordpress-plugin-deploy@main
+        with:
+          generate-zip: true
